@@ -1,0 +1,152 @@
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1/dist/fancybox/fancybox.css" />
+<script src="https://cdn.jsdelivr.net/npm/@fancyapps/ui@6.1/dist/fancybox/fancybox.umd.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+
+	console.log('[DS/Fancybox] DOMContentLoaded');
+
+	if (typeof Fancybox === "undefined") {
+		console.log('[DS/Fancybox] Fancybox is undefined. Aborting.');
+		return;
+	}
+
+	const DRAG_THRESHOLD = 6;
+	const galleryBaseId = Date.now();
+
+	console.log('[DS/Fancybox] Init. DRAG_THRESHOLD:', DRAG_THRESHOLD, 'galleryBaseId:', galleryBaseId);
+
+	function getClosestSlideMediaFromPoint(carousel, clientX, clientY) {
+		const slides = carousel.querySelectorAll('.user-items-list-carousel__slide');
+		if (!slides.length) return null;
+
+		let best = null;
+		let bestDist = Infinity;
+
+		for (const slide of slides) {
+			const rect = slide.getBoundingClientRect();
+
+			// If the click is vertically outside the slide row, skip
+			if (clientY < rect.top || clientY > rect.bottom) continue;
+
+			// Distance from pointer X to the slide's horizontal center
+			const cx = rect.left + rect.width / 2;
+			const dist = Math.abs(clientX - cx);
+
+			if (dist < bestDist) {
+				bestDist = dist;
+				best = slide;
+			}
+		}
+
+		if (!best) {
+			// fallback: pick the closest by X only (even if Y miss)
+			for (const slide of slides) {
+				const rect = slide.getBoundingClientRect();
+				const cx = rect.left + rect.width / 2;
+				const dist = Math.abs(clientX - cx);
+				if (dist < bestDist) {
+					bestDist = dist;
+					best = slide;
+				}
+			}
+		}
+
+		if (!best) return null;
+
+		const media = best.querySelector('.user-items-list-carousel__media');
+		return media || null;
+	}
+
+	document.querySelectorAll('.user-items-list .user-items-list-carousel')
+		.forEach((carousel, carouselIndex) => {
+
+			const galleryName = `gallery-${galleryBaseId}-${carouselIndex}`;
+
+			console.log('[DS/Fancybox] Carousel found:', { carouselIndex, galleryName });
+
+			const mediaEls = Array.from(carousel.querySelectorAll('.user-items-list-carousel__media'));
+			console.log('[DS/Fancybox] Media elements found:', mediaEls.length);
+
+			// Tag all media items for grouping
+			mediaEls.forEach((media) => {
+				media.setAttribute('data-fancybox', galleryName);
+			});
+
+			let startX = 0;
+			let startY = 0;
+			let isDown = false;
+
+			// Capture phase so we see events even if Squarespace stops propagation later
+			carousel.addEventListener('pointerdown', (e) => {
+				isDown = true;
+				startX = e.clientX;
+				startY = e.clientY;
+
+				console.log('[DS/Fancybox] pointerdown:', {
+					carouselIndex,
+					startX,
+					startY,
+					target: e.target,
+					closestSlides: !!e.target.closest?.('.user-items-list-carousel__slides')
+				});
+
+			}, true);
+
+			carousel.addEventListener('pointerup', (e) => {
+				if (!isDown) return;
+				isDown = false;
+
+				const dx = Math.abs(e.clientX - startX);
+				const dy = Math.abs(e.clientY - startY);
+				const moved = Math.max(dx, dy);
+
+				console.log('[DS/Fancybox] pointerup:', {
+					carouselIndex,
+					endX: e.clientX,
+					endY: e.clientY,
+					dx,
+					dy,
+					moved
+				});
+
+				// Drag? do nothing
+				if (moved > DRAG_THRESHOLD) {
+					console.log('[DS/Fancybox] Drag detected, not opening Fancybox.', { carouselIndex, moved, DRAG_THRESHOLD });
+					return;
+				}
+
+				const media = getClosestSlideMediaFromPoint(carousel, e.clientX, e.clientY);
+
+				console.log('[DS/Fancybox] Click intent. Closest media:', media);
+
+				if (!media) {
+					console.log('[DS/Fancybox] No media resolved from point. Aborting.');
+					return;
+				}
+
+				// Prevent "click" side effects, but only on click-intent
+				e.preventDefault();
+				e.stopPropagation();
+
+				// Optional: open full gallery starting from clicked item
+				const items = mediaEls.map((m) => ({ src: m.src, type: "image" }));
+				const startIndex = mediaEls.indexOf(media);
+
+				console.log('[DS/Fancybox] Opening gallery.', { carouselIndex, startIndex, total: items.length });
+console.log(items);
+				Fancybox.show(items, {
+					startIndex: Math.max(0, startIndex),
+					groupAll: false
+				});
+
+			}, true);
+
+			carousel.addEventListener('pointercancel', () => {
+				isDown = false;
+			}, true);
+
+		});
+
+});
+</script>
+

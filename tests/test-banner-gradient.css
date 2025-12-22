@@ -1,0 +1,83 @@
+:root {
+	/* globals */
+	--ds-pad-tb: 1vw;
+	--ds-pad-lr: 3vw;
+
+	/* Hero banner */
+	--ds-hero-banner-h: 66dvh;
+	--ds-hero-banner-grad-color: 0 0 0;
+	--ds-hero-banner-grad-color-opacity: 0.5;
+	--ds-hero-banner-grad-top: 78.4px;
+	--ds-hero-banner-grad-bottom: calc( var(--ds-font-h1-lh) * var(--ds-font-h1-size) + var(--ds-pad-tb) * 3 ) /* 300px */;
+}
+
+
+
+#hero-banner :is(.content-wrapper, .content, [data-fluid-engine], .fluid-engine, .sqs-block, .sqs-html-content) {
+	display: contents;
+}
+
+
+#hero-banner {
+	position: relative;
+	min-height: var(--ds-hero-banner-h);
+}
+
+/* gradient: top solid (menu) -> fade out -> clear middle -> fade in -> bottom solid (title) */
+/* #hero-banner::after {
+	background: linear-gradient(
+		to bottom,
+
+		rgb(var(--ds-hero-banner-grad-color) / var(--ds-hero-banner-grad-color-opacity)) 0,
+		rgb(var(--ds-hero-banner-grad-color) / var(--ds-hero-banner-grad-color-opacity)) var(--ds-hero-banner-grad-top),
+
+		rgb(var(--ds-hero-banner-grad-color) / 0)
+			calc(50% - var(--ds-hero-banner-grad-top) / 2),
+
+		rgb(var(--ds-hero-banner-grad-color) / 0)
+			calc(50% + var(--ds-hero-banner-grad-bottom) / 2),
+
+		rgb(var(--ds-hero-banner-grad-color) / var(--ds-hero-banner-grad-color-opacity))
+			calc(100% - var(--ds-hero-banner-grad-bottom)),
+
+		rgb(var(--ds-hero-banner-grad-color) / var(--ds-hero-banner-grad-color-opacity)) 100%
+	);
+	content: '';
+	position: absolute;
+	height: 100%;
+	left: 0;
+	top: 0;
+	width: 100%;
+	z-index: 2;
+} */
+
+#hero-banner::after,
+#hero-banner::before {
+	backdrop-filter: blur(5px);
+	/* background-color: rgb(var(--ds-hero-banner-grad-color) / var(--ds-hero-banner-grad-color-opacity)); */
+	content: '';
+	left: 0;
+	position: absolute;
+	width: 100%;
+	z-index: 3;
+}
+
+#hero-banner::after {
+	height: var(--ds-hero-banner-grad-top);
+	top: 0;
+}
+
+#hero-banner::before {
+	bottom: 0;
+	height: var(--ds-hero-banner-grad-bottom);
+}
+
+
+#hero-banner h1 {
+	color: white;
+	position: absolute;
+	left: var(--ds-pad-lr);
+	bottom: calc( var(--ds-pad-tb) * 2 );
+	z-index: 3;
+}
+
