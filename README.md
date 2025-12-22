@@ -98,5 +98,3 @@ This keeps the source readable while ensuring platform compatibility.
 
 * Making `calc()` work in Squarespace Custom CSS
   [https://forum.squarespace.com/topic/163225-how-to-make-css-calc-function-work-on-custom-css-editor/#elComment_371502](https://forum.squarespace.com/topic/163225-how-to-make-css-calc-function-work-on-custom-css-editor/#elComment_371502)
-
-```
