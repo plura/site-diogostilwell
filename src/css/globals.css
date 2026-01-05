@@ -1,0 +1,599 @@
+/* Squarespace LESS reminder: escape modern CSS that LESS may parse as math.
+   Use LESS literals (~"…") for calc()/clamp()/min()/max() and for slash syntax like:
+   grid-column: 1 / -1, grid-row, grid-area, etc. */
+
+/* ==========================================================================
+	Root Vars
+========================================================================== */
+
+:root {
+  /* globals */
+  --ds-pad-tb: 1vw;
+  --ds-pad-lr: 3vw;
+  --ds-border-radius: 10px;
+
+  /* Palette (olive) */
+  --ds-bg-light: #f6f4ee;
+  --ds-fg-light: #141a14;
+
+  --ds-bg-dark: #141a14;
+  --ds-fg-dark: #f6f4ee;
+
+  /* Semantic colours */
+  --ds-bg: var(--ds-bg-light);
+  --ds-fg: var(--ds-fg-light);
+
+  /* Theme tokens (light defaults) */
+  --ds-color-text-on-media: var(--ds-fg-dark);
+  --ds-color-overlay: rgba(20, 26, 20, 0.6);
+
+  /* Project elements */
+  --ds-project-info-gap: 15px;
+  --ds-award-icon-size: 60px;
+
+  /* Font families */
+  --ds-font-heading-family: "Fraunces", serif;
+  --ds-font-body-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto,
+    Helvetica, Arial, sans-serif;
+
+  /* Body (bigger base) */
+  --ds-body-font-size: clamp(1.125rem, 1rem + 0.4vw, 1.25rem);
+
+  --ds-body-line-height: 1.65;
+  --ds-body-letter-spacing: 0;
+
+  /* Headings */
+  --ds-heading-font-weight: 400;
+
+  /* Typography scale */
+  --ds-font-h1-size: clamp(3.2rem, 6vw, 7rem);
+  --ds-font-h2-size: clamp(2.1rem, 3.4vw, 3.2rem);
+  --ds-font-h3-size: clamp(1.5rem, 2.2vw, 2.2rem);
+  --ds-font-h4-size: clamp(1.15rem, 1.4vw, 1.6rem);
+
+  /* Line-heights */
+  --ds-font-h1-lh: 1.1;
+  --ds-font-h2-lh: 1.18;
+  --ds-font-h3-lh: 1.28;
+  --ds-font-h4-lh: 1.4;
+
+  /* Letter-spacing */
+  --ds-font-h1-ls: 0.01em;
+  --ds-font-h2-ls: 0.012em;
+  --ds-font-h3-ls: 0.014em;
+  --ds-font-h4-ls: 0.016em;
+
+  /* Transitions */
+  --ds-trans-speed: 0.4s;
+  --ds-trans-ease: ease-out;
+
+  /* Transition prop values */
+  --ds-trans-val-move: 14px;
+
+  /* Transition element level values */
+  --ds-trans-lvl1-delay-base: 0.06s;
+  --ds-trans-lvl1-delay-step: 0.06s;
+  --ds-trans-lvl2-delay-step: 0.06s;
+
+  /* Hero banner */
+  --ds-hero-banner-h: 66dvh;
+  --ds-hero-banner-grad-color: 0 0 0;
+  --ds-hero-banner-grad-color-opacity: 0.5;
+  --ds-hero-banner-grad-top: 78.4px;
+
+  --ds-hero-banner-grad-bottom: calc(
+    var(--ds-font-h1-lh) * var(--ds-font-h1-size) + (var(--ds-pad-tb) * 3)
+  );
+}
+
+/* ==========================================================================
+	Theme Overrides
+========================================================================== */
+
+/* System preference default (only when no manual override is set) */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    --ds-bg: var(--ds-bg-dark);
+    --ds-fg: var(--ds-fg-dark);
+
+    /* Existing theme tokens */
+    --ds-color-text-on-media: var(--ds-fg-dark);
+    --ds-color-overlay: rgba(20, 26, 20, 0.6);
+  }
+}
+
+/* Manual overrides (future toggle will set data-theme on :root) */
+:root[data-theme="light"] {
+  --ds-bg: var(--ds-bg-light);
+  --ds-fg: var(--ds-fg-light);
+
+  --ds-color-text-on-media: var(--ds-fg-dark);
+  --ds-color-overlay: rgba(20, 26, 20, 0.6);
+}
+
+:root[data-theme="dark"] {
+  --ds-bg: var(--ds-bg-dark);
+  --ds-fg: var(--ds-fg-dark);
+
+  --ds-color-text-on-media: var(--ds-fg-dark);
+  --ds-color-overlay: rgba(20, 26, 20, 0.6);
+}
+
+/* ==========================================================================
+	Typography
+========================================================================== */
+
+body,
+p.sqsrte-large {
+  font-family: var(--ds-font-body-family);
+  font-weight: 400;
+  font-size: var(--ds-body-font-size);
+  line-height: var(--ds-body-line-height);
+  letter-spacing: var(--ds-body-letter-spacing);
+}
+
+body {
+  background: var(--ds-bg);
+  color: var(--ds-fg);
+}
+
+a,
+strong {
+  font-weight: 500;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--ds-font-heading-family);
+  font-weight: var(--ds-heading-font-weight);
+}
+
+h1 {
+  font-size: var(--ds-font-h1-size);
+  line-height: var(--ds-font-h1-lh);
+  letter-spacing: var(--ds-font-h1-ls);
+}
+
+h2 {
+  font-size: var(--ds-font-h2-size);
+  line-height: var(--ds-font-h2-lh);
+  letter-spacing: var(--ds-font-h2-ls);
+}
+
+h3 {
+  font-size: var(--ds-font-h3-size);
+  line-height: var(--ds-font-h3-lh);
+  letter-spacing: var(--ds-font-h3-ls);
+}
+
+h4 {
+  font-size: var(--ds-font-h4-size);
+  line-height: var(--ds-font-h4-lh);
+  letter-spacing: var(--ds-font-h4-ls);
+}
+
+/* ==========================================================================
+	Hero Banner
+========================================================================== */
+
+#hero-banner
+  :is(
+    .content-wrapper,
+    .content,
+    [data-fluid-engine],
+    .fluid-engine,
+    .sqs-block,
+    .sqs-html-content
+  ) {
+  display: contents;
+}
+
+#hero-banner {
+  position: relative;
+  height: var(--ds-hero-banner-h);
+}
+
+#hero-banner::after,
+#hero-banner::before {
+  backdrop-filter: blur(5px);
+  content: "";
+  left: 0;
+  position: absolute;
+  width: 100%;
+  z-index: 1;
+}
+
+#hero-banner::after {
+  height: var(--ds-hero-banner-grad-top);
+  top: 0;
+}
+
+#hero-banner::before {
+  bottom: 0;
+  height: var(--ds-hero-banner-grad-bottom);
+}
+
+#hero-banner h1 {
+  bottom: calc(var(--ds-pad-tb) * 2);
+  color: var(--ds-color-text-on-media);
+  left: var(--ds-pad-lr);
+  position: absolute;
+  z-index: auto;
+}
+
+/* ==========================================================================
+	General Elements
+========================================================================== */
+
+.ds-invert {
+  filter: invert(1);
+}
+
+.ds-project-info {
+  gap: 10px;
+}
+
+/* ==========================================================================
+	Project Info
+========================================================================== */
+
+.ds-project-info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--ds-project-info-gap);
+}
+
+/* Project title behaves like an H2 */
+.ds-project-info .ds-project-title {
+  font-family: var(--ds-font-heading-family);
+  font-size: var(--ds-font-h2-size);
+  line-height: var(--ds-font-h2-lh);
+  letter-spacing: var(--ds-font-h2-ls);
+}
+
+/* Project client behaves like an H4 */
+.ds-project-info .ds-project-client {
+  font-size: var(--ds-font-h4-size);
+  line-height: var(--ds-font-h4-lh);
+  letter-spacing: var(--ds-font-h4-ls);
+}
+
+/* ==========================================================================
+	Works: Project Section (Overlay + Layout)
+========================================================================== */
+
+:not(#hero-banner) + section:has(.ds-project-info) .code-block {
+  background-color: var(--ds-color-overlay);
+  opacity: 0;
+  transition: opacity 0.4s ease-out;
+}
+
+:not(#hero-banner) + section:has(.ds-project-info) div:has(> .code-block) {
+  pointer-events: none;
+}
+
+:not(#hero-banner) + section:has(.ds-project-info):hover .code-block {
+  opacity: 1;
+}
+
+:not(#hero-banner) + section .code-block:has(.ds-project-info) {
+  align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+:not(#hero-banner) + section:has(.ds-project-info) .ds-project-info {
+  align-items: center;
+  color: var(--ds-color-text-on-media);
+  justify-content: center;
+}
+
+:not(#hero-banner)
+  + section:has(.ds-project-info)
+  .ds-project-info
+  .ds-awards
+  .ds-award {
+  --ds-award-icon-size: 40px;
+}
+
+/* ==========================================================================
+	Awards (Layout + Icons)
+========================================================================== */
+
+:where(.ds-project-awards, .ds-awards) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+:where(.ds-project-awards, .ds-awards) :where(.ds-project-award, .ds-award) {
+  position: relative;
+}
+
+/* Base icon box */
+:where(.ds-project-awards, .ds-awards)
+  :where(.ds-project-award, .ds-award)::before {
+  content: "";
+  display: block;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: var(--ds-award-icon-size);
+  width: var(--ds-award-icon-size);
+}
+
+/* Per-award icons */
+:where(.ds-project-awards, .ds-awards) .ds-award--adc-e::before {
+  background-image: url("https://images.squarespace-cdn.com/content/692f1739a12dd468438fd973/7e34f84c-e9a9-4f3c-842d-a6cd0b1bea2d/adc-e.webp?content-type=image%2Fwebp");
+}
+
+:where(.ds-project-awards, .ds-awards) .ds-award--appm::before {
+  background-image: url("https://images.squarespace-cdn.com/content/692f1739a12dd468438fd973/464ddc9f-420f-4e12-93ff-771ada452df3/appm.webp?content-type=image%2Fwebp");
+}
+
+:where(.ds-project-awards, .ds-awards) .ds-award--cannes-lion::before {
+  background-image: url("https://images.squarespace-cdn.com/content/692f1739a12dd468438fd973/73818c8e-181d-4e28-9f5c-d323bb9d5756/cannes-lion.webp?content-type=image%2Fwebp");
+}
+
+:where(.ds-project-awards, .ds-awards) .ds-award--ccp::before {
+  background-image: url("https://images.squarespace-cdn.com/content/692f1739a12dd468438fd973/c44c18bd-dd61-4a83-9430-ead6c3a17a1e/ccp.webp?content-type=image%2Fwebp");
+}
+
+:where(.ds-project-awards, .ds-awards) .ds-award--d-ad::before {
+  background-image: url("https://images.squarespace-cdn.com/content/692f1739a12dd468438fd973/f57043c7-ac99-4f24-ade0-1a4d3ce907a2/d-ad.webp?content-type=image%2Fwebp");
+}
+
+:where(.ds-project-awards, .ds-awards) .ds-award--effie::before {
+  background-image: url("https://images.squarespace-cdn.com/content/692f1739a12dd468438fd973/0ef3195d-0a18-4900-a121-77676615e233/effie.webp?content-type=image%2Fwebp");
+}
+
+:where(.ds-project-awards, .ds-awards) .ds-award--el-ojo::before {
+  background-image: url("https://images.squarespace-cdn.com/content/692f1739a12dd468438fd973/20fd6e2a-562f-4eae-baf1-f1db8bf01e16/el-ojo.webp?content-type=image%2Fwebp");
+}
+
+:where(.ds-project-awards, .ds-awards) .ds-award--m-p::before {
+  background-image: url("https://images.squarespace-cdn.com/content/692f1739a12dd468438fd973/04a59fc3-3253-4dc2-baea-8e953814266c/m-p.webp?content-type=image%2Fwebp");
+}
+
+:where(.ds-project-awards, .ds-awards) .ds-award--one-show::before {
+  background-image: url("https://images.squarespace-cdn.com/content/692f1739a12dd468438fd973/881311c7-7d39-4744-acc2-aad278964554/one-show.webp?content-type=image%2Fwebp");
+}
+
+/* ==========================================================================
+	Animations
+========================================================================== */
+
+/* Project info hover animation */
+:not(#hero-banner) + section:has(.ds-project-info) .ds-project-info > * {
+  --ts: calc(
+    var(--ds-trans-lvl1-delay-base) +
+      (var(--ds-trans-lvl1-delay-step) * var(--ds-trans-lvl1-delay-step-n, 1))
+  );
+
+  opacity: 0;
+  transform: translateY(var(--ds-trans-val-move));
+  transition: opacity var(--ds-trans-speed) var(--ds-trans-ease),
+    transform var(--ds-trans-speed) var(--ds-trans-ease);
+  will-change: opacity, transform;
+  transition-delay: var(--ts);
+}
+
+:not(#hero-banner)
+  + section:has(.ds-project-info)
+  .ds-project-info
+  > .ds-project-title {
+  --ds-trans-lvl1-delay-step-n: 1;
+}
+:not(#hero-banner)
+  + section:has(.ds-project-info)
+  .ds-project-info
+  > .ds-project-client {
+  --ds-trans-lvl1-delay-step-n: 2;
+}
+:not(#hero-banner)
+  + section:has(.ds-project-info)
+  .ds-project-info
+  > .ds-project-awards {
+  --ds-trans-lvl1-delay-step-n: 3;
+}
+
+:not(#hero-banner) + section:has(.ds-project-info):hover .ds-project-info > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Award icons stagger */
+:not(#hero-banner)
+  + section:has(.ds-project-info)
+  .ds-project-info
+  .ds-project-awards
+  .ds-award {
+  --ts-award: calc(
+    var(--ts) +
+      (
+        var(--ds-trans-lvl2-delay-step) *
+          (var(--ds-trans-lvl2-delay-step-n, 1) - 1)
+      )
+  );
+
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.3s ease-out, transform 0.4s ease-out;
+  will-change: opacity, transform;
+  transition-delay: var(--ts-award);
+}
+
+:not(#hero-banner)
+  + section:has(.ds-project-info):hover
+  .ds-project-info
+  .ds-project-awards
+  .ds-award {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+:not(#hero-banner)
+  + section:has(.ds-project-info)
+  .ds-project-info
+  .ds-project-awards
+  .ds-award:nth-child(1) {
+  --ds-trans-lvl2-delay-step-n: 1;
+}
+:not(#hero-banner)
+  + section:has(.ds-project-info)
+  .ds-project-info
+  .ds-project-awards
+  .ds-award:nth-child(2) {
+  --ds-trans-lvl2-delay-step-n: 2;
+}
+:not(#hero-banner)
+  + section:has(.ds-project-info)
+  .ds-project-info
+  .ds-project-awards
+  .ds-award:nth-child(3) {
+  --ds-trans-lvl2-delay-step-n: 3;
+}
+:not(#hero-banner)
+  + section:has(.ds-project-info)
+  .ds-project-info
+  .ds-project-awards
+  .ds-award:nth-child(4) {
+  --ds-trans-lvl2-delay-step-n: 4;
+}
+:not(#hero-banner)
+  + section:has(.ds-project-info)
+  .ds-project-info
+  .ds-project-awards
+  .ds-award:nth-child(5) {
+  --ds-trans-lvl2-delay-step-n: 5;
+}
+:not(#hero-banner)
+  + section:has(.ds-project-info)
+  .ds-project-info
+  .ds-project-awards
+  .ds-award:nth-child(6) {
+  --ds-trans-lvl2-delay-step-n: 6;
+}
+:not(#hero-banner)
+  + section:has(.ds-project-info)
+  .ds-project-info
+  .ds-project-awards
+  .ds-award:nth-child(7) {
+  --ds-trans-lvl2-delay-step-n: 7;
+}
+:not(#hero-banner)
+  + section:has(.ds-project-info)
+  .ds-project-info
+  .ds-project-awards
+  .ds-award:nth-child(8) {
+  --ds-trans-lvl2-delay-step-n: 8;
+}
+:not(#hero-banner)
+  + section:has(.ds-project-info)
+  .ds-project-info
+  .ds-project-awards
+  .ds-award:nth-child(9) {
+  --ds-trans-lvl2-delay-step-n: 9;
+}
+
+/* ==========================================================================
+	Project Videos (Custom Section Grid)
+========================================================================== */
+
+/* Flatten Squarespace wrappers so #project-videos becomes the grid container */
+section#project-videos
+  :is(
+    .section-border,
+    .section-border .section-background,
+    .content-wrapper,
+    .content-wrapper .content,
+    .content-wrapper .content > div,
+    .content-wrapper .content > div .fluid-engine
+  ) {
+  display: contents;
+}
+
+/* Base grid */
+section#project-videos {
+  display: grid;
+  gap: var(--ds-pad-lr);
+  margin: 0 auto var(--ds-pad-lr);
+  width: calc(100dvw - var(--ds-pad-lr) * 2);
+}
+
+/* Reset Fluid Engine placement + style the tiles */
+section#project-videos .fe-block {
+  grid-area: auto;
+  grid-column: auto;
+  grid-row: auto;
+}
+
+section#project-videos .fe-block .sqs-block-video {
+  border-radius: var(--ds-border-radius);
+  overflow: hidden;
+}
+
+section#project-videos .fe-block .sqs-block-video .embed-block-wrapper {
+  padding-bottom: 0 !important;
+}
+
+section#project-videos .fe-block .embed-block-wrapper {
+  padding: 0 !important;
+}
+
+/* Desktop layout rules (uses :has() for count-aware last-item spanning) */
+@media (min-width: 1000px) {
+  section#project-videos {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Default: 2-column flow */
+  section#project-videos .fe-block {
+    grid-column: auto;
+  }
+
+  /* #1 is always full width (except the 2-item special case below) */
+  section#project-videos .fe-block:nth-child(1) {
+    grid-column: 1 / -1;
+  }
+
+  /* Exactly 2 items: both full width */
+  section#project-videos:has(.fe-block:nth-child(2):last-child) .fe-block {
+    grid-column: 1 / -1;
+  }
+
+  /* Even totals (>= 4): last item full width (4,6,8,10,12...) */
+  section#project-videos:has(.fe-block:nth-child(4):last-child)
+    .fe-block:last-child,
+  section#project-videos:has(.fe-block:nth-child(6):last-child)
+    .fe-block:last-child,
+  section#project-videos:has(.fe-block:nth-child(8):last-child)
+    .fe-block:last-child,
+  section#project-videos:has(.fe-block:nth-child(10):last-child)
+    .fe-block:last-child,
+  section#project-videos:has(.fe-block:nth-child(12):last-child)
+    .fe-block:last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+/* ==========================================================================
+	Home
+========================================================================== */
+
+body:not(:has(#hero-banner)) section:has(.ds-project-info) > .content-wrapper {
+  --pad: calc(var(--ds-pad-lr) / 2);
+  padding-top: var(--pad);
+  padding-bottom: var(--pad);
+}
+
+body:not(:has(#hero-banner)) section:has(.ds-project-info) .fe-block {
+  border-radius: var(--ds-border-radius);
+  overflow: hidden;
+}

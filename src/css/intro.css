@@ -1,0 +1,54 @@
+/* =========================================================
+   INTRO
+   ========================================================= */
+
+/* hide header and footer when intro logo is present (not needed, header/footer are already hidden) */
+/* body:has(#ds-logo-intro) :is(header, footer) {
+    display: none;
+} */
+
+section:has(#ds-logo-intro) {
+	height: 100dvh;
+	position: relative;
+}
+
+/* make sure intro section and its contents use display: contents
+   to avoid interfering with layout and styling of surrounding elements */
+section:has(#ds-logo-intro) :is(
+
+    .section-border,
+    .content-wrapper,
+    .content-wrapper .content,
+    .content-wrapper .content [data-fluid-engine],
+    .content-wrapper .content [data-fluid-engine] .fluid-engine,
+    .content-wrapper .content [data-fluid-engine] .fluid-engine .fe-block,
+    .content-wrapper .content [data-fluid-engine] .fluid-engine .fe-block .sqs-block,
+    .content-wrapper .content [data-fluid-engine] .fluid-engine .fe-block .sqs-block .sqs-block-content,
+    .content-wrapper .content [data-fluid-engine] .fluid-engine .fe-block .sqs-block .sqs-block-content .sqs-code-container
+
+) {
+
+    display: contents;    
+
+}
+
+
+/* intro logo styling */
+#ds-logo-intro {
+	color: var(--ds-fg-dark);
+  	fill: currentColor;
+	display: block;
+	width: min(80vw, 900px);
+	height: auto;
+    left: 50%;
+	position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+	z-index: 999;
+}
+
+#ds-logo-intro :is(.ds-logo-letter, .ds-logo-letter-dot) {
+	fill: currentColor;
+	stroke: none;
+}
+

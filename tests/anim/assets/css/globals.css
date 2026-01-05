@@ -1,0 +1,98 @@
+/* assets/css/globals.css */
+
+/* =========================================================
+   Theme tokens (best-practice: palette → semantic mapping)
+   ========================================================= */
+
+:root {
+	/* Palette (single source of truth) */
+	--ds-bg-light: #ffffff;
+	--ds-fg-light: #111111;
+
+	--ds-bg-dark: #0b0b0c;
+	--ds-fg-dark: #f2f2f2;
+
+	/* Semantic tokens (used everywhere) */
+	--ds-bg: var(--ds-bg-light);
+	--ds-fg: var(--ds-fg-light);
+
+	/* Logo-specific tokens */
+	--ds-logo-stroke-width: 2;
+}
+
+/* Follow system preference by default */
+@media (prefers-color-scheme: dark) {
+	:root {
+		--ds-bg: var(--ds-bg-dark);
+		--ds-fg: var(--ds-fg-dark);
+	}
+}
+
+/* Manual override (wins over system when set) */
+:root[data-theme="light"] {
+	--ds-bg: var(--ds-bg-light);
+	--ds-fg: var(--ds-fg-light);
+}
+
+:root[data-theme="dark"] {
+	--ds-bg: var(--ds-bg-dark);
+	--ds-fg: var(--ds-fg-dark);
+}
+
+/* =========================================================
+   Base layout
+   ========================================================= */
+
+html,
+body {
+	margin: 0;
+	padding: 0;
+}
+
+body {
+	min-height: 100dvh;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+
+	background: var(--ds-bg);
+	color: var(--ds-fg);
+}
+
+/* =========================================================
+   SVG logo layout
+   ========================================================= */
+
+/* After inlining, the <img> becomes <svg>. Keep it responsive */
+svg {
+	display: block;
+	width: min(80vw, 900px);
+	height: auto;
+}
+
+/* =========================================================
+   Logo styling (CSS-state approach for animation)
+   ========================================================= */
+
+#ds-logo {
+	color: var(--ds-fg);
+	overflow: visible;
+}
+
+/* Final (resting) state */
+#ds-logo :is(.ds-logo-letter, .ds-logo-letter-dot) {
+	fill: currentColor;
+}
+
+/* Drawing state:
+   - stroke visible
+   - fill exists but invisible (GSAP animates fillOpacity) */
+#ds-logo.is-drawing .ds-logo-letter {
+	fill: currentColor;
+	fill-opacity: 0;
+
+	stroke: currentColor;
+	stroke-width: var(--ds-logo-stroke-width);
+	stroke-linecap: round;
+	stroke-linejoin: round;
+}

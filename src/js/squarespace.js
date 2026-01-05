@@ -1,5 +1,3 @@
-
-
 function getClosestElementFromPoint(elements, clientX, clientY) {
 
 	if (!elements.length) return null;
@@ -127,33 +125,4 @@ function allowFancyBoxOnCarouselSlide({ carousel, fancyboxID, threshold = 6 }) {
 		isDown = false;
 	}, true);
 
-
 }
-
-
-
-
-document.addEventListener("DOMContentLoaded", function () {
-
-	console.log('[DS/Fancybox] DOMContentLoaded');
-
-	if (typeof Fancybox === "undefined") {
-		console.log('[DS/Fancybox] Fancybox is undefined. Aborting.');
-		return;
-	}
-
-	const DRAG_THRESHOLD = 6;
-	const galleryBaseId = Date.now();
-
-	console.log('[DS/Fancybox] Init. DRAG_THRESHOLD:', DRAG_THRESHOLD, 'galleryBaseId:', galleryBaseId);
-
-	document.querySelectorAll('.user-items-list .user-items-list-carousel')
-		.forEach((carousel, carouselIndex) => {
-
-			const galleryName = `gallery-${galleryBaseId}-${carouselIndex}`;
-
-			allowFancyBoxOnCarouselSlide({ carousel, fancyboxID: galleryName, threshold: DRAG_THRESHOLD });
-
-		});
-
-});
