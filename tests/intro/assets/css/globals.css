@@ -1,4 +1,4 @@
-/* assets/css/globals.css */
+/* tests/intro/assets/css/globals.css */
 
 /* =========================================================
    Theme tokens (best-practice: palette → semantic mapping)
@@ -43,18 +43,7 @@
    Base layout
    ========================================================= */
 
-html,
 body {
-	margin: 0;
-	padding: 0;
-}
-
-body {
-	min-height: 100dvh;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-
 	background: var(--ds-bg);
 	color: var(--ds-fg);
 }

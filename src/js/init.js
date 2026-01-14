@@ -1,5 +1,15 @@
 // src/js/init.js
 
+const IDS = {
+	case: "project-case",
+	campaign: "project-campaign",
+	board: "project-board",
+	extraBoards: "project-extra-boards",
+	supportingMaterials: "project-supporting-materials",
+	onTheStreets: "project-on-the-streets"
+};
+
+
 document.addEventListener("DOMContentLoaded", function () {
 
 	// Carousel + Fancybox integration
@@ -35,14 +45,30 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	if (ds_logo_intro) {
 
+		let didRedirect = false;
+
+		const redirect = () => {
+
+			if (didRedirect) return;
+			didRedirect = true;
+			window.location.assign(new URL("/work/", window.location.href));
+
+		};
+
 		animinit(ds_logo_intro, animintro, {
 			delay: 2,
-			onReverseEnd: () => {
-				setTimeout(() => {
-					window.location.assign(new URL("/works/", window.location.href));
-				}, 1000);
-			}
+			onEnd: () => document.body.addEventListener('click', redirect, { once: true }),
+			onReverseEnd: redirect
 		});
+
+	}
+
+	// Work Countdown
+	const countdownholder = document.getElementById('ds-countdown-holder');
+
+	if (countdownholder) {
+
+		DSCountdown({target: countdownholder, enddate: '2026-06-17', animated: true});
 
 	}
 

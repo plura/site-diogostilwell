@@ -1,0 +1,35 @@
+:root {
+    /* Typography Tokens */
+    --font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    --font-weight-bold: 700;
+    --font-weight-normal: 400;
+    --line-height-base: 1.1;
+    
+    /* Font Sizes */
+    --font-size-xl: 4rem;
+    --font-size-lg: 3rem;
+    --font-size-md: 1.5rem;
+    --font-size-sm: 0.8rem;
+
+    /* Global Spacing */
+    --spacing-lg: 40px;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-family);
+    line-height: var(--line-height-base);
+    /* Essential to prevent horizontal jumping */
+    font-variant-numeric: tabular-nums; 
+}
+
+body {
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--spacing-lg);
+}

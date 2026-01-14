@@ -1,66 +1,97 @@
 # site-diogostilwell
 
-Custom development and intervention layer for the Diogo Stilwell Squarespace site.
+Custom development layer for the **Diogo Stilwell Squarespace site**, built with a clean separation between modern source code and Squarespace-compatible output.
 
-This repository contains:
-- Source CSS and JavaScript (modern, clean)
-- Reusable HTML blocks for Squarespace Code blocks
-- Squarespace-ready CSS and injection code
-- Documentation of platform-specific constraints
+This repository acts as a **canonical source of truth** for all custom CSS, JavaScript, animations, and reusable blocks, while accounting for Squarespace’s platform constraints.
 
 ---
 
-## Squarespace Custom CSS: LESS Parsing Quirks
+## Repository Structure
 
-Squarespace **does not process Custom CSS as plain CSS**.
+```
+src/
+	Canonical source code
+	- Modern CSS (design tokens, theming, grids)
+	- Modular JavaScript
 
-Internally, all Custom CSS is parsed through an **old LESS compiler (LESS v1.3.1)**.  
-This is undocumented behaviour, but widely confirmed by community reports and real-world debugging. :contentReference[oaicite:0]{index=0}
+blocks/
+	Reusable HTML snippets
+	- For Squarespace Code Blocks
+	- Kept platform-agnostic where possible
 
-Because this LESS version predates modern CSS features, **valid CSS can break silently**.
+squarespace/
+	Platform-ready output
+	- LESS-escaped CSS
+	- Header / footer injection code
+	- Files safe to copy/paste into Squarespace
 
----
-
-## Common Symptoms
-
-When the parser fails, Squarespace may:
-
-- Ignore individual properties
-- Drop entire rule blocks
-- Stop parsing the stylesheet further down
-- Cause unrelated styles (typography, layout, animation) to disappear
-
-These issues often appear unrelated to the rule being edited.
-
----
-
-## Commonly Affected Syntax
-
-The following are especially problematic in Squarespace Custom CSS:
-
-- `calc(...)`
-- `clamp(...)`
-- CSS variables inside calculations (`var(--foo)`)
-- Modern viewport units (`svh`, `dvh`, etc.)
-- Arithmetic inside properties such as:
-  - `transition-delay`
-  - `max-height`
-  - gradients
-  - transforms
-
-LESS attempts to evaluate expressions, but **does not understand CSS variables**, which leads to parsing failures.
+tests/anim/
+	Isolated animation playground
+	- GSAP logo animation experiments
+	- No Squarespace dependencies
+```
 
 ---
 
-## Workaround: LESS Literal Escaping
+## Workflow & Philosophy
 
-LESS supports literal output using:
+* **All development happens in `src/`**
+* Code is written as **modern, readable CSS & JS**
+* Squarespace-specific constraints are handled **only at the output stage**
+* No business logic, animation logic, or layout logic lives directly in Squarespace editors
+
+This keeps the codebase:
+
+* Testable
+* Maintainable
+* Portable outside Squarespace if needed
+
+---
+
+## Squarespace Custom CSS: LESS Parsing Constraints
+
+Squarespace **does not treat Custom CSS as plain CSS**.
+
+All Custom CSS is parsed through an **old LESS compiler (LESS v1.3.1)**, which predates modern CSS features.
+This behaviour is undocumented but widely confirmed by community reports and real-world debugging. 
+
+As a result, **valid modern CSS may fail silently**.
+
+### Typical Failure Modes
+
+When the LESS parser breaks, Squarespace may:
+
+* Ignore individual properties
+* Drop entire rule blocks
+* Stop parsing the stylesheet further down
+* Cause unrelated styles (layout, typography, animation) to disappear
+
+These failures often appear disconnected from the actual rule that caused them.
+
+---
+
+## Syntax That Requires Escaping
+
+The following must be escaped in Squarespace-ready CSS:
+
+* `calc(...)`
+* `clamp(...)`
+* `min(...)`, `max(...)`
+* CSS variables inside calculations (`var(--token)`)
+* Modern viewport units (`dvh`, `dvw`, etc.)
+* Slash syntax such as:
+
+  * `grid-column: 1 / -1`
+
+---
+
+## LESS Literal Escaping Strategy
+
+LESS supports literal output via:
 
 ```css
 property: ~"value";
-````
-
-This forces LESS to output the value verbatim.
+```
 
 ### Example
 
@@ -78,23 +109,93 @@ max-height: ~"calc(100vh - var(--header-height))";
 
 ---
 
-## Project Approach
+## CSS Strategy & Theming
 
-* Development is done using **modern, unescaped CSS**
-* Only at the final stage are problematic properties escaped
-* A Squarespace-compatible version is generated for copy/paste
+* Token-driven design using `:root`
+* Semantic tokens:
 
-This keeps the source readable while ensuring platform compatibility.
+  * `--ds-bg`, `--ds-fg`
+  * overlays
+  * text-on-media
+* Olive-based palette with **inverted logic**:
+
+  * light background → dark foreground
+  * dark background → light foreground
+* Squarespace core colour variables (`--paragraphMediumColor`, etc.)
+
+  * deliberately **not overridden yet**
+
+### Dark Mode (Planned)
+
+* Default via `prefers-color-scheme`
+* Future manual toggle via `data-theme`
+* Persistence via `localStorage`
+* Intro section forces its own theme regardless of global state
 
 ---
 
-## References
+## Layout & Grids
 
-* Some valid CSS ignored by Squarespace
-  [https://forum.squarespace.com/topic/287067-some-valid-css-seem-to-be-ignored-or-unvalidated-by-squarespace/#elComment_733596](https://forum.squarespace.com/topic/287067-some-valid-css-seem-to-be-ignored-or-unvalidated-by-squarespace/#elComment_733596)
+* Custom **Home section**
 
-* `calc()` inside gradients breaks the Custom CSS editor
-  [https://forum.squarespace.com/topic/231299-custom-css-trying-to-use-calc-inside-a-gradient-breaks-editor-view/#elComment_590817](https://forum.squarespace.com/topic/231299-custom-css-trying-to-use-calc-inside-a-gradient-breaks-editor-view/#elComment_590817)
+  * Dynamic vertical padding via JS-injected CSS variables
+* Custom **Projects / Videos grid**
 
-* Making `calc()` work in Squarespace Custom CSS
-  [https://forum.squarespace.com/topic/163225-how-to-make-css-calc-function-work-on-custom-css-editor/#elComment_371502](https://forum.squarespace.com/topic/163225-how-to-make-css-calc-function-work-on-custom-css-editor/#elComment_371502)
+  * Replaces native Squarespace layout
+  * Uses `display: contents` to flatten wrappers
+  * Responsive grid logic based on item count
+  * All edge cases handled, including LESS escaping
+
+---
+
+## Intro & Logo Animation
+
+* Powered by **GSAP**
+* Chosen animation: **anim3**
+
+  * Sequential letter reveal (slide + fade)
+  * Dot appears last
+  * Hold on final state
+  * Timeline reverses back to a deterministic hidden state
+* Old stroke / drawing animation fully removed
+* Initial flash prevented by:
+
+  * Forcing intro theme via CSS
+  * Hiding letters until GSAP initialises
+* SVG is:
+
+  * Centered
+  * Width-constrained (`min(80vw, 900px)`)
+  * Protected from Squarespace auto-stretching
+
+---
+
+## JavaScript Architecture
+
+### animinit()
+
+Centralised animation lifecycle handler.
+
+Responsibilities:
+
+* Initialisation
+* Delays / paused state
+* Safe callback chaining
+
+Supported options:
+
+* `delay`
+* `paused`
+* `key`
+* `onEnd` – forward animation end
+* `onReverseEnd` – rewind complete
+
+Callbacks are **chained**, never overwritten.
+
+### Animations
+
+* `anim1`, `anim2`, `anim3`
+* Do **not** call user callbacks directly
+* Own their internal logic only
+* `anim3` owns its rewind behaviour
+* `animinit` owns external hooks

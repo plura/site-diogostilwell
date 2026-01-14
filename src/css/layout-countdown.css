@@ -1,0 +1,77 @@
+/* DS Countdown Base CSS */
+
+.ds-countdown {
+    display: flex;
+}
+
+.ds-countdown__item {
+    display: flex;
+    gap: 8px; /* Internal gap between value and label */
+}
+
+.ds-countdown__value {
+    display: flex;
+    position: relative;
+    overflow: hidden; 
+    height: 1.1em; /* Functional height for animation window */
+    line-height: 1;
+}
+
+/* Stable Digit Holder - The "Window" */
+.ds-countdown__digit {
+    display: inline-flex;
+    position: relative;
+    width: 0.65em; /* Fixed width prevents jittering */
+    height: 1.1em;
+    overflow: hidden;
+    vertical-align: top;
+}
+
+.ds-countdown__digit-static {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+/* The Sliding Strip */
+.ds-countdown__digit-strip {
+    display: flex;
+    flex-direction: column;
+    height: 200%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    will-change: transform;
+}
+
+/* Individual Slot */
+.ds-countdown__digit-strip-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50%; /* 50% of the 200% strip equals 100% of the window */
+}
+
+.ds-countdown__label {
+    display: block;
+}
+
+
+/* DS Countdown Layout CSS */
+.ds-countdown {
+    gap: 60px;
+}
+
+.ds-countdown__item {
+    flex-direction: column;
+    align-items: center;
+}
+
+.ds-countdown__value {
+    font-family: var(--ds-font-heading-family);
+    font-size: var(--ds-font-h2-size);
+}

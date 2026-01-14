@@ -2,7 +2,7 @@
 // Source (dir): src/js
 // Excluded (names): node_modules,vendor,.git,dist,build,.ddev,.idea,.vscode,.next,.turbo,.cache,.pnpm-store
 // Excluded (paths): 
-// Generated: 2026-01-05T01:46:16+00:00
+// Generated: 2026-01-07T23:46:23+00:00
 // Extensions: js
 // Chunk: 1
 // -------------------------------------------------
@@ -48,21 +48,219 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	if (ds_logo_intro) {
 
+		let didRedirect = false;
+
+		const redirect = () => {
+
+			if (didRedirect) return;
+			didRedirect = true;
+			window.location.assign(new URL("/work/", window.location.href));
+
+		};
+
 		animinit(ds_logo_intro, animintro, {
 			delay: 2,
-			onReverseEnd: () => {
-				setTimeout(() => {
-					window.location.assign(new URL("/works/", window.location.href));
-				}, 1000);
-			}
+			onEnd: () => document.body.addEventListener('click', redirect, { once: true }),
+			onReverseEnd: redirect
 		});
+
+	}
+
+	// Work Countdown
+	const countdownholder = document.getElementById('ds-countdown-holder');
+
+	if (countdownholder) {
+
+		DSCountdown({target: countdownholder, enddate: '2026-05-17', animated: true});
 
 	}
 
 });
 
 // -------------------------------------------------
-//  src/js/intro.js
+//  src/js/layout-countdown.js
+// -------------------------------------------------
+
+/**
+ * Factory for a single digit slot
+ * BEM: ds-countdown__digit
+ */
+function DSCountdownItemValueDigit({ parentEl, animated }) {
+  let currentDigit = null;
+  const container = document.createElement('span');
+  container.className = 'ds-countdown__digit';
+  
+  let strip, currentSlot, nextSlot;
+
+  if (animated) {
+    strip = document.createElement('span');
+    strip.className = 'ds-countdown__digit-strip';
+    
+    currentSlot = document.createElement('span');
+    currentSlot.className = 'ds-countdown__digit-strip-item ds-countdown__digit-strip-item--current';
+    
+    nextSlot = document.createElement('span');
+    nextSlot.className = 'ds-countdown__digit-strip-item ds-countdown__digit-strip-item--next';
+    
+    strip.append(currentSlot, nextSlot);
+    container.appendChild(strip);
+  } else {
+    // Static mode uses a single slot centered in the fixed-width container
+    currentSlot = document.createElement('span');
+    currentSlot.className = 'ds-countdown__digit-static';
+    container.appendChild(currentSlot);
+  }
+
+  parentEl.appendChild(container);
+
+  return {
+    update: function(newDigit) {
+      if (newDigit === currentDigit) return;
+
+      if (!animated || currentDigit === null) {
+        currentSlot.textContent = newDigit;
+      } else {
+        nextSlot.textContent = newDigit;
+        gsap.to(strip, {
+          yPercent: -50,
+          duration: 0.4,
+          ease: "power2.inOut",
+          onComplete: () => {
+            currentSlot.textContent = newDigit;
+            gsap.set(strip, { yPercent: 0 });
+          }
+        });
+      }
+      currentDigit = newDigit;
+    }
+  };
+}
+
+/**
+ * Factory for the Value component
+ */
+function DSCountdownItemValue({ parentEl, leadingZero, animated }) {
+  const container = document.createElement('span');
+  container.className = 'ds-countdown__value';
+  parentEl.appendChild(container);
+
+  let digits = [];
+
+  // Always create digit containers if leadingZero is true to ensure layout stability
+  if (leadingZero) {
+    digits = [
+        DSCountdownItemValueDigit({ parentEl: container, animated }), 
+        DSCountdownItemValueDigit({ parentEl: container, animated })
+    ];
+  }
+
+  return {
+    update: function(newValue) {
+      const displayValue = leadingZero 
+        ? String(newValue).padStart(2, '0') 
+        : String(newValue);
+      
+      if (leadingZero) {
+        displayValue.split('').forEach((char, i) => {
+          if (digits[i]) digits[i].update(char);
+        });
+      } else {
+        if (container.textContent !== displayValue) {
+          container.textContent = displayValue;
+        }
+      }
+    }
+  };
+}
+
+/**
+ * Factory for individual countdown units
+ */
+function DSCountdownItem({ unit, parentEl, showLabel, leadingZero, animated }) {
+  const itemEl = document.createElement('div');
+  itemEl.className = `ds-countdown__item ds-countdown__item--${unit}`;
+
+  const valueController = DSCountdownItemValue({ 
+    parentEl: itemEl, 
+    leadingZero, 
+    animated 
+  });
+
+  if (showLabel) {
+    const labelEl = document.createElement('span');
+    labelEl.className = 'ds-countdown__label';
+    labelEl.textContent = unit;
+    itemEl.appendChild(labelEl);
+  }
+
+  parentEl.appendChild(itemEl);
+  return { update: (val) => valueController.update(val) };
+}
+
+/**
+ * Main Countdown Factory
+ */
+function DSCountdown({
+  startdate = false,
+  enddate,
+  target = false,
+  label = true,
+  leadingZero = true,
+  animated = false,
+  class: className = false,
+  months = true,
+  days = true,
+  hours = true,
+  minutes = true,
+  seconds = true
+}) {
+  if (!enddate) return null;
+  const targetEl = typeof target === 'string' ? document.querySelector(target) : target;
+  if (!targetEl) return null;
+
+  targetEl.innerHTML = ''; 
+  const container = document.createElement('div');
+  container.className = 'ds-countdown';
+  if (className) container.classList.add(...className.split(' ').filter(Boolean));
+  targetEl.appendChild(container);
+
+  const activeItems = {};
+  const config = { months, days, hours, minutes, seconds };
+  
+  Object.entries(config).forEach(([unit, active]) => {
+    if (active) {
+      activeItems[unit] = DSCountdownItem({ unit, parentEl: container, showLabel: label, leadingZero, animated });
+    }
+  });
+
+  let rafId = null;
+  function tick() {
+    const now = startdate ? new Date(startdate).getTime() : new Date().getTime();
+    const distance = new Date(enddate).getTime() - now;
+
+    if (distance <= 0) {
+      container.innerHTML = '<div class="ds-countdown__expired">Expired</div>';
+      return;
+    }
+
+    const values = {
+      months: Math.floor(distance / (1000 * 60 * 60 * 24 * 30.44)),
+      days: Math.floor((distance % (1000 * 60 * 60 * 24 * 30.44)) / (1000 * 60 * 60 * 24)),
+      hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+      minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
+      seconds: Math.floor((distance % (1000 * 60)) / 1000)
+    };
+
+    Object.keys(activeItems).forEach(u => activeItems[u].update(values[u]));
+    if (!startdate) rafId = requestAnimationFrame(tick);
+  }
+
+  tick();
+  return { stop: () => cancelAnimationFrame(rafId) };
+}
+
+// -------------------------------------------------
+//  src/js/layout-intro.js
 // -------------------------------------------------
 
 //src/js/intro.js
@@ -184,7 +382,7 @@ function animintro(svg, options = {delay: 0, hold: 0.8, paused: false}) {
 
 	const { letters, dot } = dsLogoPrepare(svg);
 
-	const hold = (typeof options.hold === "number") ? options.hold : 0.8;
+	const hold = (typeof options.hold === "number") ? options.hold : 0.5;
 
 	// Ensure a clean state (no stroke-draw mode, no leftover inline styles)
 	svg.classList.remove("is-drawing");
@@ -197,51 +395,55 @@ function animintro(svg, options = {delay: 0, hold: 0.8, paused: false}) {
 		el.removeAttribute("fill-opacity");
 	});
 
-	// Initial hidden state
-	const init_val_letters = { opacity: 0, y: 14 }, init_val_dot = { opacity: 0, y: -10 };
+	// More dramatic initial hidden state
+	const init_val_letters = { opacity: 0, y: 24, scale: 0.985 };
+	const init_val_dot = { opacity: 0, y: -28, scale: 0.9 };
+
 	gsap.set(letters, init_val_letters);
 	if (dot) gsap.set(dot, init_val_dot);
 
 	let didRewind = false;
 
 	const tl = gsap.timeline({
-		defaults: { ease: "power2.out" },
 		delay: options.delay,
 		paused: options.paused
 	});
 
-	// 1) Letters appear one by one
+	// 1) Letters appear one by one (slower + a touch of overshoot)
 	tl.to(letters, {
 		opacity: 1,
 		y: 0,
-		duration: 0.38,
-		stagger: 0.09
+		scale: 1,
+		duration: 0.4,
+		stagger: 0.1,
+		ease: "back.out(1.35)",
+		immediateRender: false
 	});
 
-	// 2) Dot punctuation at the end
+	// 2) Dot punctuation (elastic drop + tiny pop)
 	if (dot) {
 		tl.to(dot, {
 			opacity: 1,
 			y: 0,
-			duration: 0.25,
-			ease: "power3.out"
-		}, ">-0.02");
+			scale: 1,
+			duration: 0.5,
+			ease: "elastic.out(1, 0.38)",
+			immediateRender: false
+		}, ">-0.06");
 	}
 
 	// 3) Hold on the final state
 	tl.to({}, { duration: hold });
 
-	// 4) Fire end callback and rewind to start (once)
+	// 4) Rewind to start (once)
 	tl.add(() => {
-
 		if (didRewind) return;
 		didRewind = true;
 
-		// Rewind to the starting point and stop there
 		tl.reverse();
 	});
 
-	// Optional: clean inline transforms after rewind completes
+	// Lock back to initial state after rewind completes
 	tl.eventCallback("onReverseComplete", () => {
 		gsap.set(letters, init_val_letters);
 		if (dot) gsap.set(dot, init_val_dot);

@@ -1,3 +1,20 @@
+/*
+ * Concatenated code export
+ * Source (dir): src/css
+ * Excluded (names): node_modules,vendor,.git,dist,build,.ddev,.idea,.vscode,.next,.turbo,.cache,.pnpm-store
+ * Excluded (paths): 
+ * Generated: 2026-01-08T00:30:27+00:00
+ * Extensions: css
+ * Chunk: 1
+ * -------------------------------------------------
+ */
+
+/*
+ * -------------------------------------------------
+ *  src/css/globals.css
+ * -------------------------------------------------
+ */
+
 /* Squarespace LESS reminder: escape modern CSS that LESS may parse as math.
    Use LESS literals (~"…") for calc()/clamp()/min()/max() and for slash syntax like:
    grid-column: 1 / -1, grid-row, grid-area, etc. */
@@ -37,7 +54,7 @@
     Helvetica, Arial, sans-serif;
 
   /* Body (bigger base) */
-  --ds-body-font-size: clamp(1.125rem, 1rem + 0.4vw, 1.25rem);
+  --ds-body-font-size: ~"clamp(1.125rem, 1rem + 0.4vw, 1.25rem)";
 
   --ds-body-line-height: 1.65;
   --ds-body-letter-spacing: 0;
@@ -46,10 +63,10 @@
   --ds-heading-font-weight: 400;
 
   /* Typography scale */
-  --ds-font-h1-size: clamp(3.2rem, 6vw, 7rem);
-  --ds-font-h2-size: clamp(2.1rem, 3.4vw, 3.2rem);
-  --ds-font-h3-size: clamp(1.5rem, 2.2vw, 2.2rem);
-  --ds-font-h4-size: clamp(1.15rem, 1.4vw, 1.6rem);
+  --ds-font-h1-size: ~"clamp(3.2rem, 6vw, 7rem)";
+  --ds-font-h2-size: ~"clamp(2.1rem, 3.4vw, 3.2rem)";
+  --ds-font-h3-size: ~"clamp(1.5rem, 2.2vw, 2.2rem)";
+  --ds-font-h4-size: ~"clamp(1.15rem, 1.4vw, 1.6rem)";
 
   /* Line-heights */
   --ds-font-h1-lh: 1.1;
@@ -76,14 +93,12 @@
   --ds-trans-lvl2-delay-step: 0.06s;
 
   /* Hero banner */
-  --ds-hero-banner-h: 66dvh;
+  --ds-hero-banner-h: ~"66dvh";
   --ds-hero-banner-grad-color: 0 0 0;
   --ds-hero-banner-grad-color-opacity: 0.5;
   --ds-hero-banner-grad-top: 78.4px;
 
-  --ds-hero-banner-grad-bottom: calc(
-    var(--ds-font-h1-lh) * var(--ds-font-h1-size) + (var(--ds-pad-tb) * 3)
-  );
+  --ds-hero-banner-grad-bottom: ~"calc(var(--ds-font-h1-lh) * var(--ds-font-h1-size) + (var(--ds-pad-tb) * 3))";
 }
 
 /* ==========================================================================
@@ -216,12 +231,12 @@ h4 {
 }
 
 #hero-banner h1 {
-  bottom: calc(var(--ds-pad-tb) * 2);
+  bottom: ~"calc(var(--ds-pad-tb) * 2)";
   color: var(--ds-color-text-on-media);
   left: var(--ds-pad-lr);
   position: absolute;
   z-index: auto;
-}
+} 
 
 /* ==========================================================================
 	General Elements
@@ -371,10 +386,7 @@ h4 {
 
 /* Project info hover animation */
 :not(#hero-banner) + section:has(.ds-project-info) .ds-project-info > * {
-  --ts: calc(
-    var(--ds-trans-lvl1-delay-base) +
-      (var(--ds-trans-lvl1-delay-step) * var(--ds-trans-lvl1-delay-step-n, 1))
-  );
+  --ts: ~"calc(var(--ds-trans-lvl1-delay-base) + (var(--ds-trans-lvl1-delay-step) * var(--ds-trans-lvl1-delay-step-n, 1)))";
 
   opacity: 0;
   transform: translateY(var(--ds-trans-val-move));
@@ -382,7 +394,7 @@ h4 {
     transform var(--ds-trans-speed) var(--ds-trans-ease);
   will-change: opacity, transform;
   transition-delay: var(--ts);
-}
+} 
 
 :not(#hero-banner)
   + section:has(.ds-project-info)
@@ -414,20 +426,14 @@ h4 {
   .ds-project-info
   .ds-project-awards
   .ds-award {
-  --ts-award: calc(
-    var(--ts) +
-      (
-        var(--ds-trans-lvl2-delay-step) *
-          (var(--ds-trans-lvl2-delay-step-n, 1) - 1)
-      )
-  );
+  --ts-award: ~"calc(var(--ts) + (var(--ds-trans-lvl2-delay-step) * (var(--ds-trans-lvl2-delay-step-n, 1) - 1)))";
 
   opacity: 0;
   transform: translateY(10px);
   transition: opacity 0.3s ease-out, transform 0.4s ease-out;
   will-change: opacity, transform;
   transition-delay: var(--ts-award);
-}
+} 
 
 :not(#hero-banner)
   + section:has(.ds-project-info):hover
@@ -524,8 +530,8 @@ section#project-videos {
   display: grid;
   gap: var(--ds-pad-lr);
   margin: 0 auto var(--ds-pad-lr);
-  width: calc(100dvw - var(--ds-pad-lr) * 2);
-}
+  width: ~"calc(100dvw - var(--ds-pad-lr) * 2)";
+} 
 
 /* Reset Fluid Engine placement + style the tiles */
 section#project-videos .fe-block {
@@ -560,12 +566,12 @@ section#project-videos .fe-block .embed-block-wrapper {
 
   /* #1 is always full width (except the 2-item special case below) */
   section#project-videos .fe-block:nth-child(1) {
-    grid-column: 1 / -1;
+    grid-column: ~"1 / -1";
   }
 
   /* Exactly 2 items: both full width */
   section#project-videos:has(.fe-block:nth-child(2):last-child) .fe-block {
-    grid-column: 1 / -1;
+    grid-column: ~"1 / -1";
   }
 
   /* Even totals (>= 4): last item full width (4,6,8,10,12...) */
@@ -579,7 +585,7 @@ section#project-videos .fe-block .embed-block-wrapper {
     .fe-block:last-child,
   section#project-videos:has(.fe-block:nth-child(12):last-child)
     .fe-block:last-child {
-    grid-column: 1 / -1;
+    grid-column: ~"1 / -1";
   }
 }
 
@@ -594,12 +600,158 @@ section#project-videos .fe-block .embed-block-wrapper {
 
 
 body:not(:has(#hero-banner)) section:has(.ds-project-info) > .content-wrapper {
-  --pad: calc(var(--ds-pad-lr) / 2);
+  --pad: ~"calc(var(--ds-pad-lr) / 2)";
   padding-top: var(--pad);
   padding-bottom: var(--pad);
-}
+} 
 
 body:not(:has(#hero-banner)) section:has(.ds-project-info) .fe-block {
   border-radius: var(--ds-border-radius);
   overflow: hidden;
 }
+
+/*
+ * -------------------------------------------------
+ *  src/css/layout-countdown.css
+ * -------------------------------------------------
+ */
+
+/* DS Countdown Base CSS */
+
+.ds-countdown {
+    display: flex;
+}
+
+.ds-countdown__item {
+    display: flex;
+    gap: 8px; /* Internal gap between value and label */
+}
+
+.ds-countdown__value {
+    display: flex;
+    position: relative;
+    overflow: hidden; 
+    height: 1.1em; /* Functional height for animation window */
+    line-height: 1;
+}
+
+/* Stable Digit Holder - The "Window" */
+.ds-countdown__digit {
+    display: inline-flex;
+    position: relative;
+    width: 0.65em; /* Fixed width prevents jittering */
+    height: 1.1em;
+    overflow: hidden;
+    vertical-align: top;
+}
+
+.ds-countdown__digit-static {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+/* The Sliding Strip */
+.ds-countdown__digit-strip {
+    display: flex;
+    flex-direction: column;
+    height: 200%;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    will-change: transform;
+}
+
+/* Individual Slot */
+.ds-countdown__digit-strip-item {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 50%; /* 50% of the 200% strip equals 100% of the window */
+}
+
+.ds-countdown__label {
+    display: block;
+}
+
+
+/* DS Countdown Layout CSS */
+.ds-countdown {
+    gap: 60px;
+}
+
+.ds-countdown__item {
+    flex-direction: column;
+    align-items: center;
+}
+
+.ds-countdown__value {
+    font-family: var(--ds-font-heading-family);
+    font-size: var(--ds-font-h2-size);
+}
+
+/*
+ * -------------------------------------------------
+ *  src/css/layout-intro.css
+ * -------------------------------------------------
+ */
+
+/* =========================================================
+   INTRO
+   ========================================================= */
+
+/* hide header and footer when intro logo is present (not needed, header/footer are already hidden) */
+/* body:has(#ds-logo-intro) :is(header, footer) {
+    display: none;
+} */
+
+section:has(#ds-logo-intro) {
+	height: ~"100dvh";
+	position: relative;
+} 
+
+/* make sure intro section and its contents use display: contents
+   to avoid interfering with layout and styling of surrounding elements */
+section:has(#ds-logo-intro) :is(
+
+    .section-border,
+    .content-wrapper,
+    .content-wrapper .content,
+    .content-wrapper .content [data-fluid-engine],
+    .content-wrapper .content [data-fluid-engine] .fluid-engine,
+    .content-wrapper .content [data-fluid-engine] .fluid-engine .fe-block,
+    .content-wrapper .content [data-fluid-engine] .fluid-engine .fe-block .sqs-block,
+    .content-wrapper .content [data-fluid-engine] .fluid-engine .fe-block .sqs-block .sqs-block-content,
+    .content-wrapper .content [data-fluid-engine] .fluid-engine .fe-block .sqs-block .sqs-block-content .sqs-code-container
+
+) {
+
+    display: contents;    
+
+}
+
+
+/* intro logo styling */
+#ds-logo-intro {
+	color: var(--ds-fg-dark);
+  	fill: currentColor;
+	display: block;
+	width: ~"min(80vw, 900px)";
+	height: auto;
+    left: 50%;
+	position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+	z-index: 999;
+} 
+
+#ds-logo-intro :is(.ds-logo-letter, .ds-logo-letter-dot) {
+	fill: currentColor;
+	stroke: none;
+}
+
+

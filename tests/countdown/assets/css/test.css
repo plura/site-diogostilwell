@@ -1,0 +1,24 @@
+/* Design & Typography */
+.ds-countdown__value {
+    font-size: var(--font-size-lg);
+    font-weight: var(--font-weight-bold);
+}
+
+.ds-countdown__label {
+    font-size: var(--font-size-sm);
+    font-weight: var(--font-weight-normal);
+    text-transform: uppercase; /* Moved from globals */
+    letter-spacing: 0.05em;     /* Moved from globals */
+    opacity: 0.7;              /* Moved from globals */
+}
+
+/* Layout Directions */
+.layout-horizontal .ds-countdown__item {
+    flex-direction: row;
+    align-items: baseline;
+}
+
+:is(.layout-vertical, .layout-slide) .ds-countdown__item {
+    flex-direction: column;
+    align-items: center;
+}

@@ -117,7 +117,7 @@ function animintro(svg, options = {delay: 0, hold: 0.8, paused: false}) {
 
 	const { letters, dot } = dsLogoPrepare(svg);
 
-	const hold = (typeof options.hold === "number") ? options.hold : 0.8;
+	const hold = (typeof options.hold === "number") ? options.hold : 0.5;
 
 	// Ensure a clean state (no stroke-draw mode, no leftover inline styles)
 	svg.classList.remove("is-drawing");
@@ -130,51 +130,55 @@ function animintro(svg, options = {delay: 0, hold: 0.8, paused: false}) {
 		el.removeAttribute("fill-opacity");
 	});
 
-	// Initial hidden state
-	const init_val_letters = { opacity: 0, y: 14 }, init_val_dot = { opacity: 0, y: -10 };
+	// More dramatic initial hidden state
+	const init_val_letters = { opacity: 0, y: 24, scale: 0.985 };
+	const init_val_dot = { opacity: 0, y: -28, scale: 0.9 };
+
 	gsap.set(letters, init_val_letters);
 	if (dot) gsap.set(dot, init_val_dot);
 
 	let didRewind = false;
 
 	const tl = gsap.timeline({
-		defaults: { ease: "power2.out" },
 		delay: options.delay,
 		paused: options.paused
 	});
 
-	// 1) Letters appear one by one
+	// 1) Letters appear one by one (slower + a touch of overshoot)
 	tl.to(letters, {
 		opacity: 1,
 		y: 0,
-		duration: 0.38,
-		stagger: 0.09
+		scale: 1,
+		duration: 0.4,
+		stagger: 0.1,
+		ease: "back.out(1.35)",
+		immediateRender: false
 	});
 
-	// 2) Dot punctuation at the end
+	// 2) Dot punctuation (elastic drop + tiny pop)
 	if (dot) {
 		tl.to(dot, {
 			opacity: 1,
 			y: 0,
-			duration: 0.25,
-			ease: "power3.out"
-		}, ">-0.02");
+			scale: 1,
+			duration: 0.5,
+			ease: "elastic.out(1, 0.38)",
+			immediateRender: false
+		}, ">-0.06");
 	}
 
 	// 3) Hold on the final state
 	tl.to({}, { duration: hold });
 
-	// 4) Fire end callback and rewind to start (once)
+	// 4) Rewind to start (once)
 	tl.add(() => {
-
 		if (didRewind) return;
 		didRewind = true;
 
-		// Rewind to the starting point and stop there
 		tl.reverse();
 	});
 
-	// Optional: clean inline transforms after rewind completes
+	// Lock back to initial state after rewind completes
 	tl.eventCallback("onReverseComplete", () => {
 		gsap.set(letters, init_val_letters);
 		if (dot) gsap.set(dot, init_val_dot);

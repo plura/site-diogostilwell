@@ -15,7 +15,6 @@ import { dsLogoPrepare } from "../anim.js";
  * @param {number} [options.delay=0] - Delay (in seconds) before the timeline starts.
  * @param {boolean} [options.paused=false] - Whether the timeline starts paused.
  * @param {number} [options.hold] - Optional hold duration (in seconds), used by animations that support a hold phase.
- * @param {(function(any):void)|false} [options.onEnd=false] - Optional callback fired when the timeline reaches the end (forward play).
  * @returns {gsap.core.Timeline|undefined} The GSAP timeline, or undefined if GSAP is not available.
  */
 export function animate(svg, options = { delay: 0, paused: false }) {

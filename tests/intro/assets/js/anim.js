@@ -1,4 +1,4 @@
-// assets/js/anim.js
+// tests/intro/assets/js/anim.js
 
 /**
  * Initializes a logo animation timeline and optionally binds a keyboard toggle.
