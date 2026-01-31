@@ -11,10 +11,12 @@
 * @param {Function|false} [options.onEnd=false] - Callback fired when the timeline reaches the end (forward play).
  * @returns {void}
  */
-function animinit(svg, animation, options = { delay: 0, paused: false, key: false, onEnd: false, onReverseEnd: false }) {
+function animinit(svg, animation, options = { delay: 0, paused: false, key: false, onEnd: false, onReverseEnd: false, onTurnaround: false }) {
 	if (!animation) return;
 
-	const tl = animation(svg, { delay: options.delay, paused: options.paused });
+
+	const { delay, paused, onTurnaround } = options;
+	const tl = animation(svg, { delay, paused, onTurnaround });
 	if (!tl) return;
 
 	if (typeof options.onEnd === "function") {
@@ -109,9 +111,10 @@ function dsLogoPrepare(svg) {
  * @param {number} [options.delay=0] - Delay (in seconds) before the timeline starts.
  * @param {boolean} [options.paused=false] - Whether the timeline starts paused.
  * @param {number} [options.hold] - Optional hold duration (in seconds), used by animations that support a hold phase.
+ * @param {Function|null} [options.onTurnaround=null] - Callback fired when the timeline reaches the turnaround point (before rewind).
  * @returns {gsap.core.Timeline|undefined} The GSAP timeline, or undefined if GSAP is not available.
  */
-function animintro(svg, options = {delay: 0, hold: 0.8, paused: false}) {
+function animintro(svg, options = { delay: 0, hold: 0.8, paused: false, onTurnaround: null }) {
 	const gsap = window.gsap;
 	if (!gsap) return;
 
@@ -174,6 +177,10 @@ function animintro(svg, options = {delay: 0, hold: 0.8, paused: false}) {
 	tl.add(() => {
 		if (didRewind) return;
 		didRewind = true;
+
+		if (typeof options.onTurnaround === "function") {
+			options.onTurnaround(tl);   // <-- external control point
+		}
 
 		tl.reverse();
 	});

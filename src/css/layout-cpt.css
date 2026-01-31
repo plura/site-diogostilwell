@@ -1,0 +1,104 @@
+/* PROJECTS */
+
+
+/* ==========================================================================
+	Project Common Layout Styles
+========================================================================== */
+
+/* Center and constrain project sections */
+body:not(.sqs-edit-mode-active) section:is(#project-case, #project-campaign, #project-campaign-videos, #project-board):has(.sqs-block-video, .sqs-block-image) {
+  margin: 0 auto var(--ds-pad-lr);
+  width: calc(100dvw - var(--ds-pad-lr) * 2);
+}
+
+/* Flatten Squarespace wrappers so #project-videos becomes the grid container */
+body:not(.sqs-edit-mode-active) section:is(#project-case, #project-campaign, #project-campaign-videos, #project-board):has(.sqs-block-video, .sqs-block-image)
+  :is(
+    .section-border,
+    .section-border .section-background,
+    .content-wrapper,
+    .content-wrapper .content,
+    .content-wrapper .content > div,
+    .content-wrapper .content > div .fluid-engine,
+	.content-wrapper .content > div .fluid-engine .fe-block
+  ) {
+  display: contents;
+}
+
+
+body:not(.sqs-edit-mode-active) section:is(#project-case, #project-campaign, #project-campaign-videos, #project-board):has(.sqs-block-video, .sqs-block-image) {
+  display: grid;
+  gap: var(--ds-pad-lr);
+}
+
+
+/* ==========================================================================
+	Project Overview
+========================================================================== */
+@media (min-width: 1000px) {
+
+	#project-overview ul.ds-project-awards.ds-awards {
+		display: grid;
+		grid-template-columns: repeat(5, 1fr);
+		width: fit-content;
+	}
+
+}
+
+/* ==========================================================================
+	Project Board
+========================================================================== */
+
+
+body:not(.sqs-edit-mode-active) section:is( #project-board) .sqs-block-image .fluid-image-container.sqs-image-content {
+	width: 100% !important;
+}
+
+body:not(.sqs-edit-mode-active) section:is( #project-board) .sqs-block-image .design-layout-fluid img {
+	position: relative;
+	height: auto;
+}
+
+
+/* ==========================================================================
+	Project Videos (Custom Section Grid) - Case + Campaigns
+========================================================================== */
+
+/* Reset Fluid Engine placement + style the tiles */
+body:not(.sqs-edit-mode-active) section[id^="project-"]:has(.sqs-block-video) .fe-block {
+  grid-area: auto;
+  grid-column: auto;
+  grid-row: auto;
+}
+
+body:not(.sqs-edit-mode-active) section[id^="project-"]:has(.sqs-block-video) .fe-block .sqs-block-video {
+  border-radius: var(--ds-border-radius);
+  overflow: hidden;
+}
+
+body:not(.sqs-edit-mode-active) section[id^="project-"]:has(.sqs-block-video) .fe-block .sqs-block-video .embed-block-wrapper {
+  padding-bottom: 0 !important;
+}
+
+body:not(.sqs-edit-mode-active) section[id^="project-"]:has(.sqs-block-video) .fe-block .embed-block-wrapper {
+  padding: 0 !important;
+}
+
+/* Desktop layout rules (uses :has() for count-aware last-item spanning) */
+@media (min-width: 1000px) {
+  body:not(.sqs-edit-mode-active) section[id^="project-"]:has(.sqs-block-video) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Default: 2-column flow */
+  body:not(.sqs-edit-mode-active) section[id^="project-"]:has(.sqs-block-video) .fe-block {
+    grid-column: auto;
+  }
+
+/* Project Case #1 is always full width (atm only holds one video) */
+  body:not(.sqs-edit-mode-active) section:is(#project-case):has(.sqs-block-video) .sqs-block-video:nth-child(1) {
+    grid-column: 1 / -1;
+  }
+
+}
+

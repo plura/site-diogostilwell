@@ -117,7 +117,7 @@ function DSCountdownItem({ unit, parentEl, showLabel, leadingZero, animated }) {
 /**
  * Main Countdown Factory
  */
-export function DSCountdown({
+function DSCountdown({
   startdate = false,
   enddate,
   target = false,

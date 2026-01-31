@@ -2,7 +2,7 @@
 // Source (dir): src/js
 // Excluded (names): node_modules,vendor,.git,dist,build,.ddev,.idea,.vscode,.next,.turbo,.cache,.pnpm-store
 // Excluded (paths): 
-// Generated: 2026-01-07T23:46:23+00:00
+// Generated: 2026-01-31T02:17:23+00:00
 // Extensions: js
 // Chunk: 1
 // -------------------------------------------------
@@ -13,9 +13,24 @@
 
 // src/js/init.js
 
+const
+
+	COUNTDOWN_DATE = '2026-05-22',
+
+	IDS = {
+		case: "project-case",
+		campaign: "project-campaign",
+		board: "project-board",
+		extraBoards: "project-extra-boards",
+		supportingMaterials: "project-supporting-materials",
+		onTheStreets: "project-on-the-streets",
+		stills: "project-stills",
+	};
+
+
 document.addEventListener("DOMContentLoaded", function () {
 
-	// Carousel + Fancybox integration
+	// Globals: Carousel + Fancybox integration
 	console.log('[DS/Fancybox] DOMContentLoaded');
 
 	if (typeof Fancybox === "undefined") {
@@ -38,15 +53,63 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	}
 
-	const resize = new ResizeObserver(entries => { setVars(); });
+	/* 	const resize = new ResizeObserver(entries => { setVars(); });
+	
+		resize.observe(document.body); */
 
-	resize.observe(document.body);
+
+	//GLobals: Countdown
+	const countdownholder = document.getElementById('ds-countdown-holder');
+
+	if (countdownholder) {
+
+		DSCountdown({ target: countdownholder, enddate: COUNTDOWN_DATE, animated: true });
+
+	}
 
 
-	// Intro Animation
+	//Globals: Awards - add labels to Awards icons
+	varToAttr({ key: 'ds-award-name', target: '.ds-awards .ds-award' });
+
+
+	// Globals CPT: Header & Hero Banner H1 Heights 
+	const header = document.querySelector("header");
+	const heroH1 = document.querySelector("#hero-banner h1");
+	const elements = new Map();
+
+	const updateHeights = (entries) => {
+		entries.forEach((entry) => {
+
+			const meta = elements.get(entry.target);
+			if (!meta) return;
+
+			setVars({
+				[`${meta.id}-h`]: `${entry.target.offsetHeight}px`
+			});
+
+		});
+	};
+
+	const ro = new ResizeObserver(updateHeights);
+
+	[
+		{ obj: header, id: "header" },
+		{ obj: heroH1, id: "hero-banner-h1" }
+	].forEach((item) => {
+		if (!item.obj) return;
+
+		elements.set(item.obj, { id: item.id });
+
+		ro.observe(item.obj);
+	});
+
+
+	// Pages: Intro Animation
 	const ds_logo_intro = document.querySelector('svg#ds-logo-intro');
 
 	if (ds_logo_intro) {
+
+		const nextUrl = '/work/';
 
 		let didRedirect = false;
 
@@ -54,26 +117,25 @@ document.addEventListener("DOMContentLoaded", function () {
 
 			if (didRedirect) return;
 			didRedirect = true;
-			window.location.assign(new URL("/work/", window.location.href));
+			window.location.assign(nextUrl);
 
 		};
 
+		// start warming cache as soon as the animation starts
+		fetch(nextUrl, { credentials: "same-origin" }).catch(() => { });
+
 		animinit(ds_logo_intro, animintro, {
-			delay: 2,
-			onEnd: () => document.body.addEventListener('click', redirect, { once: true }),
+			delay: .5,
+			onTurnaround: (tl) => {
+				tl.timeScale(1.5);
+				document.body.addEventListener('click', redirect, { once: true });
+			},
 			onReverseEnd: redirect
 		});
 
 	}
 
-	// Work Countdown
-	const countdownholder = document.getElementById('ds-countdown-holder');
 
-	if (countdownholder) {
-
-		DSCountdown({target: countdownholder, enddate: '2026-05-17', animated: true});
-
-	}
 
 });
 
@@ -276,10 +338,12 @@ function DSCountdown({
 * @param {Function|false} [options.onEnd=false] - Callback fired when the timeline reaches the end (forward play).
  * @returns {void}
  */
-function animinit(svg, animation, options = { delay: 0, paused: false, key: false, onEnd: false, onReverseEnd: false }) {
+function animinit(svg, animation, options = { delay: 0, paused: false, key: false, onEnd: false, onReverseEnd: false, onTurnaround: false }) {
 	if (!animation) return;
 
-	const tl = animation(svg, { delay: options.delay, paused: options.paused });
+
+	const { delay, paused, onTurnaround } = options;
+	const tl = animation(svg, { delay, paused, onTurnaround });
 	if (!tl) return;
 
 	if (typeof options.onEnd === "function") {
@@ -374,9 +438,10 @@ function dsLogoPrepare(svg) {
  * @param {number} [options.delay=0] - Delay (in seconds) before the timeline starts.
  * @param {boolean} [options.paused=false] - Whether the timeline starts paused.
  * @param {number} [options.hold] - Optional hold duration (in seconds), used by animations that support a hold phase.
+ * @param {Function|null} [options.onTurnaround=null] - Callback fired when the timeline reaches the turnaround point (before rewind).
  * @returns {gsap.core.Timeline|undefined} The GSAP timeline, or undefined if GSAP is not available.
  */
-function animintro(svg, options = {delay: 0, hold: 0.8, paused: false}) {
+function animintro(svg, options = { delay: 0, hold: 0.8, paused: false, onTurnaround: null }) {
 	const gsap = window.gsap;
 	if (!gsap) return;
 
@@ -439,6 +504,10 @@ function animintro(svg, options = {delay: 0, hold: 0.8, paused: false}) {
 	tl.add(() => {
 		if (didRewind) return;
 		didRewind = true;
+
+		if (typeof options.onTurnaround === "function") {
+			options.onTurnaround(tl);   // <-- external control point
+		}
 
 		tl.reverse();
 	});
@@ -595,17 +664,51 @@ function allowFancyBoxOnCarouselSlide({ carousel, fancyboxID, threshold = 6 }) {
 //  src/js/utils.js
 // -------------------------------------------------
 
-function setVars( params = {} ) {
+function setVars(params = {}) {
 
 	const obj = { ...params };
-	
-	Object.entries(obj).forEach( ([key, value]) => {
 
-		const obj = typeof value === 'object' ? value : {target: document.body, value: value};	
+	Object.entries(obj).forEach(([key, value]) => {
 
-		obj.target.style.setProperty(`--ds-${ key }`, obj.value);
+		const obj = typeof value === 'object' ? value : { target: document.documentElement, value: value };
 
-	} );
+		obj.target.style.setProperty(`--ds-${key}`, obj.value);
+
+	});
 
 }
+
+
+
+const getVar = (key, target = document.body) => {
+	if (!target || !(target instanceof HTMLElement) || typeof key !== "string") return null;
+
+	const prop = key.startsWith("--") ? key : `--${key}`;
+	const value = getComputedStyle(target).getPropertyValue(prop).trim();
+
+	return value || null;
+};
+
+const parseElement = (target) => {
+	if (typeof target === "string") {
+		target = document.querySelectorAll(target);
+	}
+
+	return target instanceof HTMLElement
+		? [target]
+		: target instanceof NodeList || target instanceof HTMLCollection
+			? Array.from(target)
+			: [];
+};
+
+const varToAttr = ({ key, target = document.body }) => {
+	parseElement(target).forEach((element) => {
+		const value = getVar(key, element); // pass "foo", getVar makes it "--foo"
+		if (value != null && value !== "") {
+			const sanitizedValue = value.replace(/^(['"])(.*)\1$/, "$2");
+			element.setAttribute(`data-${key}`, sanitizedValue);
+		}
+	});
+};
+
 

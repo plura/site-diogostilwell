@@ -1,0 +1,303 @@
+/* ==========================================================================
+	Components: Countdown
+========================================================================== */
+
+.ds-countdown {
+  display: flex;
+}
+
+.ds-countdown__item {
+  display: flex;
+  gap: 8px; /* Internal gap between value and label */
+}
+
+.ds-countdown__value {
+  display: flex;
+  position: relative;
+  overflow: hidden;
+  height: 1.1em; /* Functional height for animation window */
+  line-height: 1;
+}
+
+/* Stable Digit Holder - The "Window" */
+.ds-countdown__digit {
+  display: inline-flex;
+  position: relative;
+  width: 0.65em; /* Fixed width prevents jittering */
+  height: 1.1em;
+  overflow: hidden;
+  vertical-align: top;
+}
+
+.ds-countdown__digit-static {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* The Sliding Strip */
+.ds-countdown__digit-strip {
+  display: flex;
+  flex-direction: column;
+  height: 200%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  will-change: transform;
+}
+
+/* Individual Slot */
+.ds-countdown__digit-strip-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50%; /* 50% of the 200% strip equals 100% of the window */
+}
+
+.ds-countdown__label {
+  display: block;
+}
+
+/* DS Countdown Layout CSS */
+.ds-countdown {
+  gap: 2rem;
+}
+
+.ds-countdown__item {
+  flex-direction: column;
+  align-items: center;
+}
+
+.ds-countdown__value {
+  font-family: var(--ds-font-heading-family);
+  font-size: var(--ds-font-h2-size);
+}
+
+/* ==========================================================================
+	Awards (Layout + Icons)
+========================================================================== */
+
+:is(.ds-project-awards, .ds-awards) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-awards-gap);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+:is(.ds-project-awards, .ds-awards) :where(.ds-project-award, .ds-award) {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  position: relative;
+}
+
+/* Base icon box */
+:is(.ds-project-awards, .ds-awards) :is(.ds-project-award, .ds-award)::before {
+  color: var(--ds-fg);
+  content: "";
+  display: block;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: var(--ds-award-icon-size);
+  width: var(--ds-award-icon-size);
+}
+
+:root[data-theme="light"]
+  :is(.ds-project-awards, .ds-awards)
+  :is(.ds-project-award, .ds-award)::before {
+  filter: invert(1);
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme])
+    :is(.ds-project-awards, .ds-awards)
+    :is(.ds-project-award, .ds-award)::before {
+    filter: invert(1);
+  }
+}
+
+
+:is(.ds-project-awards, .ds-awards)
+  :is(.ds-project-award, .ds-award)[data-ds-award-name]::after {
+  content: attr(data-ds-award-name);
+  display: block;
+  font-size: var(--ds-body-xxs-font-size);
+  line-height: var(--ds-body-xxs-line-height);
+  letter-spacing: var(--ds-body-xxs-letter-spacing);
+}
+
+:is(.ds-project-awards, .ds-awards)
+  :is(
+    .ds-project-award,
+    .ds-award
+  )[data-ds-award-number][data-ds-award-name]::after {
+  content: attr(data-ds-award-number) " " attr(data-ds-award-name);
+}
+
+:is(.ds-project-awards, .ds-awards)
+  :is(
+    .ds-project-award,
+    .ds-award
+  )[data-ds-award-number="20"][data-ds-award-name]::after {
+  content: "+" attr(data-ds-award-number) " " attr(data-ds-award-name);
+}
+
+.ds-award[data-ds-award-name]::after {
+  content: attr(data-ds-award-name);
+  display: block;
+  font-size: var(--ds-body-xxs-font-size);
+  line-height: var(--ds-body-xxs-line-height);
+  letter-spacing: var(--ds-body-xxs-letter-spacing);
+}
+
+/* ADC&E Award Icon */
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--adc-e {
+  --ds-award-name: "ADC&E";
+}
+
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--adc-e::before {
+  background-image: url("https://images.squarespace-cdn.com/content/692f1739a12dd468438fd973/7e34f84c-e9a9-4f3c-842d-a6cd0b1bea2d/adc-e.webp?content-type=image%2Fwebp");
+}
+
+/* APPM Award Icon */
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--appm {
+  --ds-award-name: "APPM";
+}
+
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--appm::before {
+  background-image: url("https://images.squarespace-cdn.com/content/692f1739a12dd468438fd973/464ddc9f-420f-4e12-93ff-771ada452df3/appm.webp?content-type=image%2Fwebp");
+}
+
+/* Cannes Lion Award Icon */
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--cannes-lion {
+  --ds-award-name: "Cannes Lion";
+}
+
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--cannes-lion::before {
+  background-image: url("https://images.squarespace-cdn.com/content/692f1739a12dd468438fd973/73818c8e-181d-4e28-9f5c-d323bb9d5756/cannes-lion.webp?content-type=image%2Fwebp");
+}
+
+/* CCP Award Icon */
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--ccp {
+  --ds-award-name: "CCP";
+}
+
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--ccp::before {
+  background-image: url("https://images.squarespace-cdn.com/content/692f1739a12dd468438fd973/c44c18bd-dd61-4a83-9430-ead6c3a17a1e/ccp.webp?content-type=image%2Fwebp");
+}
+
+/* Clio Award Icon */
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--clio {
+  --ds-award-name: "Clio";
+}
+
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--clio::before {
+  background-image: url("https://images.squarespace-cdn.com/content/692f1739a12dd468438fd973/4c82e68c-27aa-44d8-9888-73f326960437/clio.webp?content-type=image%2Fwebp");
+}
+
+/* Cresta Award Icon */
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--cresta {
+  --ds-award-name: "Cresta";
+}
+
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--cresta::before {
+  background-image: url("https://images.squarespace-cdn.com/content/692f1739a12dd468438fd973/7da773a1-d85e-4070-a859-bf3283cf2f95/cresta.webp?content-type=image%2Fwebp");
+}
+
+/* D&AD Award Icon */
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--d-ad {
+  --ds-award-name: "D&AD";
+}
+
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--d-ad::before {
+  background-image: url("https://images.squarespace-cdn.com/content/692f1739a12dd468438fd973/f57043c7-ac99-4f24-ade0-1a4d3ce907a2/d-ad.webp?content-type=image%2Fwebp");
+}
+
+/* Gerety Award Icon */
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--gerety {
+  --ds-award-name: "Gerety";
+}
+
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--gerety::before {
+  background-image: url("https://images.squarespace-cdn.com/content/692f1739a12dd468438fd973/e310840b-90ef-4df5-a7d2-a31d0137e4fe/gerety.webp?content-type=image%2Fwebp");
+}
+
+/* Effie Award Icon */
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--effie {
+  --ds-award-name: "Effie";
+}
+
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--effie::before {
+  background-image: url("https://images.squarespace-cdn.com/content/692f1739a12dd468438fd973/0ef3195d-0a18-4900-a121-77676615e233/effie.webp?content-type=image%2Fwebp");
+}
+
+/* El Ojo Award Icon */
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--el-ojo {
+  --ds-award-name: "El Ojo";
+}
+
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--el-ojo::before {
+  background-image: url("https://images.squarespace-cdn.com/content/692f1739a12dd468438fd973/20fd6e2a-562f-4eae-baf1-f1db8bf01e16/el-ojo.webp?content-type=image%2Fwebp");
+}
+
+/* Epica Award Icon */
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--epica {
+  --ds-award-name: "Epica";
+}
+
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--epica::before {
+  background-image: url("https://images.squarespace-cdn.com/content/692f1739a12dd468438fd973/6a475087-834f-42de-8f4d-b3aa21fb3130/epica.webp?content-type=image%2Fwebp");
+}
+
+/* Eurobest Award Icon */
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--eurobest {
+  --ds-award-name: "Eurobest";
+}
+
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--eurobest::before {
+  background-image: url("https://images.squarespace-cdn.com/content/692f1739a12dd468438fd973/48baa423-a63c-45b7-bf63-e7a3359bec5e/eurobest.webp?content-type=image%2Fwebp");
+}
+
+/* Lia Awards Icon */
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--lia {
+  --ds-award-name: "Lia";
+}
+
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--lia::before {
+  background-image: url("https://images.squarespace-cdn.com/content/692f1739a12dd468438fd973/1a179d85-1512-4b4e-8f28-a805a9654d8f/lia.webp?content-type=image%2Fwebp");
+}
+
+/* M&P Award Icon */
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--m-p {
+  --ds-award-name: "M&P";
+}
+
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--m-p::before {
+  background-image: url("https://images.squarespace-cdn.com/content/692f1739a12dd468438fd973/04a59fc3-3253-4dc2-baea-8e953814266c/m-p.webp?content-type=image%2Fwebp");
+}
+
+/* One Show Award Icon */
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--one-show {
+  --ds-award-name: "One Show";
+}
+
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--one-show::before {
+  background-image: url("https://images.squarespace-cdn.com/content/692f1739a12dd468438fd973/881311c7-7d39-4744-acc2-aad278964554/one-show.webp?content-type=image%2Fwebp");
+}
+
+/* Shark Awards Icon */
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--shark {
+  --ds-award-name: "Shark";
+}
+
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--shark::before {
+  background-image: url("https://images.squarespace-cdn.com/content/692f1739a12dd468438fd973/05bf236e-fe58-45f9-b5aa-a6c5d72ab8a2/shark-awards.webp?content-type=image%2Fwebp");
+}

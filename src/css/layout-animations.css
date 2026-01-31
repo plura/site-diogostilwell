@@ -1,0 +1,146 @@
+/* ==========================================================================
+		Animations
+		========================================================================== */
+
+/* Project info hover animation */
+:not(#hero-banner) + section:has(.ds-project-info) .ds-project-info > * {
+  --ts: calc(
+    var(--ds-trans-lvl1-delay-base) +
+      (var(--ds-trans-lvl1-delay-step) * var(--ds-trans-lvl1-delay-step-n, 1))
+  );
+
+  opacity: 0;
+  transform: translateY(var(--ds-trans-val-move));
+  transition:
+    opacity var(--ds-trans-speed) var(--ds-trans-ease),
+    transform var(--ds-trans-speed) var(--ds-trans-ease);
+  will-change: opacity, transform;
+  transition-delay: var(--ts);
+}
+
+:not(#hero-banner)
+  + section:has(.ds-project-info)
+  .ds-project-info
+  > .ds-project-title {
+  --ds-trans-lvl1-delay-step-n: 1;
+}
+:not(#hero-banner)
+  + section:has(.ds-project-info)
+  .ds-project-info
+  > .ds-project-client {
+  --ds-trans-lvl1-delay-step-n: 2;
+}
+:not(#hero-banner)
+  + section:has(.ds-project-info)
+  .ds-project-info
+  > .ds-project-awards {
+  --ds-trans-lvl1-delay-step-n: 3;
+}
+
+:not(#hero-banner) + section:has(.ds-project-info):hover .ds-project-info > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Award icons stagger */
+:not(#hero-banner)
+  + section:has(.ds-project-info)
+  .ds-project-info
+  .ds-project-awards
+  .ds-award {
+  --ts-award: calc(
+    var(--ts) +
+      (
+        var(--ds-trans-lvl2-delay-step) *
+          (var(--ds-trans-lvl2-delay-step-n, 1) - 1)
+      )
+  );
+
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity 0.3s ease-out,
+    transform 0.4s ease-out;
+  will-change: opacity, transform;
+  transition-delay: var(--ts-award);
+}
+
+:not(#hero-banner)
+  + section:has(.ds-project-info):hover
+  .ds-project-info
+  .ds-project-awards
+  .ds-award {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+:not(#hero-banner)
+  + section:has(.ds-project-info)
+  .ds-project-info
+  .ds-project-awards
+  .ds-award:nth-child(1) {
+  --ds-trans-lvl2-delay-step-n: 1;
+}
+:not(#hero-banner)
+  + section:has(.ds-project-info)
+  .ds-project-info
+  .ds-project-awards
+  .ds-award:nth-child(2) {
+  --ds-trans-lvl2-delay-step-n: 2;
+}
+:not(#hero-banner)
+  + section:has(.ds-project-info)
+  .ds-project-info
+  .ds-project-awards
+  .ds-award:nth-child(3) {
+  --ds-trans-lvl2-delay-step-n: 3;
+}
+:not(#hero-banner)
+  + section:has(.ds-project-info)
+  .ds-project-info
+  .ds-project-awards
+  .ds-award:nth-child(4) {
+  --ds-trans-lvl2-delay-step-n: 4;
+}
+:not(#hero-banner)
+  + section:has(.ds-project-info)
+  .ds-project-info
+  .ds-project-awards
+  .ds-award:nth-child(5) {
+  --ds-trans-lvl2-delay-step-n: 5;
+}
+:not(#hero-banner)
+  + section:has(.ds-project-info)
+  .ds-project-info
+  .ds-project-awards
+  .ds-award:nth-child(6) {
+  --ds-trans-lvl2-delay-step-n: 6;
+}
+:not(#hero-banner)
+  + section:has(.ds-project-info)
+  .ds-project-info
+  .ds-project-awards
+  .ds-award:nth-child(7) {
+  --ds-trans-lvl2-delay-step-n: 7;
+}
+:not(#hero-banner)
+  + section:has(.ds-project-info)
+  .ds-project-info
+  .ds-project-awards
+  .ds-award:nth-child(8) {
+  --ds-trans-lvl2-delay-step-n: 8;
+}
+:not(#hero-banner)
+  + section:has(.ds-project-info)
+  .ds-project-info
+  .ds-project-awards
+  .ds-award:nth-child(9) {
+  --ds-trans-lvl2-delay-step-n: 9;
+}
+:not(#hero-banner)
+  + section:has(.ds-project-info)
+  .ds-project-info
+  .ds-project-awards
+  .ds-award:nth-child(10) {
+  --ds-trans-lvl2-delay-step-n: 10;
+}

@@ -53,7 +53,7 @@ This keeps the codebase:
 Squarespace **does not treat Custom CSS as plain CSS**.
 
 All Custom CSS is parsed through an **old LESS compiler (LESS v1.3.1)**, which predates modern CSS features.
-This behaviour is undocumented but widely confirmed by community reports and real-world debugging. 
+This behaviour is undocumented but widely confirmed by community reports and real-world debugging.
 
 As a result, **valid modern CSS may fail silently**.
 
@@ -76,7 +76,7 @@ The following must be escaped in Squarespace-ready CSS:
 
 * `calc(...)`
 * `clamp(...)`
-* `min(...)`, `max(...)`
+* `min()` / `max()` **when used as functions**
 * CSS variables inside calculations (`var(--token)`)
 * Modern viewport units (`dvh`, `dvw`, etc.)
 * Slash syntax such as:
@@ -106,6 +106,30 @@ Use:
 ```css
 max-height: ~"calc(100vh - var(--header-height))";
 ```
+
+---
+
+## LESS-ready CSS conversion rule
+
+Use the following prompt **as-is** when converting modern CSS into Squarespace-ready CSS (manually or using any AI assistant):
+
+> Rewrite the active CSS file to be Squarespace LESS-compatible. Escape ONLY property values using LESS literals in the exact form property: ~"VALUE"; when the value contains calc(), clamp(), or min()/max() as functions (including when they contain var(--…)), modern viewport units (dvh, dvw, svh, svw, lvh, lvw), or slash grid syntax (e.g. 1 / -1). If an escaped value spans multiple lines (esp. CSS custom properties), collapse it into a single-line string inside ~"...". Do NOT escape plain var(--…) unless it’s inside those functions. Keep selectors, formatting, order, and comments unchanged, then quickly scan to ensure no required escapes remain.
+
+### Saving for reuse (VS Code / Copilot)
+
+To reuse this prompt consistently:
+
+* Open **Copilot Chat** in VS Code
+* Paste the prompt above
+* Save it as a named prompt (e.g. using `/saveprompt`, if available)
+
+Suggested name:
+
+```
+Squarespace LESS – CSS escape pass
+```
+
+This allows running a strict, mechanical “LESS-ready” conversion without re-explaining the rules each time.
 
 ---
 
