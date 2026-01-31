@@ -82,6 +82,10 @@ The following must be escaped in Squarespace-ready CSS:
 * Slash syntax such as:
 
   * `grid-column: 1 / -1`
+* Modern colour syntax with slash alpha:
+
+  * `rgb()` / `hsl()` using **space-separated channels and `/` opacity**
+    (e.g. `rgb(0 0 0 / 0.5)`, `hsl(120 30% 40% / 0.6)`)
 
 ---
 
