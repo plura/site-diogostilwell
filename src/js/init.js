@@ -40,10 +40,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	}
 
-	/* 	const resize = new ResizeObserver(entries => { setVars(); });
-	
-		resize.observe(document.body); */
-
 
 	//GLobals: Countdown
 	const countdownholder = document.getElementById('ds-countdown-holder');
@@ -60,35 +56,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 	// Globals CPT: Header & Hero Banner H1 Heights 
-	const header = document.querySelector("header");
-	const heroH1 = document.querySelector("#hero-banner h1");
-	const elements = new Map();
+	const heroH1 = document.querySelector("#ds-hero-banner h1");
 
-	const updateHeights = (entries) => {
-		entries.forEach((entry) => {
+	if (heroH1) {
 
-			const meta = elements.get(entry.target);
-			if (!meta) return;
+		DSHeroBanner({ title: heroH1 });
 
-			setVars({
-				[`${meta.id}-h`]: `${entry.target.offsetHeight}px`
-			});
+	}
 
-		});
-	};
 
-	const ro = new ResizeObserver(updateHeights);
-
-	[
-		{ obj: header, id: "header" },
-		{ obj: heroH1, id: "hero-banner-h1" }
-	].forEach((item) => {
-		if (!item.obj) return;
-
-		elements.set(item.obj, { id: item.id });
-
-		ro.observe(item.obj);
-	});
+	//Layouts: Theme Mode Toggle
+	DSThemeModeToggle({ trigger: 'header :is(.header-nav, .header-menu) a[href="#thememode"]' });
 
 
 	// Pages: Intro Animation
@@ -122,6 +100,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	}
 
+	//Pages: Work (Squarespace does not allow me to add classes, so adding them via JS)
+	const project_cards = document.querySelectorAll(':root:not(:has(#ds-hero-banner)) section:has(.ds-project-info)');
 
+	project_cards.forEach((card) => card.classList.add('ds-project-card'));
 
 });

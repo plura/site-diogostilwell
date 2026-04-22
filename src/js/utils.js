@@ -1,19 +1,3 @@
-function setVars(params = {}) {
-
-	const obj = { ...params };
-
-	Object.entries(obj).forEach(([key, value]) => {
-
-		const obj = typeof value === 'object' ? value : { target: document.documentElement, value: value };
-
-		obj.target.style.setProperty(`--ds-${key}`, obj.value);
-
-	});
-
-}
-
-
-
 const getVar = (key, target = document.body) => {
 	if (!target || !(target instanceof HTMLElement) || typeof key !== "string") return null;
 
@@ -45,3 +29,53 @@ const varToAttr = ({ key, target = document.body }) => {
 	});
 };
 
+
+/**
+ * Initializes a theme mode toggle that switches the document theme between "light" and "dark".
+ *
+ * - Persists the user's choice in localStorage under the "theme" key.
+ * - Applies the current theme via `data-theme` on `document.documentElement`.
+ * - If no stored/manual theme is present, falls back to the system preference.
+ *
+ * @param {Object} [options]
+ * @param {string|HTMLElement|NodeList|HTMLElement[]} options.trigger
+ *   CSS selector string, HTMLElement, NodeList, or array of HTMLElements used as toggle triggers.
+ * @returns {void}
+ */
+function DSThemeModeToggle({ trigger } = {}) {
+	const elements = parseElement(trigger);
+	if (elements.length === 0) return;
+
+	const root = document.documentElement;
+
+	const getSystemTheme = () =>
+		window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+
+	const getCurrentTheme = () => {
+		return (
+			localStorage.getItem("theme") ||
+			root.getAttribute("data-theme") ||
+			getSystemTheme()
+		);
+	};
+
+	const setTheme = (type) => {
+		root.setAttribute("data-theme", type);
+		localStorage.setItem("theme", type);
+		elements.forEach((el) => {
+			el.classList.remove("ds-theme-light", "ds-theme-dark");
+			el.classList.add(`ds-theme-${type}`);
+		});
+	};
+
+	// Initialize initial state
+	setTheme(getCurrentTheme());
+
+	elements.forEach((el) => {
+		el.addEventListener("click", (e) => {
+			e.preventDefault();
+			const next = getCurrentTheme() === "dark" ? "light" : "dark";
+			setTheme(next);
+		});
+	});
+}

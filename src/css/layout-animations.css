@@ -3,7 +3,7 @@
 		========================================================================== */
 
 /* Project info hover animation */
-:not(#hero-banner) + section:has(.ds-project-info) .ds-project-info > * {
+:not(#ds-hero-banner) + section:has(.ds-project-info) .ds-project-info > * {
   --ts: calc(
     var(--ds-trans-lvl1-delay-base) +
       (var(--ds-trans-lvl1-delay-step) * var(--ds-trans-lvl1-delay-step-n, 1))
@@ -18,32 +18,32 @@
   transition-delay: var(--ts);
 }
 
-:not(#hero-banner)
+:not(#ds-hero-banner)
   + section:has(.ds-project-info)
   .ds-project-info
   > .ds-project-title {
   --ds-trans-lvl1-delay-step-n: 1;
 }
-:not(#hero-banner)
+:not(#ds-hero-banner)
   + section:has(.ds-project-info)
   .ds-project-info
   > .ds-project-client {
   --ds-trans-lvl1-delay-step-n: 2;
 }
-:not(#hero-banner)
+:not(#ds-hero-banner)
   + section:has(.ds-project-info)
   .ds-project-info
   > .ds-project-awards {
   --ds-trans-lvl1-delay-step-n: 3;
 }
 
-:not(#hero-banner) + section:has(.ds-project-info):hover .ds-project-info > * {
+:not(#ds-hero-banner) + section:has(.ds-project-info):hover .ds-project-info > * {
   opacity: 1;
   transform: translateY(0);
 }
 
 /* Award icons stagger */
-:not(#hero-banner)
+:not(#ds-hero-banner)
   + section:has(.ds-project-info)
   .ds-project-info
   .ds-project-awards
@@ -65,7 +65,7 @@
   transition-delay: var(--ts-award);
 }
 
-:not(#hero-banner)
+:not(#ds-hero-banner)
   + section:has(.ds-project-info):hover
   .ds-project-info
   .ds-project-awards
@@ -74,73 +74,94 @@
   transform: translateY(0);
 }
 
-:not(#hero-banner)
+:not(#ds-hero-banner)
   + section:has(.ds-project-info)
   .ds-project-info
   .ds-project-awards
   .ds-award:nth-child(1) {
   --ds-trans-lvl2-delay-step-n: 1;
 }
-:not(#hero-banner)
+:not(#ds-hero-banner)
   + section:has(.ds-project-info)
   .ds-project-info
   .ds-project-awards
   .ds-award:nth-child(2) {
   --ds-trans-lvl2-delay-step-n: 2;
 }
-:not(#hero-banner)
+:not(#ds-hero-banner)
   + section:has(.ds-project-info)
   .ds-project-info
   .ds-project-awards
   .ds-award:nth-child(3) {
   --ds-trans-lvl2-delay-step-n: 3;
 }
-:not(#hero-banner)
+:not(#ds-hero-banner)
   + section:has(.ds-project-info)
   .ds-project-info
   .ds-project-awards
   .ds-award:nth-child(4) {
   --ds-trans-lvl2-delay-step-n: 4;
 }
-:not(#hero-banner)
+:not(#ds-hero-banner)
   + section:has(.ds-project-info)
   .ds-project-info
   .ds-project-awards
   .ds-award:nth-child(5) {
   --ds-trans-lvl2-delay-step-n: 5;
 }
-:not(#hero-banner)
+:not(#ds-hero-banner)
   + section:has(.ds-project-info)
   .ds-project-info
   .ds-project-awards
   .ds-award:nth-child(6) {
   --ds-trans-lvl2-delay-step-n: 6;
 }
-:not(#hero-banner)
+:not(#ds-hero-banner)
   + section:has(.ds-project-info)
   .ds-project-info
   .ds-project-awards
   .ds-award:nth-child(7) {
   --ds-trans-lvl2-delay-step-n: 7;
 }
-:not(#hero-banner)
+:not(#ds-hero-banner)
   + section:has(.ds-project-info)
   .ds-project-info
   .ds-project-awards
   .ds-award:nth-child(8) {
   --ds-trans-lvl2-delay-step-n: 8;
 }
-:not(#hero-banner)
+:not(#ds-hero-banner)
   + section:has(.ds-project-info)
   .ds-project-info
   .ds-project-awards
   .ds-award:nth-child(9) {
   --ds-trans-lvl2-delay-step-n: 9;
 }
-:not(#hero-banner)
+:not(#ds-hero-banner)
   + section:has(.ds-project-info)
   .ds-project-info
   .ds-project-awards
   .ds-award:nth-child(10) {
   --ds-trans-lvl2-delay-step-n: 10;
+}
+
+
+
+/* Header Dark/Light mode icon animation */
+header .header-nav a[href="#thememode"]::before {
+  transition:
+    transform 0.32s cubic-bezier(.2,.9,.2,1),
+    filter 0.18s ease-out;
+  transform-origin: 50% 50%;
+}
+
+header .header-nav a[href="#thememode"].ds-theme-light::before {
+  transform: rotate(180deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  header .header-nav a[href="#thememode"]::before {
+    transition: filter 0.18s ease-out;
+    transform: none;
+  }
 }

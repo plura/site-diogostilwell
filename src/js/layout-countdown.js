@@ -160,12 +160,23 @@ function DSCountdown({
       return;
     }
 
+    const nowDate = new Date(now);
+    const endDate = new Date(enddate);
+    let calMonths = (endDate.getFullYear() - nowDate.getFullYear()) * 12 + (endDate.getMonth() - nowDate.getMonth());
+    const afterMonths = new Date(nowDate);
+    afterMonths.setMonth(afterMonths.getMonth() + calMonths);
+    if (afterMonths > endDate) {
+      calMonths--;
+      afterMonths.setMonth(afterMonths.getMonth() - 1);
+    }
+    const remainingMs = endDate - afterMonths;
+
     const values = {
-      months: Math.floor(distance / (1000 * 60 * 60 * 24 * 30.44)),
-      days: Math.floor((distance % (1000 * 60 * 60 * 24 * 30.44)) / (1000 * 60 * 60 * 24)),
-      hours: Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
-      minutes: Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60)),
-      seconds: Math.floor((distance % (1000 * 60)) / 1000)
+      months: calMonths,
+      days: Math.floor(remainingMs / (1000 * 60 * 60 * 24)),
+      hours: Math.floor((remainingMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)),
+      minutes: Math.floor((remainingMs % (1000 * 60 * 60)) / (1000 * 60)),
+      seconds: Math.floor((remainingMs % (1000 * 60)) / 1000)
     };
 
     Object.keys(activeItems).forEach(u => activeItems[u].update(values[u]));

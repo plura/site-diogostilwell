@@ -1,0 +1,107 @@
+
+/* ==============================
+   Footer Layout
+   ============================== */
+footer {
+    display: flex;
+    flex-direction: column;
+    padding: calc( var(--ds-pad-lr) * 3 ) 0 var(--ds-pad-lr);
+    gap: var(--ds-pad-lr);
+}
+
+footer > section {
+    margin-bottom: 0 !important;
+}
+
+/* ==============================
+   Squarespace Section Layout Overrides
+   ============================== */
+
+/* Flatten Squarespace wrappers so #project-videos becomes the grid container */
+:is(
+    section[id^="ds-project-"]:has(.sqs-block-video, .sqs-block-image),
+    footer
+      section:is(
+        #contact,
+        #ds-footer-copyright-author,
+        #ds-footer-signature
+      ):has(.sqs-block-html, .sqs-block-socialaccountlinks-v2)
+  )
+  :is(
+    .section-border,
+    .section-border .section-background,
+    .content-wrapper,
+    .content-wrapper .content,
+    .content-wrapper .content > div,
+    .content-wrapper .content > div .fluid-engine,
+    .content-wrapper .content > div .fluid-engine .fe-block
+  ) {
+  display: contents;
+}
+
+/* Center single block project sections */
+:is(
+  section[id^="ds-project-"]:has(.sqs-block-video, .sqs-block-image),
+  footer
+    section:is(#contact, #ds-footer-copyright-author, #ds-footer-signature):has(
+      .sqs-block-html,
+      .sqs-block-socialaccountlinks-v2
+    )
+):has(.fe-block:only-child) {
+  justify-content: center;
+}
+
+/* Center and size project sections with videos or images */
+:is(
+  section[id^="ds-project-"]:has(.sqs-block-video, .sqs-block-image),
+  section:is(#contact, #ds-footer-copyright-author, #ds-footer-signature)
+) {
+  margin: 0 auto var(--ds-pad-lr);
+  width: calc(100dvw - var(--ds-pad-lr) * 2);
+}
+
+/* Make project sections with videos or images use grid layout */
+:is(section[id^="ds-project-"]:has(.sqs-block-video, .sqs-block-image)) {
+  display: grid;
+  gap: var(--ds-pad-lr);
+}
+
+/* Footer: Contact + Copyright Author sections side-by-side */
+footer section:is(#contact, #ds-footer-copyright-author) {
+  display: flex;
+  justify-content: space-between;
+}
+
+footer
+  section:is(#contact, #ds-footer-copyright-author, #ds-footer-signature)
+  :is(.sqs-block-html, .sqs-block-socialaccountlinks-v2) {
+  width: auto;
+}
+
+/* revert the display: contents for the signature section to allow text special resizing */
+footer
+  section#ds-footer-signature
+  .content-wrapper
+  .content
+  > div[data-fluid-engine] {
+  display: block;
+}
+
+@media (max-width: 767.99px) {
+  footer
+    section:is(#contact, #ds-footer-copyright-author, #ds-footer-signature) {
+    flex-direction: column;
+    gap: 30px;
+  }
+}
+
+:is(
+  section[id^="ds-project-"]:has(.sqs-block-video, .sqs-block-image),
+  footer
+    section:is(#contact, #ds-footer-copyright-author, #ds-footer-signature):has(
+      .sqs-block-html,
+      .sqs-block-socialaccountlinks-v2
+    )
+):has(.fe-block:only-child) {
+  justify-content: center;
+}

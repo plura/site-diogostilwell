@@ -2,7 +2,7 @@
 // Source (dir): src/js
 // Excluded (names): node_modules,vendor,.git,dist,build,.ddev,.idea,.vscode,.next,.turbo,.cache,.pnpm-store
 // Excluded (paths): 
-// Generated: 2026-01-31T02:17:23+00:00
+// Generated: 2026-02-05T18:46:43+00:00
 // Extensions: js
 // Chunk: 1
 // -------------------------------------------------
@@ -53,10 +53,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	}
 
-	/* 	const resize = new ResizeObserver(entries => { setVars(); });
-	
-		resize.observe(document.body); */
-
 
 	//GLobals: Countdown
 	const countdownholder = document.getElementById('ds-countdown-holder');
@@ -73,35 +69,17 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
 	// Globals CPT: Header & Hero Banner H1 Heights 
-	const header = document.querySelector("header");
-	const heroH1 = document.querySelector("#hero-banner h1");
-	const elements = new Map();
+	const heroH1 = document.querySelector("#ds-hero-banner h1");
 
-	const updateHeights = (entries) => {
-		entries.forEach((entry) => {
+	if (heroH1) {
 
-			const meta = elements.get(entry.target);
-			if (!meta) return;
+		DSHeroBanner({ title: heroH1 });
 
-			setVars({
-				[`${meta.id}-h`]: `${entry.target.offsetHeight}px`
-			});
+	}
 
-		});
-	};
 
-	const ro = new ResizeObserver(updateHeights);
-
-	[
-		{ obj: header, id: "header" },
-		{ obj: heroH1, id: "hero-banner-h1" }
-	].forEach((item) => {
-		if (!item.obj) return;
-
-		elements.set(item.obj, { id: item.id });
-
-		ro.observe(item.obj);
-	});
+	//Layouts: Theme Mode Toggle
+	DSThemeModeToggle({ trigger: 'header :is(.header-nav, .header-menu) a[href="#thememode"]', prefix: 'ds-theme-' });
 
 
 	// Pages: Intro Animation
@@ -135,9 +113,48 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	}
 
+	//Pages: Work (Squarespace does not allow me to add classes, so adding them via JS)
+	const project_cards = document.querySelectorAll(':root:not(:has(#ds-hero-banner)) section:has(.ds-project-info)');
 
+	project_cards.forEach((card) => card.classList.add('ds-project-card'));
 
 });
+
+// -------------------------------------------------
+//  src/js/layout-banner.js
+// -------------------------------------------------
+
+function DSHeroBanner({ title }) {
+
+	const gsap = window.gsap;
+	const SplitText = window.SplitText;
+
+	if (!gsap || !SplitText || !title) return;
+
+	const split = new SplitText(title, { type: "words" });
+
+	const tl = gsap.timeline({
+		delay: 0.45,
+		onReverseComplete: () => split.revert()
+	});
+
+	gsap.set(split.words, {
+		opacity: 0,
+		y: 20
+	});
+
+	tl.to(split.words, {
+		opacity: 1,
+		y: 0,
+		duration: 0.8,
+		stagger: { each: 0.22, from: "start" },
+		ease: "power3.out",
+		clearProps: "opacity,transform"
+	});
+
+	return tl;
+
+}
 
 // -------------------------------------------------
 //  src/js/layout-countdown.js
@@ -571,13 +588,13 @@ function getClosestElementFromPoint(elements, clientX, clientY) {
 }
 
 
-function allowFancyBoxOnCarouselSlide({ carousel, fancyboxID, threshold = 6 }) {
+function allowFancyBoxOnCarouselSlide({ carousel, fancyboxID, threshold = 6, log = false }) {
 
-	console.log('[DS/Fancybox] Carousel found:', fancyboxID);
+	log && console.log('[DS/Fancybox] Carousel found:', fancyboxID);
 
 	const elements = carousel.querySelectorAll('.user-items-list-carousel__slide');
 	const mediaEls = Array.from(carousel.querySelectorAll('.user-items-list-carousel__media'));
-	console.log('[DS/Fancybox] Media elements found:', mediaEls.length);
+	log && console.log('[DS/Fancybox] Media elements found:', mediaEls.length);
 
 	// Tag all media items for grouping
 	mediaEls.forEach((media) => {
@@ -594,7 +611,7 @@ function allowFancyBoxOnCarouselSlide({ carousel, fancyboxID, threshold = 6 }) {
 		startX = e.clientX;
 		startY = e.clientY;
 
-		console.log('[DS/Fancybox] pointerdown:', {
+		log && console.log('[DS/Fancybox] pointerdown:', {
 			fancyboxID,
 			startX,
 			startY,
@@ -608,11 +625,17 @@ function allowFancyBoxOnCarouselSlide({ carousel, fancyboxID, threshold = 6 }) {
 		if (!isDown) return;
 		isDown = false;
 
+		// Early exit if arrow button was clicked
+		if (e.target.closest('.user-items-list-carousel__arrow-button')) {
+			log && console.log('[DS/Fancybox] Arrow button clicked, skipping Fancybox.');
+			return;
+		}
+
 		const dx = Math.abs(e.clientX - startX);
 		const dy = Math.abs(e.clientY - startY);
 		const moved = Math.max(dx, dy);
 
-		console.log('[DS/Fancybox] pointerup:', {
+		log && console.log('[DS/Fancybox] pointerup:', {
 			fancyboxID,
 			endX: e.clientX,
 			endY: e.clientY,
@@ -623,17 +646,17 @@ function allowFancyBoxOnCarouselSlide({ carousel, fancyboxID, threshold = 6 }) {
 
 		// Drag? do nothing
 		if (moved > threshold) {
-			console.log('[DS/Fancybox] Drag detected, not opening Fancybox.', { fancyboxID, moved, threshold });
+			log && console.log('[DS/Fancybox] Drag detected, not opening Fancybox.', { fancyboxID, moved, threshold });
 			return;
 		}
 
 		const element = getClosestElementFromPoint(elements, e.clientX, e.clientY);
 		const media = element?.querySelector('.user-items-list-carousel__media');
 
-		console.log('[DS/Fancybox] Click intent. Closest media:', media);
+		log && console.log('[DS/Fancybox] Click intent. Closest media:', media);
 
 		if (!media) {
-			console.log('[DS/Fancybox] No media resolved from point. Aborting.');
+			log && console.log('[DS/Fancybox] No media resolved from point. Aborting.');
 			return;
 		}
 
@@ -645,7 +668,7 @@ function allowFancyBoxOnCarouselSlide({ carousel, fancyboxID, threshold = 6 }) {
 		const items = mediaEls.map((m) => ({ src: m.src, type: "image" }));
 		const startIndex = mediaEls.indexOf(media);
 
-		console.log('[DS/Fancybox] Opening gallery.', { fancyboxID, startIndex, total: items.length });
+		log && console.log('[DS/Fancybox] Opening gallery.', { fancyboxID, startIndex, total: items.length });
 
 		Fancybox.show(items, {
 			startIndex: Math.max(0, startIndex),
@@ -663,22 +686,6 @@ function allowFancyBoxOnCarouselSlide({ carousel, fancyboxID, threshold = 6 }) {
 // -------------------------------------------------
 //  src/js/utils.js
 // -------------------------------------------------
-
-function setVars(params = {}) {
-
-	const obj = { ...params };
-
-	Object.entries(obj).forEach(([key, value]) => {
-
-		const obj = typeof value === 'object' ? value : { target: document.documentElement, value: value };
-
-		obj.target.style.setProperty(`--ds-${key}`, obj.value);
-
-	});
-
-}
-
-
 
 const getVar = (key, target = document.body) => {
 	if (!target || !(target instanceof HTMLElement) || typeof key !== "string") return null;
@@ -711,4 +718,50 @@ const varToAttr = ({ key, target = document.body }) => {
 	});
 };
 
+
+/**
+ * Initializes a theme mode toggle that switches the document theme between "light" and "dark".
+ *
+ * - Persists the user's choice in localStorage under the "theme" key.
+ * - Applies the current theme via `data-theme` on `document.documentElement`.
+ * - If no stored/manual theme is present, falls back to the system preference.
+ *
+ * @param {Object} [options]
+ * @param {string|HTMLElement|NodeList|HTMLElement[]} options.trigger
+ *   CSS selector string, HTMLElement, NodeList, or array of HTMLElements used as toggle triggers.
+ * @returns {void}
+ */
+function DSThemeModeToggle({ trigger } = {}) {
+	const elements = parseElement(trigger);
+	if (elements.length === 0) return;
+
+	const root = document.documentElement;
+
+	const getSystemTheme = () =>
+		window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+
+	const getCurrentTheme = () => {
+		return (
+			localStorage.getItem("theme") ||
+			root.getAttribute("data-theme") ||
+			getSystemTheme()
+		);
+	};
+
+	const setTheme = (type) => {
+		root.setAttribute("data-theme", type);
+		localStorage.setItem("theme", type);
+	};
+
+	// Initialize initial state
+	setTheme(getCurrentTheme());
+
+	elements.forEach((el) => {
+		el.addEventListener("click", (e) => {
+			e.preventDefault();
+			const next = getCurrentTheme() === "dark" ? "light" : "dark";
+			setTheme(next);
+		});
+	});
+}
 
