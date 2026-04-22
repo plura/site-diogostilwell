@@ -11,7 +11,7 @@
 * @param {Function|false} [options.onEnd=false] - Callback fired when the timeline reaches the end (forward play).
  * @returns {void}
  */
-function animinit(svg, animation, options = { delay: 0, paused: false, key: false, onEnd: false, onReverseEnd: false, onTurnaround: false }) {
+function animinit(svg, animation, options = { delay: 0, paused: false, key: false, onEnd: false, onReverseEnd: false, onTurnaround: false, removeOnComplete: false }) {
 	if (!animation) return;
 
 
@@ -27,11 +27,14 @@ function animinit(svg, animation, options = { delay: 0, paused: false, key: fals
 		});
 	}
 
-	if (typeof options.onReverseEnd === "function") {
+	if (typeof options.onReverseEnd === "function" || options.removeOnComplete === true) {
 		const prev = tl.eventCallback("onReverseComplete");
 		tl.eventCallback("onReverseComplete", () => {
 			if (typeof prev === "function") prev();
-			options.onReverseEnd(tl);
+			if (typeof options.onReverseEnd === "function") options.onReverseEnd(tl);
+			if (options.removeOnComplete === true) {
+				gsap.to(svg, { opacity: 0, duration: 0.3, onComplete: () => svg.remove() });
+			}
 		});
 	}
 

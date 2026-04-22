@@ -95,7 +95,8 @@ document.addEventListener("DOMContentLoaded", function () {
 				tl.timeScale(1.5);
 				document.body.addEventListener('click', redirect, { once: true });
 			},
-			onReverseEnd: redirect
+			onReverseEnd: redirect,
+			removeOnComplete: true
 		});
 
 	}
