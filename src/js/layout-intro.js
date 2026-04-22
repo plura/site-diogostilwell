@@ -11,7 +11,7 @@
 * @param {Function|false} [options.onEnd=false] - Callback fired when the timeline reaches the end (forward play).
  * @returns {void}
  */
-function animinit(svg, animation, options = { delay: 0, paused: false, key: false, onEnd: false, onReverseEnd: false, onTurnaround: false, removeOnComplete: false }) {
+function DSAnimInit(svg, animation, options = { delay: 0, paused: false, key: false, onEnd: false, onReverseEnd: false, onTurnaround: false, removeOnComplete: false }) {
 	if (!animation) return;
 
 
@@ -117,7 +117,7 @@ function dsLogoPrepare(svg) {
  * @param {Function|null} [options.onTurnaround=null] - Callback fired when the timeline reaches the turnaround point (before rewind).
  * @returns {gsap.core.Timeline|undefined} The GSAP timeline, or undefined if GSAP is not available.
  */
-function animintro(svg, options = { delay: 0, hold: 0.8, paused: false, onTurnaround: null }) {
+function DSAnimIntro(svg, options = { delay: 0, hold: 0.8, paused: false, onTurnaround: null }) {
 	const gsap = window.gsap;
 	if (!gsap) return;
 

@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", function () {
 		// start warming cache as soon as the animation starts
 		fetch(nextUrl, { credentials: "same-origin" }).catch(() => { });
 
-		animinit(ds_logo_intro, animintro, {
+		DSAnimInit(ds_logo_introDSAnimIntroro, {
 			delay: .5,
 			onTurnaround: (tl) => {
 				tl.timeScale(1.5);
