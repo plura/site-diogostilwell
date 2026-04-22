@@ -74,28 +74,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	if (ds_logo_intro) {
 
-		const nextUrl = '/work/';
-
-		let didRedirect = false;
-
-		const redirect = () => {
-
-			if (didRedirect) return;
-			didRedirect = true;
-			window.location.assign(nextUrl);
-
-		};
-
-		// start warming cache as soon as the animation starts
-		fetch(nextUrl, { credentials: "same-origin" }).catch(() => { });
-
-		DSAnimInit(ds_logo_introDSAnimIntroro, {
+		DSAnimInit(ds_logo_intro, DSAnimIntroSVG, {
 			delay: .5,
 			onTurnaround: (tl) => {
 				tl.timeScale(1.5);
-				document.body.addEventListener('click', redirect, { once: true });
 			},
-			onReverseEnd: redirect,
 			removeOnComplete: true
 		});
 
