@@ -29,31 +29,3 @@ function DSHeroBanner({ title }) {
 	return tl;
 
 }
-
-function DSIntroInit() {
-
-	// Create intro div holder
-	const introHolder = document.createElement("div");
-	introHolder.className = "ds-intro__holder";
-
-	// Create Stilwell text element
-	const stilwellElement = document.createElement("h1");
-	stilwellElement.className = "ds-intro__title";
-	stilwellElement.textContent = "Stilwell";
-
-	// Append Stilwell element to holder
-	introHolder.appendChild(stilwellElement);
-
-	// Apply DSHeroBanner animation to Stilwell element
-	const tl = DSHeroBanner({ title: stilwellElement });
-
-	// When timeline completes, add completion class to intro holder
-	if (tl) {
-		tl.eventCallback("onComplete", () => {
-			introHolder.classList.add("ds-intro__complete");
-		});
-	}
-
-	return introHolder;
-
-}

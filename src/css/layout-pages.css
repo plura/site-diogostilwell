@@ -1,6 +1,33 @@
+/* ==========================================================================
+	Page: Work
+========================================================================== */
+
+#ds-countdown-holder {
+  display: flex;
+  justify-content: center;
+}
+
+
+body:not(:has(#hero-banner)) section:has(.ds-project-info) > .content-wrapper {
+  --pad: calc(var(--ds-pad-lr) / 2);
+  padding-top: var(--pad);
+  padding-bottom: var(--pad);
+}
+
+body:not(:has(#hero-banner)) section:has(.ds-project-info) .fe-block {
+  border-radius: var(--ds-border-radius);
+  overflow: hidden;
+}
+
+
 /* =========================================================
-   INTRO
+   Page: Work [Intro]
    ========================================================= */
+
+/* Prevent scroll while intro logo is present */
+body:has(#ds-logo-intro) {
+	overflow: hidden;
+}
 
 /* hide header and footer when intro logo is present (not needed, header/footer are already hidden) */
 /* body:has(#ds-logo-intro) :is(header, footer) {
@@ -42,7 +69,7 @@ section:has(#ds-logo-intro) :is(
 	height: auto;
     left: 50%;
 	overflow: visible;
-	position: absolute;
+	position: fixed;
     top: 50%;
     transform: translate(-50%, -50%);
 	z-index: 999;
@@ -51,26 +78,4 @@ section:has(#ds-logo-intro) :is(
 #ds-logo-intro :is(.ds-logo-letter, .ds-logo-letter-dot) {
 	fill: currentColor;
 	stroke: none;
-}
-
-
-/* ==========================================================================
-	Page: Work
-========================================================================== */
-
-#ds-countdown-holder {
-  display: flex;
-  justify-content: center;
-}
-
-
-body:not(:has(#hero-banner)) section:has(.ds-project-info) > .content-wrapper {
-  --pad: calc(var(--ds-pad-lr) / 2);
-  padding-top: var(--pad);
-  padding-bottom: var(--pad);
-}
-
-body:not(:has(#hero-banner)) section:has(.ds-project-info) .fe-block {
-  border-radius: var(--ds-border-radius);
-  overflow: hidden;
 }

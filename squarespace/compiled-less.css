@@ -1,0 +1,1303 @@
+/*
+ * Concatenated code export
+ * Source (dir): src/css
+ * Excluded (names): node_modules,vendor,.git,dist,build,.ddev,.idea,.vscode,.next,.turbo,.cache,.pnpm-store
+ * Excluded (paths): 
+ * Generated: 2026-04-23T14:41:36+00:00
+ * Extensions: css
+ * Chunk: 1
+ * -------------------------------------------------
+ */
+
+/*
+ * -------------------------------------------------
+ *  src/css/globals.css
+ * -------------------------------------------------
+ */
+
+/* Squarespace LESS reminder: escape modern CSS that LESS may parse as math.
+	 Use LESS literals (~"…") for calc()/clamp()/min()/max() and for slash syntax like:
+	 grid-column: 1 / -1, grid-row, grid-area, etc. */
+
+/* ==========================================================================
+	Root Vars
+========================================================================== */
+
+:root {
+	/* globals */
+	--ds-pad-tb: 1vw;
+	--ds-pad-lr: 3vw;
+	--ds-border-radius: 10px;
+
+	--ds-color1: #141414;
+
+	/* Palette (olive) */
+	--ds-bg-light: #f6f4ee;
+	--ds-fg-light: #141a14;
+
+	--ds-bg-dark: #141a14;
+	--ds-fg-dark: #f6f4ee;
+
+	/* Semantic colours */
+	--ds-bg: var(--ds-bg-light);
+	--ds-fg: var(--ds-fg-light);
+
+	/* Theme tokens (light defaults) */
+	--ds-color-text-on-media: var(--ds-fg-dark);
+	--ds-color-overlay: rgb(20 26 20 / 0.6);
+
+	/* Font families */
+	--ds-font-heading-family: "Fraunces", serif;
+	--ds-font-body-family:
+		"Inter", system-ui, -apple-system, "Segoe UI", Roboto, Helvetica, Arial,
+		sans-serif;
+
+	/* Body (default) — was Body (small), but min must be 1rem */
+	--ds-body-font-size: ~"clamp(1rem, 0.95rem + 0.2vw, 1.125rem)";
+	--ds-body-line-height: 1.58;
+	--ds-body-letter-spacing: 0;
+
+	/* Body (large) — was your old bigger base (kept essentially as-is) */
+	--ds-body-lg-font-size: ~"clamp(1.125rem, 1rem + 0.4vw, 1.25rem)";
+	--ds-body-lg-line-height: 1.65;
+	--ds-body-lg-letter-spacing: 0;
+
+	/* Body (small) — updated to sit below the new base */
+	--ds-body-sm-font-size: ~"clamp(0.9167rem, 0.885rem + 0.14vw, 1rem)";
+	--ds-body-sm-line-height: 1.5;
+	--ds-body-sm-letter-spacing: 0.006em;
+
+	/* Body (extra small / xs) — updated to bridge sm → xxs */
+	--ds-body-xs-font-size: ~"clamp(0.75rem, 0.72rem + 0.1vw, 0.875rem)";
+	--ds-body-xs-line-height: 1.38;
+	--ds-body-xs-letter-spacing: 0.014em;
+
+	/* Body (extra extra small / xxs) — keep EXACTLY as-is */
+	--ds-body-xxs-font-size: ~"clamp(0.5rem, 0.48rem + 0.08vw, 0.58rem)";
+	--ds-body-xxs-line-height: 1.18;
+	--ds-body-xxs-letter-spacing: 0.024em;
+
+	/* Headings */
+	--ds-heading-font-weight: 400;
+
+	/* Typography scale */
+	--ds-font-h1-size: ~"clamp(2.4rem, 6vw, 7rem)";
+	--ds-font-h2-size: ~"clamp(1.9rem, 3.4vw, 3.2rem)";
+	--ds-font-h3-size: ~"clamp(1.35rem, 2.2vw, 2.2rem)";
+	--ds-font-h4-size: ~"clamp(1.1rem, 1.4vw, 1.6rem)";
+
+	/* Line-heights */
+	--ds-font-h1-lh: 1.1;
+	--ds-font-h2-lh: 1.18;
+	--ds-font-h3-lh: 1.28;
+	--ds-font-h4-lh: 1.4;
+
+	/* Letter-spacing */
+	--ds-font-h1-ls: 0.01em;
+	--ds-font-h2-ls: 0.012em;
+	--ds-font-h3-ls: 0.014em;
+	--ds-font-h4-ls: 0.016em;
+
+	/* Transitions */
+	--ds-trans-speed: 0.4s;
+	--ds-trans-ease: ease-out;
+
+	/* Transition prop values */
+	--ds-trans-val-move: 14px;
+
+	/* Transition element level values */
+	--ds-trans-lvl1-delay-base: 0.06s;
+	--ds-trans-lvl1-delay-step: 0.06s;
+	--ds-trans-lvl2-delay-step: 0.06s;
+
+	/* Hero banner */
+	--ds-hero-banner-h: ~"66dvh";
+	--ds-hero-banner-grad-color: 0 0 0;
+	--ds-hero-banner-grad-color-opacity: 0.5;
+	--ds-hero-banner-grad-top: 78.4px;
+
+	--ds-hero-banner-grad-bottom: ~"calc(var(--ds-font-h1-lh) * var(--ds-font-h1-size) + (var(--ds-pad-tb) * 3))"; 
+
+	/* Components */
+	--ds-project-info-gap: 30px;
+	--ds-awards-gap: ~"max(1.5dvw, 20px)";
+	--ds-award-icon-size: 40px;
+}
+
+
+/* ==========================================================================
+	Theme Overrides
+========================================================================== */
+
+/* System preference default (only when no manual override is set) */
+@media (prefers-color-scheme: dark) {
+	:root:not([data-theme]) {
+		--ds-bg: var(--ds-bg-dark);
+		--ds-fg: var(--ds-fg-dark);
+
+		/* Existing theme tokens */
+		--ds-color-text-on-media: var(--ds-fg-dark);
+		--ds-color-overlay: rgba(20, 26, 20, 0.6);
+	}
+}
+
+/* Manual overrides (future toggle will set data-theme on :root) */
+:root[data-theme="light"] {
+	--ds-bg: var(--ds-bg-light);
+	--ds-fg: var(--ds-fg-light);
+
+	--ds-color-text-on-media: var(--ds-fg-dark);
+	--ds-color-overlay: rgba(20, 26, 20, 0.6);
+}
+
+:root[data-theme="dark"] {
+	--ds-bg: var(--ds-bg-dark);
+	--ds-fg: var(--ds-fg-dark);
+
+	--ds-color-text-on-media: var(--ds-fg-dark);
+	--ds-color-overlay: rgba(20, 26, 20, 0.6);
+}
+
+/* ==========================================================================
+	Colors
+========================================================================== */
+
+body {
+	background: var(--ds-bg);
+}
+
+body,
+.page-section,
+:is(.sqsrte-large, .sqsrte-text-color--lightAccent),
+h1,
+h2,
+h3,
+h4 {
+	color: var(--ds-fg);
+}
+
+/* ==========================================================================
+	Typography
+========================================================================== */
+
+body,
+.page-section,
+p.sqsrte-large {
+	color: var(--ds-fg);
+	font-family: var(--ds-font-body-family);
+	font-weight: 400;
+	font-size: var(--ds-body-font-size);
+	line-height: var(--ds-body-line-height);
+	letter-spacing: var(--ds-body-letter-spacing);
+}
+
+a,
+strong {
+	font-weight: 500;
+}
+
+h1,
+h2,
+h3,
+h4 {
+	font-family: var(--ds-font-heading-family);
+	font-weight: var(--ds-heading-font-weight);
+}
+
+h1 {
+	font-size: var(--ds-font-h1-size);
+	line-height: var(--ds-font-h1-lh);
+	letter-spacing: var(--ds-font-h1-ls);
+}
+
+h2 {
+	font-size: var(--ds-font-h2-size);
+	line-height: var(--ds-font-h2-lh);
+	letter-spacing: var(--ds-font-h2-ls);
+}
+
+h3 {
+	font-size: var(--ds-font-h3-size);
+	line-height: var(--ds-font-h3-lh);
+	letter-spacing: var(--ds-font-h3-ls);
+}
+
+h4 {
+	font-size: var(--ds-font-h4-size);
+	line-height: var(--ds-font-h4-lh);
+	letter-spacing: var(--ds-font-h4-ls);
+}
+
+/* overrides for Squarespace background color blocks */
+.page-section .section-border,
+:not(.has-background) .section-background {
+	background-color: unset;
+}
+
+/* ==========================================================================
+	Hero Banner
+========================================================================== */
+
+#ds-hero-banner
+	:is(
+		.content-wrapper,
+		.content,
+		[data-fluid-engine],
+		.fluid-engine,
+		.sqs-block,
+		.sqs-html-content
+	) {
+	display: contents;
+}
+
+#ds-hero-banner {
+	position: relative;
+	height: 100% /* var(--ds-hero-banner-h) */;
+}
+
+/* #ds-hero-banner::after, */
+#ds-hero-banner::before {
+	backdrop-filter: blur(5px);
+	background-color: var(--ds-color-overlay);
+	content: "";
+	left: 0;
+	position: absolute;
+	width: 100%;
+	z-index: 1;
+}
+
+/* #ds-hero-banner::after {
+	height: var(--ds-hero-banner-grad-top);
+	top: 0;
+} */
+
+#ds-hero-banner::before {
+	bottom: 0;
+	height: 100% /* var(--ds-hero-banner-grad-bottom) */;
+}
+
+#ds-hero-banner h1 {
+	bottom: ~\"calc(var(--ds-pad-tb) * 2)\";
+	color: var(--ds-color-text-on-media);
+	left: var(--ds-pad-lr);
+	position: absolute;
+	z-index: auto;
+}
+
+/* ==========================================================================
+	General Elements
+========================================================================== */
+
+.ds-invert {
+	filter: invert(1);
+}
+
+.ds-project-info {
+	gap: 10px;
+}
+
+/* ==========================================================================
+	Project Info
+========================================================================== */
+
+.ds-project-info {
+	display: flex;
+	flex-direction: column;
+	gap: var(--ds-project-info-gap);
+}
+
+/* Project title behaves like an H2 */
+.ds-project-info .ds-project-title {
+	font-family: var(--ds-font-heading-family);
+	font-size: var(--ds-font-h2-size);
+	line-height: var(--ds-font-h2-lh);
+	letter-spacing: var(--ds-font-h2-ls);
+}
+
+/* Project client behaves like an H4 */
+.ds-project-info .ds-project-client {
+	font-size: var(--ds-font-h4-size);
+	line-height: var(--ds-font-h4-lh);
+	letter-spacing: var(--ds-font-h4-ls);
+}
+
+/* ==========================================================================
+	Works: Project Section (Overlay + Layout)
+========================================================================== */
+
+:not(#ds-hero-banner) + section:has(.ds-project-info) .code-block {
+	background-color: var(--ds-color-overlay);
+	opacity: 0;
+	transition: opacity 0.4s ease-out;
+}
+
+:not(#ds-hero-banner) + section:has(.ds-project-info) div:has(> .code-block) {
+	pointer-events: none;
+}
+
+:not(#ds-hero-banner) + section:has(.ds-project-info):hover .code-block {
+	opacity: 1;
+}
+
+:not(#ds-hero-banner) + section .code-block:has(.ds-project-info) {
+	align-items: center;
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+}
+
+:not(#ds-hero-banner) + section:has(.ds-project-info) .ds-project-info {
+	align-items: center;
+	color: var(--ds-color-text-on-media);
+	gap: ~\"calc(var(--ds-project-info-gap) / 2)\";
+	justify-content: center;
+}
+
+:not(#ds-hero-banner)
+	+ section:has(.ds-project-info)
+	.ds-project-info
+	.ds-awards
+	.ds-award {
+	--ds-award-icon-size: 40px;
+}
+
+/* Carousel */
+.user-items-list-carousel
+	.user-items-list-carousel__media-inner:not(
+		[data-media-aspect-ratio="original"]
+	)
+	.user-items-list-carousel__media {
+	border-radius: var(--ds-border-radius);
+}
+
+.user-items-list-carousel .user-items-list-carousel__arrow-button {
+	background-color: var(--ds-color-overlay);
+}
+
+.user-items-list-carousel
+	.user-items-list-carousel__arrow-button
+	.user-items-list-carousel__arrow-icon-path {
+	stroke: var(--ds-fg);
+}
+
+/* ==========================================================================
+	Header
+========================================================================== */
+
+/* when in dark mode or hero banner is present and header is not shrunk */
+:is(:root:not([data-theme="light"]),:root:has(#ds-hero-banner)) header:not(.shrink) :is(.header-title-text, .header-nav) a {
+	color: var(--ds-fg-dark);
+}
+
+header .header-display-mobile .header-burger :is(.top-bun, .patty, .bottom-bun) {
+	background-color: var(--ds-fg);
+}
+
+
+
+header .header-nav a {
+	transition: color 0.4s ease-out;
+}
+
+header .header-nav a {
+	font-size: var(--ds-body-sm-font-size);
+	line-height: var(--ds-body-sm-line-height);
+	letter-spacing: var(--ds-body-sm-letter-spacing);
+}
+
+header :is(.header-nav, .header-menu) a[href="#thememode"] {
+	--n: 20px;
+	display: block;
+	width: var(--n);
+	height: var(--n);
+	position: relative;
+	overflow: hidden;
+	font-size: 0;
+}
+
+header :is(.header-nav, .header-menu) a[href="#thememode"]::before {
+	background-color: transparent;
+	background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNCIgaGVpZ2h0PSIyNCIgdmlld0JveD0iMCAwIDI0IDI0IiBmaWxsPSJub25lIiBzdHJva2U9IiMwMDAwMDAiIHN0cm9rZS13aWR0aD0iMiIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBzdHJva2UtbGluZWpvaW49InJvdW5kIj4KCTxwYXRoIGQ9Ik0xMiA0IEE4IDggMCAwIDAgMTIgMjAgWiIgZmlsbD0iIzAwMDAwMCIgLz4KCTxwYXRoIGQ9Ik0xMiA0IEE4IDggMCAwIDEgMTIgMjAgWiIgZmlsbD0ibm9uZSIgLz4KPC9zdmc+");
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	content: "";
+	height: 100%;
+	filter: brightness(0) saturate(100%) invert(0%) sepia(6%) saturate(1032%) hue-rotate(322deg) brightness(102%) contrast(84%);
+	width: 100%;
+	position: absolute;
+	top: 0;
+	left: 0;
+}
+
+/* invert the icon when in dark mode or hero banner is present and header is not shrunk */
+:is( :root[data-theme="light"]:has(#ds-hero-banner), :root[data-theme="dark"] ) header:not(.shrink) .header-nav a[href="#thememode"]::before {
+	filter: invert(1);
+}
+
+
+
+/* mobile */
+header .header-menu .header-menu-nav-item a[href="#thememode"] {
+	--n: 40px;
+	margin-left: auto;
+    margin-right: auto;
+}
+
+
+/* ==========================================================================
+	Footer
+========================================================================== */
+
+footer section:is(#contact, #ds-footer-copyright-author) a {
+	color: var(--ds-fg);
+	text-decoration: none;
+}
+
+footer section#contact {
+	font-size: var(--ds-body-sm-font-size);
+	line-height: var(--ds-body-sm-line-height);
+	letter-spacing: var(--ds-body-sm-letter-spacing);
+}
+
+footer section#ds-footer-copyright-author {
+	font-size: var(--ds-body-xs-font-size);
+	line-height: var(--ds-body-xs-line-height);
+	letter-spacing: var(--ds-body-xs-letter-spacing);
+}
+
+footer .socialaccountlinks-v2-block .social-icons-style-regular .sqs-use--icon {
+	fill: var(--ds-fg);
+}
+
+/*
+ * -------------------------------------------------
+ *  src/css/layout-animations.css
+ * -------------------------------------------------
+ */
+
+/* ==========================================================================
+		Animations
+		========================================================================== */
+
+/* Project info hover animation */
+:not(#ds-hero-banner) + section:has(.ds-project-info) .ds-project-info > * {
+  --ts: ~"calc(var(--ds-trans-lvl1-delay-base) + (var(--ds-trans-lvl1-delay-step) * var(--ds-trans-lvl1-delay-step-n, 1)))";
+
+  opacity: 0;
+  transform: translateY(var(--ds-trans-val-move));
+  transition:
+    opacity var(--ds-trans-speed) var(--ds-trans-ease),
+    transform var(--ds-trans-speed) var(--ds-trans-ease);
+  will-change: opacity, transform;
+  transition-delay: var(--ts);
+}
+
+:not(#ds-hero-banner)
+  + section:has(.ds-project-info)
+  .ds-project-info
+  > .ds-project-title {
+  --ds-trans-lvl1-delay-step-n: 1;
+}
+:not(#ds-hero-banner)
+  + section:has(.ds-project-info)
+  .ds-project-info
+  > .ds-project-client {
+  --ds-trans-lvl1-delay-step-n: 2;
+}
+:not(#ds-hero-banner)
+  + section:has(.ds-project-info)
+  .ds-project-info
+  > .ds-project-awards {
+  --ds-trans-lvl1-delay-step-n: 3;
+}
+
+:not(#ds-hero-banner) + section:has(.ds-project-info):hover .ds-project-info > * {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Award icons stagger */
+:not(#ds-hero-banner)
+  + section:has(.ds-project-info)
+  .ds-project-info
+  .ds-project-awards
+  .ds-award {
+  --ts-award: ~"calc(var(--ts) + (var(--ds-trans-lvl2-delay-step) * (var(--ds-trans-lvl2-delay-step-n, 1) - 1)))";
+
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity 0.3s ease-out,
+    transform 0.4s ease-out;
+  will-change: opacity, transform;
+  transition-delay: var(--ts-award);
+}
+
+:not(#ds-hero-banner)
+  + section:has(.ds-project-info):hover
+  .ds-project-info
+  .ds-project-awards
+  .ds-award {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+:not(#ds-hero-banner)
+  + section:has(.ds-project-info)
+  .ds-project-info
+  .ds-project-awards
+  .ds-award:nth-child(1) {
+  --ds-trans-lvl2-delay-step-n: 1;
+}
+:not(#ds-hero-banner)
+  + section:has(.ds-project-info)
+  .ds-project-info
+  .ds-project-awards
+  .ds-award:nth-child(2) {
+  --ds-trans-lvl2-delay-step-n: 2;
+}
+:not(#ds-hero-banner)
+  + section:has(.ds-project-info)
+  .ds-project-info
+  .ds-project-awards
+  .ds-award:nth-child(3) {
+  --ds-trans-lvl2-delay-step-n: 3;
+}
+:not(#ds-hero-banner)
+  + section:has(.ds-project-info)
+  .ds-project-info
+  .ds-project-awards
+  .ds-award:nth-child(4) {
+  --ds-trans-lvl2-delay-step-n: 4;
+}
+:not(#ds-hero-banner)
+  + section:has(.ds-project-info)
+  .ds-project-info
+  .ds-project-awards
+  .ds-award:nth-child(5) {
+  --ds-trans-lvl2-delay-step-n: 5;
+}
+:not(#ds-hero-banner)
+  + section:has(.ds-project-info)
+  .ds-project-info
+  .ds-project-awards
+  .ds-award:nth-child(6) {
+  --ds-trans-lvl2-delay-step-n: 6;
+}
+:not(#ds-hero-banner)
+  + section:has(.ds-project-info)
+  .ds-project-info
+  .ds-project-awards
+  .ds-award:nth-child(7) {
+  --ds-trans-lvl2-delay-step-n: 7;
+}
+:not(#ds-hero-banner)
+  + section:has(.ds-project-info)
+  .ds-project-info
+  .ds-project-awards
+  .ds-award:nth-child(8) {
+  --ds-trans-lvl2-delay-step-n: 8;
+}
+:not(#ds-hero-banner)
+  + section:has(.ds-project-info)
+  .ds-project-info
+  .ds-project-awards
+  .ds-award:nth-child(9) {
+  --ds-trans-lvl2-delay-step-n: 9;
+}
+:not(#ds-hero-banner)
+  + section:has(.ds-project-info)
+  .ds-project-info
+  .ds-project-awards
+  .ds-award:nth-child(10) {
+  --ds-trans-lvl2-delay-step-n: 10;
+}
+
+
+
+/* Header Dark/Light mode icon animation */
+header .header-nav a[href="#thememode"]::before {
+  transition:
+    transform 0.32s cubic-bezier(.2,.9,.2,1),
+    filter 0.18s ease-out;
+  transform-origin: 50% 50%;
+}
+
+header .header-nav a[href="#thememode"].ds-theme-light::before {
+  transform: rotate(180deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  header .header-nav a[href="#thememode"]::before {
+    transition: filter 0.18s ease-out;
+    transform: none;
+  }
+}
+
+/*
+ * -------------------------------------------------
+ *  src/css/layout-components.css
+ * -------------------------------------------------
+ */
+
+/* ==========================================================================
+	Components: Countdown
+========================================================================== */
+
+.ds-countdown {
+  display: flex;
+}
+
+.ds-countdown__item {
+  display: flex;
+  gap: 8px; /* Internal gap between value and label */
+}
+
+.ds-countdown__value {
+  display: flex;
+  position: relative;
+  overflow: hidden;
+  height: 1.1em; /* Functional height for animation window */
+  line-height: 1;
+}
+
+/* Stable Digit Holder - The "Window" */
+.ds-countdown__digit {
+  display: inline-flex;
+  position: relative;
+  width: 0.65em; /* Fixed width prevents jittering */
+  height: 1.1em;
+  overflow: hidden;
+  vertical-align: top;
+}
+
+.ds-countdown__digit-static {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* The Sliding Strip */
+.ds-countdown__digit-strip {
+  display: flex;
+  flex-direction: column;
+  height: 200%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  will-change: transform;
+}
+
+/* Individual Slot */
+.ds-countdown__digit-strip-item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 50%; /* 50% of the 200% strip equals 100% of the window */
+}
+
+.ds-countdown__label {
+  display: block;
+}
+
+/* DS Countdown Layout CSS */
+.ds-countdown {
+  gap: 1rem;
+}
+
+.ds-countdown__item {
+  flex-direction: column;
+  align-items: center;
+}
+
+.ds-countdown__value {
+  font-family: var(--ds-font-heading-family);
+  font-size: var(--ds-font-h2-size);
+}
+
+@media (min-width: 768px) {
+  .ds-countdown {
+    gap: 2rem;
+  }
+}
+
+/* ==========================================================================
+	Project Info
+========================================================================== */
+.ds-project-info .ds-project-title {
+  text-align: center;
+}
+
+/* ==========================================================================
+	Awards (Layout + Icons)
+========================================================================== */
+
+:is(.ds-project-awards, .ds-awards) {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--ds-awards-gap);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+:is(.ds-project-awards, .ds-awards) :where(.ds-project-award, .ds-award) {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  position: relative;
+}
+
+/* Base icon box */
+:is(.ds-project-awards, .ds-awards) :is(.ds-project-award, .ds-award)::before {
+  color: var(--ds-fg);
+  content: "";
+  display: block;
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+  height: var(--ds-award-icon-size);
+  width: var(--ds-award-icon-size);
+}
+
+:root[data-theme="light"]
+  section:not(.ds-project-card)
+  :is(.ds-project-awards, .ds-awards)
+  :is(.ds-project-award, .ds-award)::before {
+  filter: invert(1);
+}
+
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme])
+    section:not(.ds-project-card)
+    :is(.ds-project-awards, .ds-awards)
+    :is(.ds-project-award, .ds-award)::before {
+    filter: invert(1);
+  }
+}
+
+/* Award Name Label */
+:is(.ds-project-awards, .ds-awards)
+  :is(.ds-project-award, .ds-award)[data-ds-award-name]::after {
+  content: attr(data-ds-award-name);
+  display: block;
+  font-size: var(--ds-body-xxs-font-size);
+  line-height: var(--ds-body-xxs-line-height);
+  letter-spacing: var(--ds-body-xxs-letter-spacing);
+}
+
+:is(.ds-project-awards, .ds-awards)
+  :is(
+    .ds-project-award,
+    .ds-award
+  )[data-ds-award-number][data-ds-award-name]::after {
+  content: attr(data-ds-award-number) " " attr(data-ds-award-name);
+}
+
+:is(.ds-project-awards, .ds-awards)
+  :is(
+    .ds-project-award,
+    .ds-award
+  )[data-ds-award-number="20"][data-ds-award-name]::after {
+  content: "+" attr(data-ds-award-number) " " attr(data-ds-award-name);
+}
+
+.ds-award[data-ds-award-name]::after {
+  content: attr(data-ds-award-name);
+  display: block;
+  font-size: var(--ds-body-xxs-font-size);
+  line-height: var(--ds-body-xxs-line-height);
+  letter-spacing: var(--ds-body-xxs-letter-spacing);
+}
+
+/* =========================================================================
+	Award Icons	
+========================================================================= */
+
+/* ADC&E Award Icon */
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--adc-e {
+  --ds-award-name: "ADC&E";
+}
+
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--adc-e::before {
+  background-image: url("https://images.squarespace-cdn.com/content/692f1739a12dd468438fd973/7e34f84c-e9a9-4f3c-842d-a6cd0b1bea2d/adc-e.webp?content-type=image%2Fwebp");
+}
+
+/* APPM Award Icon */
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--appm {
+  --ds-award-name: "APPM";
+}
+
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--appm::before {
+  background-image: url("https://images.squarespace-cdn.com/content/692f1739a12dd468438fd973/464ddc9f-420f-4e12-93ff-771ada452df3/appm.webp?content-type=image%2Fwebp");
+}
+
+/* Cannes Lion Award Icon */
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--cannes-lion {
+  --ds-award-name: "Cannes Lion";
+}
+
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--cannes-lion::before {
+  background-image: url("https://images.squarespace-cdn.com/content/692f1739a12dd468438fd973/73818c8e-181d-4e28-9f5c-d323bb9d5756/cannes-lion.webp?content-type=image%2Fwebp");
+}
+
+/* CCP Award Icon */
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--ccp {
+  --ds-award-name: "CCP";
+}
+
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--ccp::before {
+  background-image: url("https://images.squarespace-cdn.com/content/692f1739a12dd468438fd973/c44c18bd-dd61-4a83-9430-ead6c3a17a1e/ccp.webp?content-type=image%2Fwebp");
+}
+
+/* Clio Award Icon */
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--clio {
+  --ds-award-name: "Clio";
+}
+
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--clio::before {
+  background-image: url("https://images.squarespace-cdn.com/content/692f1739a12dd468438fd973/4c82e68c-27aa-44d8-9888-73f326960437/clio.webp?content-type=image%2Fwebp");
+}
+
+/* Cresta Award Icon */
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--cresta {
+  --ds-award-name: "Cresta";
+}
+
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--cresta::before {
+  background-image: url("https://images.squarespace-cdn.com/content/692f1739a12dd468438fd973/7da773a1-d85e-4070-a859-bf3283cf2f95/cresta.webp?content-type=image%2Fwebp");
+}
+
+/* D&AD Award Icon */
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--d-ad {
+  --ds-award-name: "D&AD";
+}
+
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--d-ad::before {
+  background-image: url("https://images.squarespace-cdn.com/content/692f1739a12dd468438fd973/f57043c7-ac99-4f24-ade0-1a4d3ce907a2/d-ad.webp?content-type=image%2Fwebp");
+}
+
+/* Gerety Award Icon */
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--gerety {
+  --ds-award-name: "Gerety";
+}
+
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--gerety::before {
+  background-image: url("https://images.squarespace-cdn.com/content/692f1739a12dd468438fd973/e310840b-90ef-4df5-a7d2-a31d0137e4fe/gerety.webp?content-type=image%2Fwebp");
+}
+
+/* Effie Award Icon */
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--effie {
+  --ds-award-name: "Effie";
+}
+
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--effie::before {
+  background-image: url("https://images.squarespace-cdn.com/content/692f1739a12dd468438fd973/0ef3195d-0a18-4900-a121-77676615e233/effie.webp?content-type=image%2Fwebp");
+}
+
+/* El Ojo Award Icon */
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--el-ojo {
+  --ds-award-name: "El Ojo";
+}
+
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--el-ojo::before {
+  background-image: url("https://images.squarespace-cdn.com/content/692f1739a12dd468438fd973/20fd6e2a-562f-4eae-baf1-f1db8bf01e16/el-ojo.webp?content-type=image%2Fwebp");
+}
+
+/* Epica Award Icon */
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--epica {
+  --ds-award-name: "Epica";
+}
+
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--epica::before {
+  background-image: url("https://images.squarespace-cdn.com/content/692f1739a12dd468438fd973/6a475087-834f-42de-8f4d-b3aa21fb3130/epica.webp?content-type=image%2Fwebp");
+}
+
+/* Eurobest Award Icon */
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--eurobest {
+  --ds-award-name: "Eurobest";
+}
+
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--eurobest::before {
+  background-image: url("https://images.squarespace-cdn.com/content/692f1739a12dd468438fd973/48baa423-a63c-45b7-bf63-e7a3359bec5e/eurobest.webp?content-type=image%2Fwebp");
+}
+
+/* Lia Awards Icon */
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--lia {
+  --ds-award-name: "Lia";
+}
+
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--lia::before {
+  background-image: url("https://images.squarespace-cdn.com/content/692f1739a12dd468438fd973/1a179d85-1512-4b4e-8f28-a805a9654d8f/lia.webp?content-type=image%2Fwebp");
+}
+
+/* M&P Award Icon */
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--m-p {
+  --ds-award-name: "M&P";
+}
+
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--m-p::before {
+  background-image: url("https://images.squarespace-cdn.com/content/692f1739a12dd468438fd973/04a59fc3-3253-4dc2-baea-8e953814266c/m-p.webp?content-type=image%2Fwebp");
+}
+
+/* One Show Award Icon */
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--one-show {
+  --ds-award-name: "One Show";
+}
+
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--one-show::before {
+  background-image: url("https://images.squarespace-cdn.com/content/692f1739a12dd468438fd973/881311c7-7d39-4744-acc2-aad278964554/one-show.webp?content-type=image%2Fwebp");
+}
+
+/* Shark Awards Icon */
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--shark {
+  --ds-award-name: "Shark";
+}
+
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--shark::before {
+  background-image: url("https://images.squarespace-cdn.com/content/692f1739a12dd468438fd973/05bf236e-fe58-45f9-b5aa-a6c5d72ab8a2/shark-awards.webp?content-type=image%2Fwebp");
+}
+
+/* Project Card */
+section.ds-project-card .ds-project-awards {
+  justify-content: center;
+}
+
+@media (max-width: 767.99px) {
+  section.ds-project-card {
+    min-height: unset !important;
+  }
+
+  section.ds-project-card .ds-project-info {
+    padding: ~"calc(var(--ds-pad-lr) * 2)";
+  }
+
+  section.ds-project-card .content-wrapper {
+    padding: var(--ds-pad-lr) 0 !important;
+  }
+
+  section.ds-project-card .sqs-block-image .fluid-image-container {
+    aspect-ratio: 5 / 4 !important;
+  }
+}
+
+/* body:not(:has(#hero-banner)) section:has(.ds-project-info) > .content-wrapper { */
+section.ds-project-card > .content-wrapper {
+  --pad: ~\"calc(var(--ds-pad-lr) / 2)\";
+  padding-top: var(--pad);
+  padding-bottom: var(--pad);
+}
+
+section.ds-project-card .fe-block {
+  border-radius: var(--ds-border-radius);
+  overflow: hidden;
+}
+
+/*
+ * -------------------------------------------------
+ *  src/css/layout-cpt.css
+ * -------------------------------------------------
+ */
+
+/* PROJECTS */
+
+
+/* ==========================================================================
+	Project Common Layout Styles
+========================================================================== */
+
+
+
+
+
+/* Videos and Images*/
+body:not(.sqs-edit-mode-active) section[id^="ds-project-"]:has(.sqs-block-image,.sqs-block-video) .fe-block :is(.sqs-block-image, .sqs-block-video) {
+  border-radius: var(--ds-border-radius);
+  overflow: hidden;
+}
+
+
+/* ==========================================================================
+	Project Images
+========================================================================== */
+
+body:not(.sqs-edit-mode-active) section[id^="ds-project-"] .sqs-block-image .fluid-image-container.sqs-image-content {
+	width: 100% !important;
+}
+
+body:not(.sqs-edit-mode-active) section[id^="ds-project-"] .sqs-block-image .design-layout-fluid img {
+	position: relative;
+	height: auto;
+}
+
+
+/* ==========================================================================
+	Project Section Awards
+========================================================================== */
+@media (min-width: 1000px) {
+
+	section[id^="ds-project-"] ul.ds-project-awards.ds-awards {
+		display: grid;
+		grid-template-columns: repeat(5, 1fr);
+		width: fit-content;
+	}
+
+}
+
+
+/* ==========================================================================
+	Project Videos (Custom Section Grid) - Case + Campaigns
+========================================================================== */
+
+/* Reset Fluid Engine placement + style the tiles */
+body:not(.sqs-edit-mode-active) section[id^="ds-project-"]:has(.sqs-block-video) .fe-block {
+  grid-area: auto;
+  grid-column: auto;
+  grid-row: auto;
+}
+
+body:not(.sqs-edit-mode-active) section[id^="ds-project-"]:has(.sqs-block-video) .fe-block .sqs-block-video .embed-block-wrapper {
+  padding-bottom: 0 !important;
+}
+
+body:not(.sqs-edit-mode-active) section[id^="ds-project-"]:has(.sqs-block-video) .fe-block .embed-block-wrapper {
+  padding: 0 !important;
+}
+
+/* Youtube */
+body:not(.sqs-edit-mode-active) section[id^="ds-project-"]:has(.sqs-block-video) .sqs-block-video:has([data-provider-name="YouTube"]) .sqs-block-content {
+    padding-bottom: 56.5%;
+}
+
+/* Desktop layout rules (uses :has() for count-aware last-item spanning) */
+@media (min-width: 1000px) {
+  body:not(.sqs-edit-mode-active) section[id^="ds-project-"]:has(.sqs-block-video) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  /* Default: 2-column flow */
+  body:not(.sqs-edit-mode-active) section[id^="ds-project-"]:has(.sqs-block-video) .fe-block {
+    grid-column: auto;
+  }
+
+  /* if only one video, make it full width */
+  body:not(.sqs-edit-mode-active) section[id^="ds-project-"]:has(.sqs-block-video) .fluid-engine:has(> .fe-block:only-child) .sqs-block-video {
+    grid-column: ~"1 / -1";
+  }
+
+/* Project Case #1 is always full width (atm only holds one video) */
+/*   body:not(.sqs-edit-mode-active) section:is(#project-case):has(.sqs-block-video) .sqs-block-video:nth-child(1) {
+    grid-column: ~"1 / -1";
+  } */
+
+}
+
+
+/*
+ * -------------------------------------------------
+ *  src/css/layout-pages.css
+ * -------------------------------------------------
+ */
+
+/* ==========================================================================
+	Page: Work
+========================================================================== */
+
+#ds-countdown-holder {
+  display: flex;
+  justify-content: center;
+}
+
+
+body:not(:has(#hero-banner)) section:has(.ds-project-info) > .content-wrapper {
+  --pad: ~"calc(var(--ds-pad-lr) / 2)";
+  padding-top: var(--pad);
+  padding-bottom: var(--pad);
+}
+
+body:not(:has(#hero-banner)) section:has(.ds-project-info) .fe-block {
+  border-radius: var(--ds-border-radius);
+  overflow: hidden;
+}
+
+
+/* =========================================================
+   Page: Work [Intro]
+   ========================================================= */
+
+/* Prevent scroll while intro logo is present */
+body:has(#ds-logo-intro) {
+	overflow: hidden;
+}
+
+/* hide header and footer when intro logo is present (not needed, header/footer are already hidden) */
+/* body:has(#ds-logo-intro) :is(header, footer) {
+    display: none;
+} */
+
+section:has(#ds-logo-intro) {
+	height: ~"100dvh";
+	position: relative;
+}
+
+/* make sure intro section and its contents use display: contents
+   to avoid interfering with layout and styling of surrounding elements */
+section:has(#ds-logo-intro) :is(
+
+    .section-border,
+    .content-wrapper,
+    .content-wrapper .content,
+    .content-wrapper .content [data-fluid-engine],
+    .content-wrapper .content [data-fluid-engine] .fluid-engine,
+    .content-wrapper .content [data-fluid-engine] .fluid-engine .fe-block,
+    .content-wrapper .content [data-fluid-engine] .fluid-engine .fe-block .sqs-block,
+    .content-wrapper .content [data-fluid-engine] .fluid-engine .fe-block .sqs-block .sqs-block-content,
+    .content-wrapper .content [data-fluid-engine] .fluid-engine .fe-block .sqs-block .sqs-block-content .sqs-code-container
+
+) {
+
+    display: contents;    
+
+}
+
+
+/* intro logo styling */
+#ds-logo-intro {
+	color: var(--ds-fg-dark);
+  	fill: currentColor;
+	display: block;
+	width: ~"min(80vw, 900px)";
+	height: auto;
+    left: 50%;
+	overflow: visible;
+	position: fixed;
+    top: 50%;
+    transform: translate(-50%, -50%);
+	z-index: 999;
+}
+
+#ds-logo-intro :is(.ds-logo-letter, .ds-logo-letter-dot) {
+	fill: currentColor;
+	stroke: none;
+}
+
+/*
+ * -------------------------------------------------
+ *  src/css/layout-structure.css
+ * -------------------------------------------------
+ */
+
+
+/* ==============================
+   Footer Layout
+   ============================== */
+footer {
+    display: flex;
+    flex-direction: column;
+    padding: ~"calc(var(--ds-pad-lr) * 3)" 0 var(--ds-pad-lr);
+    gap: var(--ds-pad-lr);
+}
+
+footer > section {
+    margin-bottom: 0 !important;
+}
+
+/* ==============================
+   Squarespace Section Layout Overrides
+   ============================== */
+
+/* Flatten Squarespace wrappers so #project-videos becomes the grid container */
+:is(
+    section[id^="ds-project-"]:has(.sqs-block-video, .sqs-block-image),
+    footer
+      section:is(
+        #contact,
+        #ds-footer-copyright-author,
+        #ds-footer-signature
+      ):has(.sqs-block-html, .sqs-block-socialaccountlinks-v2)
+  )
+  :is(
+    .section-border,
+    .section-border .section-background,
+    .content-wrapper,
+    .content-wrapper .content,
+    .content-wrapper .content > div,
+    .content-wrapper .content > div .fluid-engine,
+    .content-wrapper .content > div .fluid-engine .fe-block
+  ) {
+  display: contents;
+}
+
+/* Center single block project sections */
+:is(
+  section[id^="ds-project-"]:has(.sqs-block-video, .sqs-block-image),
+  footer
+    section:is(#contact, #ds-footer-copyright-author, #ds-footer-signature):has(
+      .sqs-block-html,
+      .sqs-block-socialaccountlinks-v2
+    )
+):has(.fe-block:only-child) {
+  justify-content: center;
+}
+
+/* Center and size project sections with videos or images */
+:is(
+  section[id^="ds-project-"]:has(.sqs-block-video, .sqs-block-image),
+  section:is(#contact, #ds-footer-copyright-author, #ds-footer-signature)
+) {
+  margin: 0 auto var(--ds-pad-lr);
+  width: ~"calc(100dvw - var(--ds-pad-lr) * 2)" ;
+}
+
+/* Make project sections with videos or images use grid layout */
+:is(section[id^="ds-project-"]:has(.sqs-block-video, .sqs-block-image)) {
+  display: grid;
+  gap: var(--ds-pad-lr);
+}
+
+/* Footer: Contact + Copyright Author sections side-by-side */
+footer section:is(#contact, #ds-footer-copyright-author) {
+  display: flex;
+  justify-content: space-between;
+}
+
+footer
+  section:is(#contact, #ds-footer-copyright-author, #ds-footer-signature)
+  :is(.sqs-block-html, .sqs-block-socialaccountlinks-v2) {
+  width: auto;
+}
+
+/* revert the display: contents for the signature section to allow text special resizing */
+footer
+  section#ds-footer-signature
+  .content-wrapper
+  .content
+  > div[data-fluid-engine] {
+  display: block;
+}
+
+@media (max-width: 767.99px) {
+  footer
+    section:is(#contact, #ds-footer-copyright-author, #ds-footer-signature) {
+    flex-direction: column;
+    gap: 30px;
+  }
+}
+
+:is(
+  section[id^="ds-project-"]:has(.sqs-block-video, .sqs-block-image),
+  footer
+    section:is(#contact, #ds-footer-copyright-author, #ds-footer-signature):has(
+      .sqs-block-html,
+      .sqs-block-socialaccountlinks-v2
+    )
+):has(.fe-block:only-child) {
+  justify-content: center;
+}
+
