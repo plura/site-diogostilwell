@@ -11,7 +11,7 @@
 * @param {Function|false} [options.onEnd=false] - Callback fired when the timeline reaches the end (forward play).
  * @returns {void}
  */
-function DSIntroInit(svg, animation, { delay = 0, paused = false, key = false, onEnd = false, onReverseEnd = false, onTurnaround = false, removeOnComplete = false } = {}) {
+function DSIntroInit(svg, animation, { delay = 0, paused = false, key = false, onEnd = false, onReverseEnd = false, onTurnaround = false, removeOnComplete = false, onRemoved = false } = {}) {
 	if (!animation) return;
 
 	const tl = animation(svg, { delay, paused, onTurnaround });
@@ -32,7 +32,14 @@ function DSIntroInit(svg, animation, { delay = 0, paused = false, key = false, o
 			if (typeof onReverseEnd === "function") onReverseEnd(tl);
 			if (removeOnComplete === true) {
 				const gsap = window.gsap;
-				if (gsap) gsap.to(svg, { opacity: 0, duration: 0.3, onComplete: () => svg.remove() });
+				if (gsap) gsap.to(svg, {
+					opacity: 0,
+					duration: 0.3,
+					onComplete: () => {
+						svg.remove();
+						if (typeof onRemoved === "function") onRemoved();
+					}
+				});
 			}
 		});
 	}
