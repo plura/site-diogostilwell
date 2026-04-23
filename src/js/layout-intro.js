@@ -11,7 +11,7 @@
 * @param {Function|false} [options.onEnd=false] - Callback fired when the timeline reaches the end (forward play).
  * @returns {void}
  */
-function DSAnimInit(svg, animation, { delay = 0, paused = false, key = false, onEnd = false, onReverseEnd = false, onTurnaround = false, removeOnComplete = false } = {}) {
+function DSIntroInit(svg, animation, { delay = 0, paused = false, key = false, onEnd = false, onReverseEnd = false, onTurnaround = false, removeOnComplete = false } = {}) {
 	if (!animation) return;
 
 	const tl = animation(svg, { delay, paused, onTurnaround });

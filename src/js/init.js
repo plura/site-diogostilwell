@@ -71,7 +71,7 @@ document.querySelectorAll('.user-items-list .user-items-list-carousel')
 
 	if (ds_logo_intro) {
 
-		DSAnimInit(ds_logo_intro, DSAnimIntroSVG, {
+		DSIntroInit(ds_logo_intro, DSAnimIntroSVG, {
 			delay: .5,
 			onTurnaround: (tl) => { tl.timeScale(1.5); },
 			onReverseEnd: () => { document.documentElement.classList.add('ds-intro-done'); },
