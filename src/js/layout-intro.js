@@ -1,4 +1,4 @@
-//src/js/intro.js
+//src/js/layout-intro.js
 
 /**
  * Initializes a logo animation timeline and optionally binds a keyboard toggle.
@@ -33,7 +33,8 @@ function DSAnimInit(svg, animation, options = { delay: 0, paused: false, key: fa
 			if (typeof prev === "function") prev();
 			if (typeof options.onReverseEnd === "function") options.onReverseEnd(tl);
 			if (options.removeOnComplete === true) {
-				gsap.to(svg, { opacity: 0, duration: 0.3, onComplete: () => svg.remove() });
+				const gsap = window.gsap;
+				if (gsap) gsap.to(svg, { opacity: 0, duration: 0.3, onComplete: () => svg.remove() });
 			}
 		});
 	}
@@ -72,7 +73,7 @@ function DSAnimInit(svg, animation, options = { delay: 0, paused: false, key: fa
  * @param {SVGElement} svg
  * @returns {{ letters: SVGElement[], dot: SVGElement|null }}
  */
-function dsLogoPrepare(svg) {
+function DSLogoPrepare(svg) {
 	if (!(svg instanceof SVGElement)) {
 		throw new TypeError("dsLogoPrepare: expected an SVGElement.");
 	}
@@ -117,13 +118,11 @@ function dsLogoPrepare(svg) {
  * @param {Function|null} [options.onTurnaround=null] - Callback fired when the timeline reaches the turnaround point (before rewind).
  * @returns {gsap.core.Timeline|undefined} The GSAP timeline, or undefined if GSAP is not available.
  */
-function DSAnimIntroSVG(svg, options = { delay: 0, hold: 0.8, paused: false, onTurnaround: null }) {
+function DSAnimIntroSVG(svg, { delay = 0, hold = 0.8, paused = false, onTurnaround = null } = {}) {
 	const gsap = window.gsap;
 	if (!gsap) return;
 
-	const { letters, dot } = dsLogoPrepare(svg);
-
-	const hold = (typeof options.hold === "number") ? options.hold : 0.5;
+	const { letters, dot } = DSLogoPrepare(svg);
 
 	// Ensure a clean state (no stroke-draw mode, no leftover inline styles)
 	svg.classList.remove("is-drawing");
@@ -145,10 +144,7 @@ function DSAnimIntroSVG(svg, options = { delay: 0, hold: 0.8, paused: false, onT
 
 	let didRewind = false;
 
-	const tl = gsap.timeline({
-		delay: options.delay,
-		paused: options.paused
-	});
+	const tl = gsap.timeline({ delay, paused });
 
 	// 1) Letters appear one by one (slower + a touch of overshoot)
 	tl.to(letters, {
@@ -181,8 +177,8 @@ function DSAnimIntroSVG(svg, options = { delay: 0, hold: 0.8, paused: false, onT
 		if (didRewind) return;
 		didRewind = true;
 
-		if (typeof options.onTurnaround === "function") {
-			options.onTurnaround(tl);   // <-- external control point
+		if (typeof onTurnaround === "function") {
+			onTurnaround(tl);
 		}
 
 		tl.reverse();

@@ -18,18 +18,15 @@ const
 document.addEventListener("DOMContentLoaded", function () {
 
 	// Globals: Carousel + Fancybox integration
-	console.log('[DS/Fancybox] DOMContentLoaded');
+	dsLog('[DS/Fancybox] DOMContentLoaded');
 
-	if (typeof Fancybox === "undefined") {
-		console.log('[DS/Fancybox] Fancybox is undefined. Aborting.');
-	} else {
+	if (typeof Fancybox !== "undefined") {
 
 		const DRAG_THRESHOLD = 6;
 		const galleryBaseId = Date.now();
 
-		console.log('[DS/Fancybox] Init. DRAG_THRESHOLD:', DRAG_THRESHOLD, 'galleryBaseId:', galleryBaseId);
-
-		document.querySelectorAll('.user-items-list .user-items-list-carousel')
+		dsLog('[DS/Fancybox] Init. DRAG_THRESHOLD:', DRAG_THRESHOLD, 'galleryBaseId:', galleryBaseId);
+document.querySelectorAll('.user-items-list .user-items-list-carousel')
 			.forEach((carousel, carouselIndex) => {
 
 				const galleryName = `gallery-${galleryBaseId}-${carouselIndex}`;

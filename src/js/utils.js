@@ -1,3 +1,6 @@
+const DS_DEBUG = false;
+const dsLog = (...args) => DS_DEBUG && console.log(...args);
+
 const getVar = (key, target = document.body) => {
 	if (!target || !(target instanceof HTMLElement) || typeof key !== "string") return null;
 

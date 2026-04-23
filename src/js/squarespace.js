@@ -38,13 +38,13 @@ function getClosestElementFromPoint(elements, clientX, clientY) {
 }
 
 
-function allowFancyBoxOnCarouselSlide({ carousel, fancyboxID, threshold = 6, log = false }) {
+function allowFancyBoxOnCarouselSlide({ carousel, fancyboxID, threshold = 6 }) {
 
-	log && console.log('[DS/Fancybox] Carousel found:', fancyboxID);
+	dsLog('[DS/Fancybox] Carousel found:', fancyboxID);
 
 	const elements = carousel.querySelectorAll('.user-items-list-carousel__slide');
 	const mediaEls = Array.from(carousel.querySelectorAll('.user-items-list-carousel__media'));
-	log && console.log('[DS/Fancybox] Media elements found:', mediaEls.length);
+	dsLog('[DS/Fancybox] Media elements found:', mediaEls.length);
 
 	// Tag all media items for grouping
 	mediaEls.forEach((media) => {
@@ -61,7 +61,7 @@ function allowFancyBoxOnCarouselSlide({ carousel, fancyboxID, threshold = 6, log
 		startX = e.clientX;
 		startY = e.clientY;
 
-		log && console.log('[DS/Fancybox] pointerdown:', {
+		dsLog('[DS/Fancybox] pointerdown:', {
 			fancyboxID,
 			startX,
 			startY,
@@ -77,7 +77,7 @@ function allowFancyBoxOnCarouselSlide({ carousel, fancyboxID, threshold = 6, log
 
 		// Early exit if arrow button was clicked
 		if (e.target.closest('.user-items-list-carousel__arrow-button')) {
-			log && console.log('[DS/Fancybox] Arrow button clicked, skipping Fancybox.');
+			dsLog('[DS/Fancybox] Arrow button clicked, skipping Fancybox.');
 			return;
 		}
 
@@ -85,7 +85,7 @@ function allowFancyBoxOnCarouselSlide({ carousel, fancyboxID, threshold = 6, log
 		const dy = Math.abs(e.clientY - startY);
 		const moved = Math.max(dx, dy);
 
-		log && console.log('[DS/Fancybox] pointerup:', {
+		dsLog('[DS/Fancybox] pointerup:', {
 			fancyboxID,
 			endX: e.clientX,
 			endY: e.clientY,
@@ -96,17 +96,17 @@ function allowFancyBoxOnCarouselSlide({ carousel, fancyboxID, threshold = 6, log
 
 		// Drag? do nothing
 		if (moved > threshold) {
-			log && console.log('[DS/Fancybox] Drag detected, not opening Fancybox.', { fancyboxID, moved, threshold });
+			dsLog('[DS/Fancybox] Drag detected, not opening Fancybox.', { fancyboxID, moved, threshold });
 			return;
 		}
 
 		const element = getClosestElementFromPoint(elements, e.clientX, e.clientY);
 		const media = element?.querySelector('.user-items-list-carousel__media');
 
-		log && console.log('[DS/Fancybox] Click intent. Closest media:', media);
+		dsLog('[DS/Fancybox] Click intent. Closest media:', media);
 
 		if (!media) {
-			log && console.log('[DS/Fancybox] No media resolved from point. Aborting.');
+			dsLog('[DS/Fancybox] No media resolved from point. Aborting.');
 			return;
 		}
 
@@ -118,7 +118,7 @@ function allowFancyBoxOnCarouselSlide({ carousel, fancyboxID, threshold = 6, log
 		const items = mediaEls.map((m) => ({ src: m.src, type: "image" }));
 		const startIndex = mediaEls.indexOf(media);
 
-		log && console.log('[DS/Fancybox] Opening gallery.', { fancyboxID, startIndex, total: items.length });
+		dsLog('[DS/Fancybox] Opening gallery.', { fancyboxID, startIndex, total: items.length });
 
 		Fancybox.show(items, {
 			startIndex: Math.max(0, startIndex),
