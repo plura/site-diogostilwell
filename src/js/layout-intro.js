@@ -11,46 +11,44 @@
 * @param {Function|false} [options.onEnd=false] - Callback fired when the timeline reaches the end (forward play).
  * @returns {void}
  */
-function DSAnimInit(svg, animation, options = { delay: 0, paused: false, key: false, onEnd: false, onReverseEnd: false, onTurnaround: false, removeOnComplete: false }) {
+function DSAnimInit(svg, animation, { delay = 0, paused = false, key = false, onEnd = false, onReverseEnd = false, onTurnaround = false, removeOnComplete = false } = {}) {
 	if (!animation) return;
 
-
-	const { delay, paused, onTurnaround } = options;
 	const tl = animation(svg, { delay, paused, onTurnaround });
 	if (!tl) return;
 
-	if (typeof options.onEnd === "function") {
+	if (typeof onEnd === "function") {
 		const prev = tl.eventCallback("onComplete");
 		tl.eventCallback("onComplete", () => {
 			if (typeof prev === "function") prev();
-			options.onEnd(tl);
+			onEnd(tl);
 		});
 	}
 
-	if (typeof options.onReverseEnd === "function" || options.removeOnComplete === true) {
+	if (typeof onReverseEnd === "function" || removeOnComplete === true) {
 		const prev = tl.eventCallback("onReverseComplete");
 		tl.eventCallback("onReverseComplete", () => {
 			if (typeof prev === "function") prev();
-			if (typeof options.onReverseEnd === "function") options.onReverseEnd(tl);
-			if (options.removeOnComplete === true) {
+			if (typeof onReverseEnd === "function") onReverseEnd(tl);
+			if (removeOnComplete === true) {
 				const gsap = window.gsap;
 				if (gsap) gsap.to(svg, { opacity: 0, duration: 0.3, onComplete: () => svg.remove() });
 			}
 		});
 	}
 
-	if (!options.key) return;
-	if (typeof options.key !== "string") return;
+	if (!key) return;
+	if (typeof key !== "string") return;
 
 	// Guard to avoid stacking listeners
 	if (svg.dataset.dsanimKeyListener === "1") return;
 	svg.dataset.dsanimKeyListener = "1";
 
 	document.addEventListener("keydown", (e) => {
-		if (e.code !== options.key) return;
+		if (e.code !== key) return;
 
 		if (e.repeat) return;
-		if (options.key === "Space") e.preventDefault();
+		if (key === "Space") e.preventDefault();
 
 		if (tl.paused()) {
 			// If finished, replay from start; otherwise resume
@@ -188,6 +186,7 @@ function DSAnimIntroSVG(svg, { delay = 0, hold = 0.8, paused = false, onTurnarou
 	tl.eventCallback("onReverseComplete", () => {
 		gsap.set(letters, init_val_letters);
 		if (dot) gsap.set(dot, init_val_dot);
+		svg.classList.add('ds-animation-done');
 	});
 
 	return tl;
