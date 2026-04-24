@@ -26,7 +26,8 @@ document.addEventListener("DOMContentLoaded", function () {
 		const galleryBaseId = Date.now();
 
 		dsLog('[DS/Fancybox] Init. DRAG_THRESHOLD:', DRAG_THRESHOLD, 'galleryBaseId:', galleryBaseId);
-document.querySelectorAll('.user-items-list .user-items-list-carousel')
+
+		document.querySelectorAll('.user-items-list .user-items-list-carousel')
 			.forEach((carousel, carouselIndex) => {
 
 				const galleryName = `gallery-${galleryBaseId}-${carouselIndex}`;

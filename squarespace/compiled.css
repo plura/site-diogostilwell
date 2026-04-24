@@ -3,7 +3,7 @@
  * Source (dir): src/css
  * Excluded (names): node_modules,vendor,.git,dist,build,.ddev,.idea,.vscode,.next,.turbo,.cache,.pnpm-store
  * Excluded (paths): 
- * Generated: 2026-04-23T14:41:36+00:00
+ * Generated: 2026-04-23T23:23:47+00:00
  * Extensions: css
  * Chunk: 1
  * -------------------------------------------------
@@ -1125,7 +1125,6 @@ body:not(.sqs-edit-mode-active) section[id^="ds-project-"]:has(.sqs-block-video)
   justify-content: center;
 }
 
-
 body:not(:has(#hero-banner)) section:has(.ds-project-info) > .content-wrapper {
   --pad: calc(var(--ds-pad-lr) / 2);
   padding-top: var(--pad);
@@ -1137,65 +1136,88 @@ body:not(:has(#hero-banner)) section:has(.ds-project-info) .fe-block {
   overflow: hidden;
 }
 
-
 /* =========================================================
    Page: Work [Intro]
    ========================================================= */
 
 /* Prevent scroll while intro logo is present */
 body:has(#ds-logo-intro) {
-	overflow: hidden;
+  overflow: hidden;
 }
 
 /* hide header and footer when intro logo is present (not needed, header/footer are already hidden) */
 /* body:has(#ds-logo-intro) :is(header, footer) {
-    display: none;
+	display: none;
 } */
 
 section:has(#ds-logo-intro) {
+	background-color: var(--ds-bg-dark);
 	height: 100dvh;
-	position: relative;
+	position: fixed;
+	top: 0;
+	transition: opacity 0.3s ease, visibility 0.3s ease;
+	width: 100dvw;
+	z-index: 10;
+}
+
+section:has(#ds-logo-intro.ds-animation-done) {
+	opacity: 0;
+	visibility: hidden;
 }
 
 /* make sure intro section and its contents use display: contents
    to avoid interfering with layout and styling of surrounding elements */
-section:has(#ds-logo-intro) :is(
-
+section:has(#ds-logo-intro)
+  :is(
     .section-border,
     .content-wrapper,
     .content-wrapper .content,
     .content-wrapper .content [data-fluid-engine],
     .content-wrapper .content [data-fluid-engine] .fluid-engine,
     .content-wrapper .content [data-fluid-engine] .fluid-engine .fe-block,
-    .content-wrapper .content [data-fluid-engine] .fluid-engine .fe-block .sqs-block,
-    .content-wrapper .content [data-fluid-engine] .fluid-engine .fe-block .sqs-block .sqs-block-content,
-    .content-wrapper .content [data-fluid-engine] .fluid-engine .fe-block .sqs-block .sqs-block-content .sqs-code-container
-
-) {
-
-    display: contents;    
-
+    .content-wrapper
+      .content
+      [data-fluid-engine]
+      .fluid-engine
+      .fe-block
+      .sqs-block,
+    .content-wrapper
+      .content
+      [data-fluid-engine]
+      .fluid-engine
+      .fe-block
+      .sqs-block
+      .sqs-block-content,
+    .content-wrapper
+      .content
+      [data-fluid-engine]
+      .fluid-engine
+      .fe-block
+      .sqs-block
+      .sqs-block-content
+      .sqs-code-container
+  ) {
+  display: contents;
 }
-
 
 /* intro logo styling */
 #ds-logo-intro {
-	color: var(--ds-fg-dark);
-  	fill: currentColor;
-	display: block;
-	width: min(80vw, 900px);
-	height: auto;
-    left: 50%;
-	overflow: visible;
-	position: fixed;
-    top: 50%;
-    transform: translate(-50%, -50%);
-	z-index: 999;
+  color: var(--ds-fg-dark);
+  fill: currentColor;
+  display: block;
+  width: min(80vw, 900px);
+  height: auto;
+  left: 50%;
+  overflow: visible;
+  position: fixed;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 999;
 }
 
 #ds-logo-intro :is(.ds-logo-letter, .ds-logo-letter-dot) {
-	fill: currentColor;
-	stroke: none;
+  fill: currentColor;
+  stroke: none;
 }
 
 /*

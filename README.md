@@ -2,7 +2,7 @@
 
 Custom development layer for the **Diogo Stilwell Squarespace site**, built with a clean separation between modern source code and Squarespace-compatible output.
 
-This repository acts as a **canonical source of truth** for all custom CSS, JavaScript, animations, and reusable blocks, while accounting for Squarespace’s platform constraints.
+This repository acts as a **canonical source of truth** for all custom CSS, JavaScript, animations, and reusable blocks, while accounting for Squarespace's platform constraints.
 
 ---
 
@@ -10,26 +10,40 @@ This repository acts as a **canonical source of truth** for all custom CSS, Java
 
 ```
 src/
-	Canonical source code
-	- Modern CSS (design tokens, theming, grids)
-	- Modular JavaScript
+    Canonical source code
+    - Modern CSS (design tokens, theming, grids)
+    - Modular JavaScript
 
 blocks/
-	Reusable HTML snippets
-	- For Squarespace Code Blocks
-	- Kept platform-agnostic where possible
+    Reusable HTML snippets
+    - For Squarespace Code Blocks
+    - Kept platform-agnostic where possible
 
 squarespace/
-	Platform-ready output
-	- LESS-escaped CSS
-	- Header / footer injection code
-	- Files safe to copy/paste into Squarespace
+    Platform-ready output
+    - compiled.css — standard CSS (for reference / non-Squarespace use)
+    - compiled-less.css — LESS-escaped CSS (paste into Squarespace Custom CSS)
+    - compiled.js — concatenated JS (paste into Code Injection header)
+    - Files safe to copy/paste into Squarespace
 
 tests/anim/
-	Isolated animation playground
-	- GSAP logo animation experiments
-	- No Squarespace dependencies
+    Isolated animation playground
+    - GSAP logo animation experiments
+    - No Squarespace dependencies
 ```
+
+---
+
+## Compile Workflow
+
+Run both commands from the project root:
+
+```bash
+php /path/to/code-export/src/code-export.php --mode=concat --source "src/css" --output "squarespace/compiled.css" --ext=css
+php /path/to/code-export/src/code-export.php --mode=concat --source "src/js" --output "squarespace/compiled.js" --ext=js
+```
+
+The tool writes `compiled1.css` / `compiled1.js` — delete old compiled files and rename the outputs. Then duplicate `compiled.css` → `compiled-less.css` and apply LESS escaping per `.github/prompts/escapeLessValues.prompt.md`.
 
 ---
 
@@ -78,7 +92,7 @@ The following must be escaped in Squarespace-ready CSS:
 * `clamp(...)`
 * `min()` / `max()` **when used as functions**
 * CSS variables inside calculations (`var(--token)`)
-* Modern viewport units (`dvh`, `dvw`, etc.)
+* Modern viewport units (`dvh`, `dvw`, `svh`, `svw`, etc.)
 * Slash syntax such as:
 
   * `grid-column: 1 / -1`
@@ -86,6 +100,11 @@ The following must be escaped in Squarespace-ready CSS:
 
   * `rgb()` / `hsl()` using **space-separated channels and `/` opacity**
     (e.g. `rgb(0 0 0 / 0.5)`, `hsl(120 30% 40% / 0.6)`)
+* `filter` values containing `saturate()`
+
+Nested `:is()`, `:has()`, `:where()` selectors must also be **flattened** into explicit comma-separated lists before escaping.
+
+Full rules: `.github/prompts/escapeLessValues.prompt.md`
 
 ---
 
@@ -113,30 +132,6 @@ max-height: ~"calc(100vh - var(--header-height))";
 
 ---
 
-## LESS-ready CSS conversion rule
-
-Use the following prompt **as-is** when converting modern CSS into Squarespace-ready CSS (manually or using any AI assistant):
-
-> Rewrite the active CSS file to be Squarespace LESS-compatible. Escape ONLY property values using LESS literals in the exact form property: ~"VALUE"; when the value contains calc(), clamp(), or min()/max() as functions (including when they contain var(--…)), modern viewport units (dvh, dvw, svh, svw, lvh, lvw), or slash grid syntax (e.g. 1 / -1). If an escaped value spans multiple lines (esp. CSS custom properties), collapse it into a single-line string inside ~"...". Do NOT escape plain var(--…) unless it’s inside those functions. Keep selectors, formatting, order, and comments unchanged, then quickly scan to ensure no required escapes remain.
-
-### Saving for reuse (VS Code / Copilot)
-
-To reuse this prompt consistently:
-
-* Open **Copilot Chat** in VS Code
-* Paste the prompt above
-* Save it as a named prompt (e.g. using `/saveprompt`, if available)
-
-Suggested name:
-
-```
-Squarespace LESS – CSS escape pass
-```
-
-This allows running a strict, mechanical “LESS-ready” conversion without re-explaining the rules each time.
-
----
-
 ## CSS Strategy & Theming
 
 * Token-driven design using `:root`
@@ -149,24 +144,19 @@ This allows running a strict, mechanical “LESS-ready” conversion without re-
 
   * light background → dark foreground
   * dark background → light foreground
-* Squarespace core colour variables (`--paragraphMediumColor`, etc.)
 
-  * deliberately **not overridden yet**
-
-### Dark Mode (Planned)
+### Dark Mode
 
 * Default via `prefers-color-scheme`
-* Future manual toggle via `data-theme`
-* Persistence via `localStorage`
-* Intro section forces its own theme regardless of global state
+* Manual toggle via `data-theme` attribute on `<html>`
+* Persistence via `localStorage` key `"theme"`
+* Toggle triggered by `DSThemeModeToggle()` — wired to any `a[href="#thememode"]` in the header
+* Intro section forces its own dark theme regardless of global state
 
 ---
 
 ## Layout & Grids
 
-* Custom **Home section**
-
-  * Dynamic vertical padding via JS-injected CSS variables
 * Custom **Projects / Videos grid**
 
   * Replaces native Squarespace layout
@@ -179,51 +169,54 @@ This allows running a strict, mechanical “LESS-ready” conversion without re-
 ## Intro & Logo Animation
 
 * Powered by **GSAP**
-* Chosen animation: **anim3**
-
-  * Sequential letter reveal (slide + fade)
-  * Dot appears last
-  * Hold on final state
-  * Timeline reverses back to a deterministic hidden state
-* Old stroke / drawing animation fully removed
-* Initial flash prevented by:
-
-  * Forcing intro theme via CSS
-  * Hiding letters until GSAP initialises
-* SVG is:
-
-  * Centered
-  * Width-constrained (`min(80vw, 900px)`)
-  * Protected from Squarespace auto-stretching
+* Animation: sequential letter reveal (slide + fade) → dot drop → hold → timeline reverses to hidden state
+* Lifecycle:
+  1. Timeline reverses → `ds-animation-done` class added to SVG
+  2. CSS fades out the intro section (`opacity: 0; visibility: hidden`)
+  3. GSAP fades SVG opacity to 0, then removes it from the DOM
+  4. `ds-intro-done` class added to `<html>` — available for downstream CSS/JS hooks
+* Initial flash prevented by scoping intro theme via CSS before GSAP initialises
+* SVG is centered and width-constrained (`min(80vw, 900px)`)
 
 ---
 
 ## JavaScript Architecture
 
-### animinit()
+All functions are namespaced under `DS`.
 
-Centralised animation lifecycle handler.
+### `DSIntroInit(svg, animation, options)`
 
-Responsibilities:
+Centralised animation lifecycle handler for the intro.
 
-* Initialisation
-* Delays / paused state
-* Safe callback chaining
+Options:
 
-Supported options:
-
-* `delay`
-* `paused`
-* `key`
-* `onEnd` – forward animation end
-* `onReverseEnd` – rewind complete
+* `delay` — start delay in seconds
+* `paused` — start paused
+* `key` — keyboard key code to toggle play/pause
+* `onEnd` — callback on forward complete
+* `onReverseEnd` — callback on reverse complete
+* `onTurnaround` — callback fired at the moment of reversal
+* `removeOnComplete` — fade and remove SVG after reverse completes
+* `onRemoved` — callback fired after SVG is removed from DOM
 
 Callbacks are **chained**, never overwritten.
 
-### Animations
+### `DSAnimIntroSVG(svg, options)`
 
-* `anim1`, `anim2`, `anim3`
-* Do **not** call user callbacks directly
-* Own their internal logic only
-* `anim3` owns its rewind behaviour
-* `animinit` owns external hooks
+The intro animation factory. Builds the GSAP timeline: letters appear → dot drops → hold → rewind. Adds `ds-animation-done` to the SVG on reverse complete.
+
+### `DSThemeModeToggle(options)`
+
+Initialises the dark/light mode toggle. Reads and writes `localStorage` key `"theme"`. Applies `data-theme` to `<html>` and `ds-theme-light` / `ds-theme-dark` class to the trigger element.
+
+### `DSCountdown(options)`
+
+Animated countdown to a target date. Supports animated digit strips.
+
+### `DSHeroBanner(options)`
+
+Manages hero banner H1 height synchronisation.
+
+### Debug Logging
+
+`DS_DEBUG` constant in `utils.js` (default `false`). When `true`, `dsLog()` calls output to the console. Flip to `true` locally for debugging — never commit as `true`.

@@ -3,7 +3,7 @@
  * Source (dir): src/css
  * Excluded (names): node_modules,vendor,.git,dist,build,.ddev,.idea,.vscode,.next,.turbo,.cache,.pnpm-store
  * Excluded (paths): 
- * Generated: 2026-04-23T14:41:36+00:00
+ * Generated: 2026-04-23T23:23:47+00:00
  * Extensions: css
  * Chunk: 1
  * -------------------------------------------------
@@ -44,7 +44,7 @@
 
 	/* Theme tokens (light defaults) */
 	--ds-color-text-on-media: var(--ds-fg-dark);
-	--ds-color-overlay: rgb(20 26 20 / 0.6);
+	--ds-color-overlay: ~"rgb(20 26 20 / 0.6)";
 
 	/* Font families */
 	--ds-font-heading-family: "Fraunces", serif;
@@ -116,7 +116,7 @@
 	--ds-hero-banner-grad-color-opacity: 0.5;
 	--ds-hero-banner-grad-top: 78.4px;
 
-	--ds-hero-banner-grad-bottom: ~"calc(var(--ds-font-h1-lh) * var(--ds-font-h1-size) + (var(--ds-pad-tb) * 3))"; 
+	--ds-hero-banner-grad-bottom: ~"calc(var(--ds-font-h1-lh) * var(--ds-font-h1-size) + (var(--ds-pad-tb) * 3))";
 
 	/* Components */
 	--ds-project-info-gap: 30px;
@@ -277,7 +277,7 @@ h4 {
 }
 
 #ds-hero-banner h1 {
-	bottom: ~\"calc(var(--ds-pad-tb) * 2)\";
+	bottom: ~"calc(var(--ds-pad-tb) * 2)";
 	color: var(--ds-color-text-on-media);
 	left: var(--ds-pad-lr);
 	position: absolute;
@@ -349,7 +349,7 @@ h4 {
 :not(#ds-hero-banner) + section:has(.ds-project-info) .ds-project-info {
 	align-items: center;
 	color: var(--ds-color-text-on-media);
-	gap: ~\"calc(var(--ds-project-info-gap) / 2)\";
+	gap: ~"calc(var(--ds-project-info-gap) / 2)";
 	justify-content: center;
 }
 
@@ -385,7 +385,8 @@ h4 {
 ========================================================================== */
 
 /* when in dark mode or hero banner is present and header is not shrunk */
-:is(:root:not([data-theme="light"]),:root:has(#ds-hero-banner)) header:not(.shrink) :is(.header-title-text, .header-nav) a {
+:root:not([data-theme="light"]) header:not(.shrink) :is(.header-title-text, .header-nav) a,
+:root:has(#ds-hero-banner) header:not(.shrink) :is(.header-title-text, .header-nav) a {
 	color: var(--ds-fg-dark);
 }
 
@@ -423,7 +424,7 @@ header :is(.header-nav, .header-menu) a[href="#thememode"]::before {
 	background-repeat: no-repeat;
 	content: "";
 	height: 100%;
-	filter: brightness(0) saturate(100%) invert(0%) sepia(6%) saturate(1032%) hue-rotate(322deg) brightness(102%) contrast(84%);
+	filter: ~"brightness(0) saturate(100%) invert(0%) sepia(6%) saturate(1032%) hue-rotate(322deg) brightness(102%) contrast(84%)";
 	width: 100%;
 	position: absolute;
 	top: 0;
@@ -431,7 +432,8 @@ header :is(.header-nav, .header-menu) a[href="#thememode"]::before {
 }
 
 /* invert the icon when in dark mode or hero banner is present and header is not shrunk */
-:is( :root[data-theme="light"]:has(#ds-hero-banner), :root[data-theme="dark"] ) header:not(.shrink) .header-nav a[href="#thememode"]::before {
+:root[data-theme="light"]:has(#ds-hero-banner) header:not(.shrink) .header-nav a[href="#thememode"]::before,
+:root[data-theme="dark"] header:not(.shrink) .header-nav a[href="#thememode"]::before {
 	filter: invert(1);
 }
 
@@ -983,13 +985,13 @@ section.ds-project-card .ds-project-awards {
   }
 
   section.ds-project-card .sqs-block-image .fluid-image-container {
-    aspect-ratio: 5 / 4 !important;
+    aspect-ratio: ~"5 / 4" !important;
   }
 }
 
 /* body:not(:has(#hero-banner)) section:has(.ds-project-info) > .content-wrapper { */
 section.ds-project-card > .content-wrapper {
-  --pad: ~\"calc(var(--ds-pad-lr) / 2)\";
+  --pad: ~"calc(var(--ds-pad-lr) / 2)";
   padding-top: var(--pad);
   padding-bottom: var(--pad);
 }
@@ -1093,7 +1095,7 @@ body:not(.sqs-edit-mode-active) section[id^="ds-project-"]:has(.sqs-block-video)
 
 /* Project Case #1 is always full width (atm only holds one video) */
 /*   body:not(.sqs-edit-mode-active) section:is(#project-case):has(.sqs-block-video) .sqs-block-video:nth-child(1) {
-    grid-column: ~"1 / -1";
+    grid-column: 1 / -1;
   } */
 
 }
@@ -1114,7 +1116,6 @@ body:not(.sqs-edit-mode-active) section[id^="ds-project-"]:has(.sqs-block-video)
   justify-content: center;
 }
 
-
 body:not(:has(#hero-banner)) section:has(.ds-project-info) > .content-wrapper {
   --pad: ~"calc(var(--ds-pad-lr) / 2)";
   padding-top: var(--pad);
@@ -1126,65 +1127,88 @@ body:not(:has(#hero-banner)) section:has(.ds-project-info) .fe-block {
   overflow: hidden;
 }
 
-
 /* =========================================================
    Page: Work [Intro]
    ========================================================= */
 
 /* Prevent scroll while intro logo is present */
 body:has(#ds-logo-intro) {
-	overflow: hidden;
+  overflow: hidden;
 }
 
 /* hide header and footer when intro logo is present (not needed, header/footer are already hidden) */
 /* body:has(#ds-logo-intro) :is(header, footer) {
-    display: none;
+	display: none;
 } */
 
 section:has(#ds-logo-intro) {
+	background-color: var(--ds-bg-dark);
 	height: ~"100dvh";
-	position: relative;
+	position: fixed;
+	top: 0;
+	transition: opacity 0.3s ease, visibility 0.3s ease;
+	width: ~"100dvw";
+	z-index: 10;
+}
+
+section:has(#ds-logo-intro.ds-animation-done) {
+	opacity: 0;
+	visibility: hidden;
 }
 
 /* make sure intro section and its contents use display: contents
    to avoid interfering with layout and styling of surrounding elements */
-section:has(#ds-logo-intro) :is(
-
+section:has(#ds-logo-intro)
+  :is(
     .section-border,
     .content-wrapper,
     .content-wrapper .content,
     .content-wrapper .content [data-fluid-engine],
     .content-wrapper .content [data-fluid-engine] .fluid-engine,
     .content-wrapper .content [data-fluid-engine] .fluid-engine .fe-block,
-    .content-wrapper .content [data-fluid-engine] .fluid-engine .fe-block .sqs-block,
-    .content-wrapper .content [data-fluid-engine] .fluid-engine .fe-block .sqs-block .sqs-block-content,
-    .content-wrapper .content [data-fluid-engine] .fluid-engine .fe-block .sqs-block .sqs-block-content .sqs-code-container
-
-) {
-
-    display: contents;    
-
+    .content-wrapper
+      .content
+      [data-fluid-engine]
+      .fluid-engine
+      .fe-block
+      .sqs-block,
+    .content-wrapper
+      .content
+      [data-fluid-engine]
+      .fluid-engine
+      .fe-block
+      .sqs-block
+      .sqs-block-content,
+    .content-wrapper
+      .content
+      [data-fluid-engine]
+      .fluid-engine
+      .fe-block
+      .sqs-block
+      .sqs-block-content
+      .sqs-code-container
+  ) {
+  display: contents;
 }
-
 
 /* intro logo styling */
 #ds-logo-intro {
-	color: var(--ds-fg-dark);
-  	fill: currentColor;
-	display: block;
-	width: ~"min(80vw, 900px)";
-	height: auto;
-    left: 50%;
-	overflow: visible;
-	position: fixed;
-    top: 50%;
-    transform: translate(-50%, -50%);
-	z-index: 999;
+  color: var(--ds-fg-dark);
+  fill: currentColor;
+  display: block;
+  width: ~"min(80vw, 900px)";
+  height: auto;
+  left: 50%;
+  overflow: visible;
+  position: fixed;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 999;
 }
 
 #ds-logo-intro :is(.ds-logo-letter, .ds-logo-letter-dot) {
-	fill: currentColor;
-	stroke: none;
+  fill: currentColor;
+  stroke: none;
 }
 
 /*
@@ -1200,7 +1224,7 @@ section:has(#ds-logo-intro) :is(
 footer {
     display: flex;
     flex-direction: column;
-    padding: ~"calc(var(--ds-pad-lr) * 3)" 0 var(--ds-pad-lr);
+    padding: ~"calc( var(--ds-pad-lr) * 3 ) 0 var(--ds-pad-lr)";
     gap: var(--ds-pad-lr);
 }
 
@@ -1213,15 +1237,18 @@ footer > section {
    ============================== */
 
 /* Flatten Squarespace wrappers so #project-videos becomes the grid container */
-:is(
-    section[id^="ds-project-"]:has(.sqs-block-video, .sqs-block-image),
-    footer
-      section:is(
-        #contact,
-        #ds-footer-copyright-author,
-        #ds-footer-signature
-      ):has(.sqs-block-html, .sqs-block-socialaccountlinks-v2)
-  )
+section[id^="ds-project-"]:has(.sqs-block-video, .sqs-block-image)
+  :is(
+    .section-border,
+    .section-border .section-background,
+    .content-wrapper,
+    .content-wrapper .content,
+    .content-wrapper .content > div,
+    .content-wrapper .content > div .fluid-engine,
+    .content-wrapper .content > div .fluid-engine .fe-block
+  ),
+footer
+  section:is(#contact, #ds-footer-copyright-author, #ds-footer-signature):has(.sqs-block-html, .sqs-block-socialaccountlinks-v2)
   :is(
     .section-border,
     .section-border .section-background,
@@ -1235,28 +1262,21 @@ footer > section {
 }
 
 /* Center single block project sections */
-:is(
-  section[id^="ds-project-"]:has(.sqs-block-video, .sqs-block-image),
-  footer
-    section:is(#contact, #ds-footer-copyright-author, #ds-footer-signature):has(
-      .sqs-block-html,
-      .sqs-block-socialaccountlinks-v2
-    )
-):has(.fe-block:only-child) {
+section[id^="ds-project-"]:has(.sqs-block-video, .sqs-block-image):has(.fe-block:only-child),
+footer
+  section:is(#contact, #ds-footer-copyright-author, #ds-footer-signature):has(.sqs-block-html, .sqs-block-socialaccountlinks-v2):has(.fe-block:only-child) {
   justify-content: center;
 }
 
 /* Center and size project sections with videos or images */
-:is(
-  section[id^="ds-project-"]:has(.sqs-block-video, .sqs-block-image),
-  section:is(#contact, #ds-footer-copyright-author, #ds-footer-signature)
-) {
+section[id^="ds-project-"]:has(.sqs-block-video, .sqs-block-image),
+section:is(#contact, #ds-footer-copyright-author, #ds-footer-signature) {
   margin: 0 auto var(--ds-pad-lr);
-  width: ~"calc(100dvw - var(--ds-pad-lr) * 2)" ;
+  width: ~"calc(100dvw - var(--ds-pad-lr) * 2)";
 }
 
 /* Make project sections with videos or images use grid layout */
-:is(section[id^="ds-project-"]:has(.sqs-block-video, .sqs-block-image)) {
+section[id^="ds-project-"]:has(.sqs-block-video, .sqs-block-image) {
   display: grid;
   gap: var(--ds-pad-lr);
 }
@@ -1290,14 +1310,9 @@ footer
   }
 }
 
-:is(
-  section[id^="ds-project-"]:has(.sqs-block-video, .sqs-block-image),
-  footer
-    section:is(#contact, #ds-footer-copyright-author, #ds-footer-signature):has(
-      .sqs-block-html,
-      .sqs-block-socialaccountlinks-v2
-    )
-):has(.fe-block:only-child) {
+section[id^="ds-project-"]:has(.sqs-block-video, .sqs-block-image):has(.fe-block:only-child),
+footer
+  section:is(#contact, #ds-footer-copyright-author, #ds-footer-signature):has(.sqs-block-html, .sqs-block-socialaccountlinks-v2):has(.fe-block:only-child) {
   justify-content: center;
 }
 

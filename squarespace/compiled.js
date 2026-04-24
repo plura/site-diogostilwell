@@ -2,7 +2,7 @@
 // Source (dir): src/js
 // Excluded (names): node_modules,vendor,.git,dist,build,.ddev,.idea,.vscode,.next,.turbo,.cache,.pnpm-store
 // Excluded (paths): 
-// Generated: 2026-04-23T14:41:36+00:00
+// Generated: 2026-04-23T23:19:07+00:00
 // Extensions: js
 // Chunk: 1
 // -------------------------------------------------
@@ -31,16 +31,14 @@ const
 document.addEventListener("DOMContentLoaded", function () {
 
 	// Globals: Carousel + Fancybox integration
-	console.log('[DS/Fancybox] DOMContentLoaded');
+	dsLog('[DS/Fancybox] DOMContentLoaded');
 
-	if (typeof Fancybox === "undefined") {
-		console.log('[DS/Fancybox] Fancybox is undefined. Aborting.');
-	} else {
+	if (typeof Fancybox !== "undefined") {
 
 		const DRAG_THRESHOLD = 6;
 		const galleryBaseId = Date.now();
 
-		console.log('[DS/Fancybox] Init. DRAG_THRESHOLD:', DRAG_THRESHOLD, 'galleryBaseId:', galleryBaseId);
+		dsLog('[DS/Fancybox] Init. DRAG_THRESHOLD:', DRAG_THRESHOLD, 'galleryBaseId:', galleryBaseId);
 
 		document.querySelectorAll('.user-items-list .user-items-list-carousel')
 			.forEach((carousel, carouselIndex) => {
@@ -87,12 +85,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
 	if (ds_logo_intro) {
 
-		DSAnimInit(ds_logo_intro, DSAnimIntroSVG, {
+		DSIntroInit(ds_logo_intro, DSAnimIntroSVG, {
 			delay: .5,
-			onTurnaround: (tl) => {
-				tl.timeScale(1.5);
-			},
-			removeOnComplete: true
+			onTurnaround: (tl) => { tl.timeScale(1.5); },
+			removeOnComplete: true,
+			onRemoved: () => { document.documentElement.classList.add('ds-intro-done'); }
 		});
 
 	}
@@ -337,7 +334,7 @@ function DSCountdown({
 //  src/js/layout-intro.js
 // -------------------------------------------------
 
-//src/js/intro.js
+//src/js/layout-intro.js
 
 /**
  * Initializes a logo animation timeline and optionally binds a keyboard toggle.
@@ -350,45 +347,51 @@ function DSCountdown({
 * @param {Function|false} [options.onEnd=false] - Callback fired when the timeline reaches the end (forward play).
  * @returns {void}
  */
-function DSAnimInit(svg, animation, options = { delay: 0, paused: false, key: false, onEnd: false, onReverseEnd: false, onTurnaround: false, removeOnComplete: false }) {
+function DSIntroInit(svg, animation, { delay = 0, paused = false, key = false, onEnd = false, onReverseEnd = false, onTurnaround = false, removeOnComplete = false, onRemoved = false } = {}) {
 	if (!animation) return;
 
-
-	const { delay, paused, onTurnaround } = options;
 	const tl = animation(svg, { delay, paused, onTurnaround });
 	if (!tl) return;
 
-	if (typeof options.onEnd === "function") {
+	if (typeof onEnd === "function") {
 		const prev = tl.eventCallback("onComplete");
 		tl.eventCallback("onComplete", () => {
 			if (typeof prev === "function") prev();
-			options.onEnd(tl);
+			onEnd(tl);
 		});
 	}
 
-	if (typeof options.onReverseEnd === "function" || options.removeOnComplete === true) {
+	if (typeof onReverseEnd === "function" || removeOnComplete === true) {
 		const prev = tl.eventCallback("onReverseComplete");
 		tl.eventCallback("onReverseComplete", () => {
 			if (typeof prev === "function") prev();
-			if (typeof options.onReverseEnd === "function") options.onReverseEnd(tl);
-			if (options.removeOnComplete === true) {
-				gsap.to(svg, { opacity: 0, duration: 0.3, onComplete: () => svg.remove() });
+			if (typeof onReverseEnd === "function") onReverseEnd(tl);
+			if (removeOnComplete === true) {
+				const gsap = window.gsap;
+				if (gsap) gsap.to(svg, {
+					opacity: 0,
+					duration: 0.3,
+					onComplete: () => {
+						svg.remove();
+						if (typeof onRemoved === "function") onRemoved();
+					}
+				});
 			}
 		});
 	}
 
-	if (!options.key) return;
-	if (typeof options.key !== "string") return;
+	if (!key) return;
+	if (typeof key !== "string") return;
 
 	// Guard to avoid stacking listeners
 	if (svg.dataset.dsanimKeyListener === "1") return;
 	svg.dataset.dsanimKeyListener = "1";
 
 	document.addEventListener("keydown", (e) => {
-		if (e.code !== options.key) return;
+		if (e.code !== key) return;
 
 		if (e.repeat) return;
-		if (options.key === "Space") e.preventDefault();
+		if (key === "Space") e.preventDefault();
 
 		if (tl.paused()) {
 			// If finished, replay from start; otherwise resume
@@ -411,7 +414,7 @@ function DSAnimInit(svg, animation, options = { delay: 0, paused: false, key: fa
  * @param {SVGElement} svg
  * @returns {{ letters: SVGElement[], dot: SVGElement|null }}
  */
-function dsLogoPrepare(svg) {
+function DSLogoPrepare(svg) {
 	if (!(svg instanceof SVGElement)) {
 		throw new TypeError("dsLogoPrepare: expected an SVGElement.");
 	}
@@ -456,13 +459,11 @@ function dsLogoPrepare(svg) {
  * @param {Function|null} [options.onTurnaround=null] - Callback fired when the timeline reaches the turnaround point (before rewind).
  * @returns {gsap.core.Timeline|undefined} The GSAP timeline, or undefined if GSAP is not available.
  */
-function DSAnimIntroSVG(svg, options = { delay: 0, hold: 0.8, paused: false, onTurnaround: null }) {
+function DSAnimIntroSVG(svg, { delay = 0, hold = 0.8, paused = false, onTurnaround = null } = {}) {
 	const gsap = window.gsap;
 	if (!gsap) return;
 
-	const { letters, dot } = dsLogoPrepare(svg);
-
-	const hold = (typeof options.hold === "number") ? options.hold : 0.5;
+	const { letters, dot } = DSLogoPrepare(svg);
 
 	// Ensure a clean state (no stroke-draw mode, no leftover inline styles)
 	svg.classList.remove("is-drawing");
@@ -484,10 +485,7 @@ function DSAnimIntroSVG(svg, options = { delay: 0, hold: 0.8, paused: false, onT
 
 	let didRewind = false;
 
-	const tl = gsap.timeline({
-		delay: options.delay,
-		paused: options.paused
-	});
+	const tl = gsap.timeline({ delay, paused });
 
 	// 1) Letters appear one by one (slower + a touch of overshoot)
 	tl.to(letters, {
@@ -520,8 +518,8 @@ function DSAnimIntroSVG(svg, options = { delay: 0, hold: 0.8, paused: false, onT
 		if (didRewind) return;
 		didRewind = true;
 
-		if (typeof options.onTurnaround === "function") {
-			options.onTurnaround(tl);   // <-- external control point
+		if (typeof onTurnaround === "function") {
+			onTurnaround(tl);
 		}
 
 		tl.reverse();
@@ -531,6 +529,7 @@ function DSAnimIntroSVG(svg, options = { delay: 0, hold: 0.8, paused: false, onT
 	tl.eventCallback("onReverseComplete", () => {
 		gsap.set(letters, init_val_letters);
 		if (dot) gsap.set(dot, init_val_dot);
+		svg.classList.add('ds-animation-done');
 	});
 
 	return tl;
@@ -586,13 +585,13 @@ function getClosestElementFromPoint(elements, clientX, clientY) {
 }
 
 
-function allowFancyBoxOnCarouselSlide({ carousel, fancyboxID, threshold = 6, log = false }) {
+function allowFancyBoxOnCarouselSlide({ carousel, fancyboxID, threshold = 6 }) {
 
-	log && console.log('[DS/Fancybox] Carousel found:', fancyboxID);
+	dsLog('[DS/Fancybox] Carousel found:', fancyboxID);
 
 	const elements = carousel.querySelectorAll('.user-items-list-carousel__slide');
 	const mediaEls = Array.from(carousel.querySelectorAll('.user-items-list-carousel__media'));
-	log && console.log('[DS/Fancybox] Media elements found:', mediaEls.length);
+	dsLog('[DS/Fancybox] Media elements found:', mediaEls.length);
 
 	// Tag all media items for grouping
 	mediaEls.forEach((media) => {
@@ -609,7 +608,7 @@ function allowFancyBoxOnCarouselSlide({ carousel, fancyboxID, threshold = 6, log
 		startX = e.clientX;
 		startY = e.clientY;
 
-		log && console.log('[DS/Fancybox] pointerdown:', {
+		dsLog('[DS/Fancybox] pointerdown:', {
 			fancyboxID,
 			startX,
 			startY,
@@ -625,7 +624,7 @@ function allowFancyBoxOnCarouselSlide({ carousel, fancyboxID, threshold = 6, log
 
 		// Early exit if arrow button was clicked
 		if (e.target.closest('.user-items-list-carousel__arrow-button')) {
-			log && console.log('[DS/Fancybox] Arrow button clicked, skipping Fancybox.');
+			dsLog('[DS/Fancybox] Arrow button clicked, skipping Fancybox.');
 			return;
 		}
 
@@ -633,7 +632,7 @@ function allowFancyBoxOnCarouselSlide({ carousel, fancyboxID, threshold = 6, log
 		const dy = Math.abs(e.clientY - startY);
 		const moved = Math.max(dx, dy);
 
-		log && console.log('[DS/Fancybox] pointerup:', {
+		dsLog('[DS/Fancybox] pointerup:', {
 			fancyboxID,
 			endX: e.clientX,
 			endY: e.clientY,
@@ -644,17 +643,17 @@ function allowFancyBoxOnCarouselSlide({ carousel, fancyboxID, threshold = 6, log
 
 		// Drag? do nothing
 		if (moved > threshold) {
-			log && console.log('[DS/Fancybox] Drag detected, not opening Fancybox.', { fancyboxID, moved, threshold });
+			dsLog('[DS/Fancybox] Drag detected, not opening Fancybox.', { fancyboxID, moved, threshold });
 			return;
 		}
 
 		const element = getClosestElementFromPoint(elements, e.clientX, e.clientY);
 		const media = element?.querySelector('.user-items-list-carousel__media');
 
-		log && console.log('[DS/Fancybox] Click intent. Closest media:', media);
+		dsLog('[DS/Fancybox] Click intent. Closest media:', media);
 
 		if (!media) {
-			log && console.log('[DS/Fancybox] No media resolved from point. Aborting.');
+			dsLog('[DS/Fancybox] No media resolved from point. Aborting.');
 			return;
 		}
 
@@ -666,7 +665,7 @@ function allowFancyBoxOnCarouselSlide({ carousel, fancyboxID, threshold = 6, log
 		const items = mediaEls.map((m) => ({ src: m.src, type: "image" }));
 		const startIndex = mediaEls.indexOf(media);
 
-		log && console.log('[DS/Fancybox] Opening gallery.', { fancyboxID, startIndex, total: items.length });
+		dsLog('[DS/Fancybox] Opening gallery.', { fancyboxID, startIndex, total: items.length });
 
 		Fancybox.show(items, {
 			startIndex: Math.max(0, startIndex),
@@ -684,6 +683,9 @@ function allowFancyBoxOnCarouselSlide({ carousel, fancyboxID, threshold = 6, log
 // -------------------------------------------------
 //  src/js/utils.js
 // -------------------------------------------------
+
+const DS_DEBUG = false;
+const dsLog = (...args) => DS_DEBUG && console.log(...args);
 
 const getVar = (key, target = document.body) => {
 	if (!target || !(target instanceof HTMLElement) || typeof key !== "string") return null;
