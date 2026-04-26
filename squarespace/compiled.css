@@ -1301,9 +1301,15 @@ footer section:is(#contact, #ds-footer-copyright-author) {
 }
 
 footer
-  section:is(#contact, #ds-footer-copyright-author, #ds-footer-signature)
-  :is(.sqs-block-html, .sqs-block-socialaccountlinks-v2) {
+  section:is(#contact, #ds-footer-copyright-author/* , #ds-footer-signature */)
+  :is(.sqs-block-html, .sqs-block-socialaccountlinks) {
   width: auto;
+}
+
+footer
+  section:is(#ds-footer-signature)
+  :is(.sqs-block-html) {
+  width: 100%;
 }
 
 /* revert the display: contents for the signature section to allow text special resizing */
