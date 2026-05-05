@@ -1,18 +1,69 @@
+<!--
+  Awards Block — Full Icon Reference
+  ===================================
+  Use this as a reference for all available award icons.
+
+  Structure:
+    <ul class="ds-awards">                         — awards list container
+      <li class="ds-award ds-award--{name}"></li>  — individual award icon
+
+  Optional attributes on <li>:
+    data-ds-award-name="{Label}"    — displays a text label below the icon
+    data-ds-award-number="{n}"      — prefixes the label with a count (e.g. "4 Cannes Lion")
+                                      use "20" to trigger the "20+" display
+-->
 <ul class="ds-awards">
 	<li class="ds-award ds-award--adc-e"></li>
+	<li class="ds-award ds-award--andy"></li>
 	<li class="ds-award ds-award--appm"></li>
 	<li class="ds-award ds-award--cannes-lion"></li>
 	<li class="ds-award ds-award--ccp"></li>
+	<li class="ds-award ds-award--clio"></li>
+	<li class="ds-award ds-award--cresta"></li>
 	<li class="ds-award ds-award--d-ad"></li>
 	<li class="ds-award ds-award--effie"></li>
 	<li class="ds-award ds-award--el-ojo"></li>
+	<li class="ds-award ds-award--epica"></li>
+	<li class="ds-award ds-award--eurobest"></li>
+	<li class="ds-award ds-award--gerety"></li>
+	<li class="ds-award ds-award--lia"></li>
 	<li class="ds-award ds-award--m-p"></li>
 	<li class="ds-award ds-award--one-show"></li>
+	<li class="ds-award ds-award--shark"></li>
 </ul>
 
 
-/* Project: History */
+<!--
+  Awards Block — About Page
+  ==========================
+  This is the awards list used on the About page.
+
+  data-ds-award-number adds a win count before the label (e.g. "4 Cannes Lion").
+  A value of "20" renders as "20+" per the CSS rule in layout-components.css.
+
+  The label is rendered via CSS:
+    [data-ds-award-name]::after { content: attr(data-ds-award-name); }
+  This requires the data-ds-award-name attribute to be present on the element.
+  It can be set manually in HTML, or via varToAttr() — which reads each icon's
+  --ds-award-name CSS custom property and sets the attribute automatically at runtime,
+  removing the need to hardcode it in markup.
+-->
 <ul class="ds-awards">
+	<li class="ds-award ds-award--cannes-lion" data-ds-award-number="4"></li>
+	<li class="ds-award ds-award--clio" data-ds-award-number="11"></li>
+	<li class="ds-award ds-award--lia" data-ds-award-number="2"></li>
+	<li class="ds-award ds-award--one-show" data-ds-award-number="1"></li>
+	<li class="ds-award ds-award--cresta" data-ds-award-number="8"></li>
+	<li class="ds-award ds-award--eurobest" data-ds-award-number="4"></li>
+	<li class="ds-award ds-award--adc-e" data-ds-award-number="4"></li>
+	<li class="ds-award ds-award--el-ojo" data-ds-award-number="6"></li>
+	<li class="ds-award ds-award--gerety" data-ds-award-number="2"></li>
+	<li class="ds-award ds-award--ccp" data-ds-award-number="20"></li>
+	<li class="ds-award ds-award--m-p" data-ds-award-number="20"></li>
+	<li class="ds-award ds-award--andy"></li>
+	<li class="ds-award ds-award--shark"></li>
 	<li class="ds-award ds-award--appm"></li>
-	<li class="ds-award ds-award--cannes-lion"></li>
+	<li class="ds-award ds-award--d-ad"></li>
+	<li class="ds-award ds-award--effie"></li>
+	<li class="ds-award ds-award--epica"></li>
 </ul>
