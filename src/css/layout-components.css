@@ -321,6 +321,15 @@
   background-image: url("https://images.squarespace-cdn.com/content/692f1739a12dd468438fd973/05bf236e-fe58-45f9-b5aa-a6c5d72ab8a2/shark-awards.webp?content-type=image%2Fwebp");
 }
 
+/* Andy Award Icon */
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--andy {
+  --ds-award-name: "Andy";
+}
+
+:is(.ds-project-awards, .ds-awards) .ds-award.ds-award--andy::before {
+  background-image: url("https://images.squarespace-cdn.com/content/692f1739a12dd468438fd973/16631f4d-e476-4b46-8100-8d7f6ea830ba/andy.webp?content-type=image%2Fwebp");
+}
+
 /* Project Card */
 section.ds-project-card .ds-project-awards {
   justify-content: center;
