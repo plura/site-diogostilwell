@@ -18,6 +18,7 @@ blocks/
     Reusable HTML snippets
     - For Squarespace Code Blocks
     - Kept platform-agnostic where possible
+    - block-awards.html — full award icon reference + About Page example
 
 squarespace/
     Platform-ready output
@@ -129,6 +130,21 @@ Use:
 ```css
 max-height: ~"calc(100vh - var(--header-height))";
 ```
+
+---
+
+## Award Icons
+
+Award icons are rendered as `<li class="ds-award ds-award--{name}">` elements inside a `<ul class="ds-awards">` container. Each icon's image and label are defined entirely in CSS via `--ds-award-name` and `background-image` on `::before`.
+
+Available modifiers:
+
+* `data-ds-award-number="{n}"` — prepends a win count to the label (`"20"` renders as `"20+"`)
+* `data-ds-award-name="{Label}"` — sets the label directly in markup
+
+In practice, `data-ds-award-name` is set automatically at runtime by `varToAttr()`, which reads each icon's `--ds-award-name` CSS custom property and writes it as an HTML attribute — removing the need to hardcode it in markup.
+
+See [`blocks/block-awards.html`](blocks/block-awards.html) for the full icon reference and a live usage example.
 
 ---
 
