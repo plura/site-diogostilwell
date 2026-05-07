@@ -116,3 +116,8 @@ section:has(#ds-logo-intro)
   fill: currentColor;
   stroke: none;
 }
+
+/* Hide letters before GSAP runs to prevent a flash of the full logo on load */
+#ds-logo-intro [id^="ds-logo-letter"] {
+  opacity: 0;
+}
