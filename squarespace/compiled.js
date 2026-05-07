@@ -87,9 +87,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 		DSIntroInit(ds_logo_intro, DSAnimIntroSVG, {
 			delay: .5,
-			onTurnaround: (tl) => { tl.timeScale(1.5); },
-			removeOnComplete: true,
-			onRemoved: () => { document.documentElement.classList.add('ds-intro-done'); }
+			onTurnaround: (tl) => { tl.timeScale(1.5); }
 		});
 
 	}

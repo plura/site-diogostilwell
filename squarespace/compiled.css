@@ -846,8 +846,18 @@ body:not(:has(#hero-banner)) section:has(.ds-project-info) .fe-block {
    ========================================================= */
 
 /* Prevent scroll while intro logo is present */
-body:has(#ds-logo-intro) {
+body:has(#ds-logo-intro:not(.ds-animation-done)) {
   overflow: hidden;
+}
+
+/* Hide header during intro, fade in after */
+.header-announcement-bar-wrapper {
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+body:has(#ds-logo-intro:not(.ds-animation-done)) .header-announcement-bar-wrapper {
+  opacity: 0;
+  visibility: hidden;
 }
 
 /* hide header and footer when intro logo is present (not needed, header/footer are already hidden) */
