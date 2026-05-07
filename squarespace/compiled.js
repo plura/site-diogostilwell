@@ -1,16 +1,3 @@
-// Concatenated code export
-// Source (dir): src/js
-// Excluded (names): node_modules,vendor,.git,dist,build,.ddev,.idea,.vscode,.next,.turbo,.cache,.pnpm-store
-// Excluded (paths): 
-// Generated: 2026-04-23T23:19:07+00:00
-// Extensions: js
-// Chunk: 1
-// -------------------------------------------------
-
-// -------------------------------------------------
-//  src/js/init.js
-// -------------------------------------------------
-
 // src/js/init.js
 
 const
@@ -65,8 +52,15 @@ document.addEventListener("DOMContentLoaded", function () {
 	//Globals: Awards - add labels to Awards icons
 	varToAttr({ key: 'ds-award-name', target: '.ds-awards .ds-award' });
 
+	// Globals: Awards - set --i per award for CSS stagger
+	document.querySelectorAll('.ds-project-awards').forEach(awards => {
+		awards.querySelectorAll('.ds-award').forEach((award, index) => {
+			award.style.setProperty('--i', index);
+		});
+	});
 
-	// Globals CPT: Header & Hero Banner H1 Heights 
+
+	// Globals CPT: Header & Hero Banner H1 Heights
 	const heroH1 = document.querySelector("#ds-hero-banner h1");
 
 	if (heroH1) {
@@ -99,9 +93,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 });
 
-// -------------------------------------------------
-//  src/js/layout-banner.js
-// -------------------------------------------------
+// src/js/layout-banner.js
 
 function DSHeroBanner({ title }) {
 
@@ -135,9 +127,7 @@ function DSHeroBanner({ title }) {
 
 }
 
-// -------------------------------------------------
-//  src/js/layout-countdown.js
-// -------------------------------------------------
+// src/js/layout-countdown.js
 
 /**
  * Factory for a single digit slot
@@ -147,19 +137,19 @@ function DSCountdownItemValueDigit({ parentEl, animated }) {
   let currentDigit = null;
   const container = document.createElement('span');
   container.className = 'ds-countdown__digit';
-  
+
   let strip, currentSlot, nextSlot;
 
   if (animated) {
     strip = document.createElement('span');
     strip.className = 'ds-countdown__digit-strip';
-    
+
     currentSlot = document.createElement('span');
     currentSlot.className = 'ds-countdown__digit-strip-item ds-countdown__digit-strip-item--current';
-    
+
     nextSlot = document.createElement('span');
     nextSlot.className = 'ds-countdown__digit-strip-item ds-countdown__digit-strip-item--next';
-    
+
     strip.append(currentSlot, nextSlot);
     container.appendChild(strip);
   } else {
@@ -207,17 +197,17 @@ function DSCountdownItemValue({ parentEl, leadingZero, animated }) {
   // Always create digit containers if leadingZero is true to ensure layout stability
   if (leadingZero) {
     digits = [
-        DSCountdownItemValueDigit({ parentEl: container, animated }), 
+        DSCountdownItemValueDigit({ parentEl: container, animated }),
         DSCountdownItemValueDigit({ parentEl: container, animated })
     ];
   }
 
   return {
     update: function(newValue) {
-      const displayValue = leadingZero 
-        ? String(newValue).padStart(2, '0') 
+      const displayValue = leadingZero
+        ? String(newValue).padStart(2, '0')
         : String(newValue);
-      
+
       if (leadingZero) {
         displayValue.split('').forEach((char, i) => {
           if (digits[i]) digits[i].update(char);
@@ -238,10 +228,10 @@ function DSCountdownItem({ unit, parentEl, showLabel, leadingZero, animated }) {
   const itemEl = document.createElement('div');
   itemEl.className = `ds-countdown__item ds-countdown__item--${unit}`;
 
-  const valueController = DSCountdownItemValue({ 
-    parentEl: itemEl, 
-    leadingZero, 
-    animated 
+  const valueController = DSCountdownItemValue({
+    parentEl: itemEl,
+    leadingZero,
+    animated
   });
 
   if (showLabel) {
@@ -276,7 +266,7 @@ function DSCountdown({
   const targetEl = typeof target === 'string' ? document.querySelector(target) : target;
   if (!targetEl) return null;
 
-  targetEl.innerHTML = ''; 
+  targetEl.innerHTML = '';
   const container = document.createElement('div');
   container.className = 'ds-countdown';
   if (className) container.classList.add(...className.split(' ').filter(Boolean));
@@ -284,7 +274,7 @@ function DSCountdown({
 
   const activeItems = {};
   const config = { months, days, hours, minutes, seconds };
-  
+
   Object.entries(config).forEach(([unit, active]) => {
     if (active) {
       activeItems[unit] = DSCountdownItem({ unit, parentEl: container, showLabel: label, leadingZero, animated });
@@ -328,11 +318,7 @@ function DSCountdown({
   return { stop: () => cancelAnimationFrame(rafId) };
 }
 
-// -------------------------------------------------
-//  src/js/layout-intro.js
-// -------------------------------------------------
-
-//src/js/layout-intro.js
+// src/js/layout-intro.js
 
 /**
  * Initializes a logo animation timeline and optionally binds a keyboard toggle.
@@ -533,15 +519,7 @@ function DSAnimIntroSVG(svg, { delay = 0, hold = 0.8, paused = false, onTurnarou
 	return tl;
 }
 
-
-
-
-
-
-
-// -------------------------------------------------
-//  src/js/squarespace.js
-// -------------------------------------------------
+// src/js/squarespace.js
 
 function getClosestElementFromPoint(elements, clientX, clientY) {
 
@@ -678,9 +656,7 @@ function allowFancyBoxOnCarouselSlide({ carousel, fancyboxID, threshold = 6 }) {
 
 }
 
-// -------------------------------------------------
-//  src/js/utils.js
-// -------------------------------------------------
+// src/js/utils.js
 
 const DS_DEBUG = false;
 const dsLog = (...args) => DS_DEBUG && console.log(...args);
@@ -766,4 +742,3 @@ function DSThemeModeToggle({ trigger } = {}) {
 		});
 	});
 }
-

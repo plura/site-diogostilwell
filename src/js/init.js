@@ -52,6 +52,13 @@ document.addEventListener("DOMContentLoaded", function () {
 	//Globals: Awards - add labels to Awards icons
 	varToAttr({ key: 'ds-award-name', target: '.ds-awards .ds-award' });
 
+	// Globals: Awards - set --i per award for CSS stagger
+	document.querySelectorAll('.ds-project-awards').forEach(awards => {
+		awards.querySelectorAll('.ds-award').forEach((award, index) => {
+			award.style.setProperty('--i', index);
+		});
+	});
+
 
 	// Globals CPT: Header & Hero Banner H1 Heights 
 	const heroH1 = document.querySelector("#ds-hero-banner h1");

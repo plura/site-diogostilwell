@@ -1,20 +1,3 @@
-/*
- * Concatenated code export
- * Source (dir): src/css
- * Excluded (names): node_modules,vendor,.git,dist,build,.ddev,.idea,.vscode,.next,.turbo,.cache,.pnpm-store
- * Excluded (paths): 
- * Generated: 2026-04-23T23:23:47+00:00
- * Extensions: css
- * Chunk: 1
- * -------------------------------------------------
- */
-
-/*
- * -------------------------------------------------
- *  src/css/globals.css
- * -------------------------------------------------
- */
-
 /* Squarespace LESS reminder: escape modern CSS that LESS may parse as math.
 	 Use LESS literals (~"…") for calc()/clamp()/min()/max() and for slash syntax like:
 	 grid-column: 1 / -1, grid-row, grid-area, etc. */
@@ -472,12 +455,6 @@ footer .socialaccountlinks-v2-block .social-icons-style-regular .sqs-use--icon {
 	fill: var(--ds-fg);
 }
 
-/*
- * -------------------------------------------------
- *  src/css/layout-animations.css
- * -------------------------------------------------
- */
-
 /* ==========================================================================
 		Animations
 		========================================================================== */
@@ -519,13 +496,13 @@ footer .socialaccountlinks-v2-block .social-icons-style-regular .sqs-use--icon {
   transform: translateY(0);
 }
 
-/* Award icons stagger */
+/* Award icons stagger — --i is set per element via JS (0-based) */
 :not(#ds-hero-banner)
   + section:has(.ds-project-info)
   .ds-project-info
   .ds-project-awards
   .ds-award {
-  --ts-award: ~"calc(var(--ts) + (var(--ds-trans-lvl2-delay-step) * (var(--ds-trans-lvl2-delay-step-n, 1) - 1)))";
+  --ts-award: ~"calc(var(--ts) + (var(--ds-trans-lvl2-delay-step) * var(--i, 0)))";
 
   opacity: 0;
   transform: translateY(10px);
@@ -543,77 +520,6 @@ footer .socialaccountlinks-v2-block .social-icons-style-regular .sqs-use--icon {
   .ds-award {
   opacity: 1;
   transform: translateY(0);
-}
-
-:not(#ds-hero-banner)
-  + section:has(.ds-project-info)
-  .ds-project-info
-  .ds-project-awards
-  .ds-award:nth-child(1) {
-  --ds-trans-lvl2-delay-step-n: 1;
-}
-:not(#ds-hero-banner)
-  + section:has(.ds-project-info)
-  .ds-project-info
-  .ds-project-awards
-  .ds-award:nth-child(2) {
-  --ds-trans-lvl2-delay-step-n: 2;
-}
-:not(#ds-hero-banner)
-  + section:has(.ds-project-info)
-  .ds-project-info
-  .ds-project-awards
-  .ds-award:nth-child(3) {
-  --ds-trans-lvl2-delay-step-n: 3;
-}
-:not(#ds-hero-banner)
-  + section:has(.ds-project-info)
-  .ds-project-info
-  .ds-project-awards
-  .ds-award:nth-child(4) {
-  --ds-trans-lvl2-delay-step-n: 4;
-}
-:not(#ds-hero-banner)
-  + section:has(.ds-project-info)
-  .ds-project-info
-  .ds-project-awards
-  .ds-award:nth-child(5) {
-  --ds-trans-lvl2-delay-step-n: 5;
-}
-:not(#ds-hero-banner)
-  + section:has(.ds-project-info)
-  .ds-project-info
-  .ds-project-awards
-  .ds-award:nth-child(6) {
-  --ds-trans-lvl2-delay-step-n: 6;
-}
-:not(#ds-hero-banner)
-  + section:has(.ds-project-info)
-  .ds-project-info
-  .ds-project-awards
-  .ds-award:nth-child(7) {
-  --ds-trans-lvl2-delay-step-n: 7;
-}
-:not(#ds-hero-banner)
-  + section:has(.ds-project-info)
-  .ds-project-info
-  .ds-project-awards
-  .ds-award:nth-child(8) {
-  --ds-trans-lvl2-delay-step-n: 8;
-}
-:not(#ds-hero-banner)
-  + section:has(.ds-project-info)
-  .ds-project-info
-  .ds-project-awards
-  .ds-award:nth-child(9) {
-  --ds-trans-lvl2-delay-step-n: 9;
-}
-:not(#ds-hero-banner)
-  + section:has(.ds-project-info)
-  .ds-project-info
-  .ds-project-awards
-  .ds-award:nth-child(10) {
-  --ds-trans-lvl2-delay-step-n: 10;
 }
 
 
@@ -636,12 +542,6 @@ header .header-nav a[href="#thememode"].ds-theme-light::before {
     transform: none;
   }
 }
-
-/*
- * -------------------------------------------------
- *  src/css/layout-components.css
- * -------------------------------------------------
- */
 
 /* ==========================================================================
 	Components: Countdown
@@ -819,7 +719,7 @@ header .header-nav a[href="#thememode"].ds-theme-light::before {
 }
 
 /* =========================================================================
-	Award Icons	
+	Award Icons
 ========================================================================= */
 
 /* ADC&E Award Icon */
@@ -1010,19 +910,12 @@ section.ds-project-card .fe-block {
   overflow: hidden;
 }
 
-/*
- * -------------------------------------------------
- *  src/css/layout-cpt.css
- * -------------------------------------------------
- */
-
 /* PROJECTS */
 
 
 /* ==========================================================================
 	Project Common Layout Styles
 ========================================================================== */
-
 
 
 
@@ -1108,13 +1001,6 @@ body:not(.sqs-edit-mode-active) section[id^="ds-project-"]:has(.sqs-block-video)
   } */
 
 }
-
-
-/*
- * -------------------------------------------------
- *  src/css/layout-pages.css
- * -------------------------------------------------
- */
 
 /* ==========================================================================
 	Page: Work
@@ -1240,12 +1126,6 @@ section:has(#ds-logo-intro)
   opacity: 0;
 }
 
-/*
- * -------------------------------------------------
- *  src/css/layout-structure.css
- * -------------------------------------------------
- */
-
 
 /* ==============================
    Footer Layout
@@ -1266,18 +1146,15 @@ footer > section {
    ============================== */
 
 /* Flatten Squarespace wrappers so #project-videos becomes the grid container */
-section[id^="ds-project-"]:has(.sqs-block-video, .sqs-block-image)
-  :is(
-    .section-border,
-    .section-border .section-background,
-    .content-wrapper,
-    .content-wrapper .content,
-    .content-wrapper .content > div,
-    .content-wrapper .content > div .fluid-engine,
-    .content-wrapper .content > div .fluid-engine .fe-block
-  ),
-footer
-  section:is(#contact, #ds-footer-copyright-author, #ds-footer-signature):has(.sqs-block-html, .sqs-block-socialaccountlinks-v2)
+:is(
+    section[id^="ds-project-"]:has(.sqs-block-video, .sqs-block-image),
+    footer
+      section:is(
+        #contact,
+        #ds-footer-copyright-author,
+        #ds-footer-signature
+      ):has(.sqs-block-html, .sqs-block-socialaccountlinks-v2)
+  )
   :is(
     .section-border,
     .section-border .section-background,
@@ -1291,15 +1168,22 @@ footer
 }
 
 /* Center single block project sections */
-section[id^="ds-project-"]:has(.sqs-block-video, .sqs-block-image):has(.fe-block:only-child),
-footer
-  section:is(#contact, #ds-footer-copyright-author, #ds-footer-signature):has(.sqs-block-html, .sqs-block-socialaccountlinks-v2):has(.fe-block:only-child) {
+:is(
+  section[id^="ds-project-"]:has(.sqs-block-video, .sqs-block-image),
+  footer
+    section:is(#contact, #ds-footer-copyright-author, #ds-footer-signature):has(
+      .sqs-block-html,
+      .sqs-block-socialaccountlinks-v2
+    )
+):has(.fe-block:only-child) {
   justify-content: center;
 }
 
 /* Center and size project sections with videos or images */
-section[id^="ds-project-"]:has(.sqs-block-video, .sqs-block-image),
-section:is(#contact, #ds-footer-copyright-author, #ds-footer-signature) {
+:is(
+  section[id^="ds-project-"]:has(.sqs-block-video, .sqs-block-image),
+  section:is(#contact, #ds-footer-copyright-author, #ds-footer-signature)
+) {
   margin: 0 auto var(--ds-pad-lr);
   width: ~"calc(100dvw - var(--ds-pad-lr) * 2)";
 }
@@ -1318,7 +1202,7 @@ footer section:is(#contact, #ds-footer-copyright-author) {
 
 footer
   section:is(#contact, #ds-footer-copyright-author/* , #ds-footer-signature */)
-  :is(.sqs-block-html, .sqs-block-socialaccountlinks) {
+  :is(.sqs-block-html, .sqs-block-socialaccountlinks-v2) {
   width: auto;
 }
 
@@ -1345,9 +1229,13 @@ footer
   }
 }
 
-section[id^="ds-project-"]:has(.sqs-block-video, .sqs-block-image):has(.fe-block:only-child),
-footer
-  section:is(#contact, #ds-footer-copyright-author, #ds-footer-signature):has(.sqs-block-html, .sqs-block-socialaccountlinks-v2):has(.fe-block:only-child) {
+:is(
+  section[id^="ds-project-"]:has(.sqs-block-video, .sqs-block-image),
+  footer
+    section:is(#contact, #ds-footer-copyright-author, #ds-footer-signature):has(
+      .sqs-block-html,
+      .sqs-block-socialaccountlinks-v2
+    )
+):has(.fe-block:only-child) {
   justify-content: center;
 }
-
