@@ -70,7 +70,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	// Pages: Intro Animation
 	const ds_logo_intro = document.querySelector('svg#ds-logo-intro');
 
-	if (ds_logo_intro) {
+	if (ds_logo_intro && !document.documentElement.hasAttribute('data-url')) {
 
 		DSIntroInit(ds_logo_intro, DSAnimIntroSVG, {
 			delay: .5,

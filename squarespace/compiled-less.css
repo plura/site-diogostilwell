@@ -1141,7 +1141,7 @@ body:not(:has(#hero-banner)) section:has(.ds-project-info) .fe-block {
    ========================================================= */
 
 /* Prevent scroll while intro logo is present */
-body:has(#ds-logo-intro:not(.ds-animation-done)) {
+:root:not([data-url]) body:has(#ds-logo-intro:not(.ds-animation-done)) {
   overflow: hidden;
 }
 
@@ -1150,9 +1150,14 @@ body:has(#ds-logo-intro:not(.ds-animation-done)) {
   transition: opacity 0.3s ease, visibility 0.3s ease;
 }
 
-body:has(#ds-logo-intro:not(.ds-animation-done)) .header-announcement-bar-wrapper {
+:root:not([data-url]) body:has(#ds-logo-intro:not(.ds-animation-done)) .header-announcement-bar-wrapper {
   opacity: 0;
   visibility: hidden;
+}
+
+/* Hide intro section on non-home pages */
+:root[data-url] section:has(#ds-logo-intro) {
+  display: none;
 }
 
 /* hide header and footer when intro logo is present (not needed, header/footer are already hidden) */
